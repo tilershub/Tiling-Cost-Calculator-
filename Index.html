@@ -131,88 +131,145 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    const { jsPDF } = window.jspdf;
-    let adWatched = false;
+const { jsPDF } = window.jspdf;
+let adWatched = false;
 
-    function adWatchedComplete() {
-      adWatched = true;
-      document.getElementById("ad-container").style.display = "none";
-      document.getElementById("report-container").style.display = "block";
-    }
+function adWatchedComplete() {
+  adWatched = true;
+  document.getElementById("ad-container").style.display = "none";
+  document.getElementById("report-container").style.display = "block";
+}
 
-    function updateTileSizeFromDropdown() {
-      const preset = document.getElementById("tilePreset").value;
-      const customInput = document.getElementById("customTileSizeInput");
-      if (preset === "custom") {
-        customInput.style.display = "block";
-      } else {
-        customInput.style.display = "none";
-        document.getElementById("tileSizeSqft").value = preset;
-      }
-    }
+function updateTileSizeFromDropdown() {
+  const preset = document.getElementById("tilePreset").value;
+  const customInput = document.getElementById("customTileSizeInput");
+  if (preset === "custom") {
+    customInput.style.display = "block";
+  } else {
+    customInput.style.display = "none";
+    document.getElementById("tileSizeSqft").value = preset;
+  }
+}
 
-    function calculate() {
-      if (!adWatched) {
-        alert("Please watch the ad first.");
-        return;
-      }
+function calculate() {
+  if (!adWatched) {
+    alert("Please watch the ad first.");
+    return;
+  }
 
-      const sqft = parseFloat(document.getElementById("area").value);
-      const tileAreaSqft = parseFloat(document.getElementById("tileSizeSqft").value);
-      const skirtingInput = document.getElementById("skirting").value;
-      const skirting = skirtingInput ? parseFloat(skirtingInput) : Math.ceil(sqft * 0.2);
-      const tilePrice = parseFloat(document.getElementById("tilePrice").value) || 0;
-      const tileType = document.getElementById("tileType").value;
+  const sqft = parseFloat(document.getElementById("area").value);
+  const tileSize = parseFloat(document.getElementById("tileSizeSqft").value);
+  const skirtingInput = document.getElementById("skirting").value;
+  const skirting = skirtingInput ? parseFloat(skirtingInput) : Math.ceil(sqft * 0.2);
+  const tilePrice = parseFloat(document.getElementById("tilePrice").value);
+  const tileType = document.getElementById("tileType").value;
 
-      const floorTiles = Math.ceil(sqft / tileAreaSqft);
-      const skirtingTiles = Math.ceil(skirting / 12);
-      const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
-      const tileCost = totalTiles * tilePrice;
+  if (!sqft || !tileSize) {
+    alert("Please enter valid area and tile size.");
+    return;
+  }
 
-      const cementPrice = parseFloat(document.getElementById("cementPrice").value) || 0;
-      const sandPrice = parseFloat(document.getElementById("sandPrice").value) || 0;
-      const adhesivePrice = parseFloat(document.getElementById("adhesivePrice").value) || 0;
-      const clipPrice = parseFloat(document.getElementById("clipPrice").value) || 0;
-      const groutPrice = parseFloat(document.getElementById("groutPrice").value) || 0;
-      const laborRate = parseFloat(document.getElementById("laborRate").value) || 0;
+  const floorTiles = Math.ceil(sqft / tileSize);
+  const skirtingTiles = Math.ceil(skirting / 12);
+  const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
+  const tileCost = tilePrice > 0 ? totalTiles * tilePrice : null;
 
-      const cementQty = [10, 14].map(f => (f * sqft / 1000).toFixed(2));
-      const sandQty = [1.25, 1.75].map(f => (f * sqft / 1000).toFixed(2));
-      const adhesiveQty = [25, 40].map(f => (f * sqft / 1000).toFixed(2));
-      const clips = Math.ceil(sqft / 100);
-      const grout = Math.ceil(sqft / 175);
-      const laborCost = laborRate ? laborRate * sqft : 0;
+  const cementQtyMin = 10 * (sqft / 1000);
+  const cementQtyMax = 14 * (sqft / 1000);
+  const sandQtyMin = 1.25 * (sqft / 1000);
+  const sandQtyMax = 1.75 * (sqft / 1000);
+  const adhesiveQtyMin = 25 * (sqft / 1000);
+  const adhesiveQtyMax = 40 * (sqft / 1000);
+  const clipQty = Math.ceil(sqft / 100);
+  const groutQty = Math.ceil(sqft / 175);
 
-      const output = `
-📐 Area: ${sqft} sqft
+  // Prices
+  const cementPrice = parseFloat(document.getElementById("cementPrice").value);
+  const sandPrice = parseFloat(document.getElementById("sandPrice").value);
+  const adhesivePrice = parseFloat(document.getElementById("adhesivePrice").value);
+  const clipPrice = parseFloat(document.getElementById("clipPrice").value);
+  const groutPrice = parseFloat(document.getElementById("groutPrice").value);
+  const laborRate = parseFloat(document.getElementById("laborRate").value);
+
+  // Check if all prices are entered
+  const allPricesEntered = [tilePrice, cementPrice, sandPrice, adhesivePrice, clipPrice, groutPrice].every(p => !isNaN(p) && p > 0);
+
+  // Cost calculations
+  let report = `📋 Tiling Report:
+
+📐 Area: ${sqft.toFixed(2)} sqft
 🧱 Tile Type: ${tileType}
-📏 Skirting: ${skirting} ft
-🧮 Total Tiles Needed: ${totalTiles}
-💰 Tile Cost: LKR ${tileCost.toFixed(0)}
+📏 Tile Size: ${tileSize.toFixed(2)} sqft
+📏 Skirting: ${skirting.toFixed(0)} ft
 
-📦 Materials:
-- Cement: ${cementQty.join(' - ')} bags
-- Sand: ${sandQty.join(' - ')} cubes
-- Tile Adhesive: ${adhesiveQty.join(' - ')} bags
-- Clips: ${clips} packs
-- Grout: ${grout} packs
-
-💸 Labor Cost: LKR ${laborCost.toFixed(0)}
+🧮 Tile Quantity:
+- Floor Tiles: ${floorTiles}
+- Skirting Tiles: ${skirtingTiles}
+- Wastage (5%): ${Math.ceil((floorTiles + skirtingTiles) * 0.05)}
+➡ Total Tiles Required: ${totalTiles}
 `;
 
-      document.getElementById("output").innerText = output;
-      window.latestReport = output;
-    }
+  if (tileCost !== null) {
+    report += `💰 Tile Cost: LKR ${tileCost.toFixed(0)}\n`;
+  } else {
+    report += `💰 Tile Cost: (Enter tile price to calculate)\n`;
+  }
 
-    function downloadPDF() {
-      if (!window.latestReport) {
-        alert("Please calculate first.");
-        return;
-      }
-      const doc = new jsPDF();
-      doc.text(window.latestReport, 10, 10);
-      doc.save("tiling_report.pdf");
-    }
-  </script>
+  report += `
+📦 Material Quantities:
+- Cement: ${cementQtyMin.toFixed(2)} – ${cementQtyMax.toFixed(2)} bags
+- Sand: ${sandQtyMin.toFixed(2)} – ${sandQtyMax.toFixed(2)} cubes
+- Tile Adhesive: ${adhesiveQtyMin.toFixed(2)} – ${adhesiveQtyMax.toFixed(2)} bags
+- Leveling Clips: ${clipQty} packets
+- Grout: ${groutQty} packets
+`;
+
+  if (allPricesEntered) {
+    const cementCostMin = cementQtyMin * cementPrice;
+    const cementCostMax = cementQtyMax * cementPrice;
+    const sandCostMin = sandQtyMin * sandPrice;
+    const sandCostMax = sandQtyMax * sandPrice;
+    const adhesiveCostMin = adhesiveQtyMin * adhesivePrice;
+    const adhesiveCostMax = adhesiveQtyMax * adhesivePrice;
+    const clipCost = clipQty * clipPrice;
+    const groutCost = groutQty * groutPrice;
+    const laborCost = laborRate ? sqft * laborRate : 0;
+
+    const totalMin = tileCost + cementCostMin + sandCostMin + adhesiveCostMin + clipCost + groutCost + laborCost;
+    const totalMax = tileCost + cementCostMax + sandCostMax + adhesiveCostMax + clipCost + groutCost + laborCost;
+
+    report += `
+💸 Material Costs:
+- Cement: LKR ${cementCostMin.toFixed(0)} – ${cementCostMax.toFixed(0)}
+- Sand: LKR ${sandCostMin.toFixed(0)} – ${sandCostMax.toFixed(0)}
+- Tile Adhesive: LKR ${adhesiveCostMin.toFixed(0)} – ${adhesiveCostMax.toFixed(0)}
+- Leveling Clips: LKR ${clipCost.toFixed(0)}
+- Grout: LKR ${groutCost.toFixed(0)}
+
+👷 Labor Cost: ${laborRate ? "LKR " + laborCost.toFixed(0) : "Not included"}
+
+🧾 Total Cost Estimate:
+- Minimum: LKR ${totalMin.toFixed(0)}
+- Maximum: LKR ${totalMax.toFixed(0)}
+`;
+  } else {
+    report += `\n💡 Enter all material + tile prices to see full cost estimate.\n`;
+  }
+
+  document.getElementById("output").innerText = report;
+  window.latestReport = report;
+}
+
+function downloadPDF() {
+  if (!window.latestReport) {
+    alert("Please calculate first.");
+    return;
+  }
+  const doc = new jsPDF();
+  const lines = doc.splitTextToSize(window.latestReport, 180);
+  doc.text(lines, 10, 10);
+  doc.save("tiling_report.pdf");
+}
+</script>
 </body>
 </html>
