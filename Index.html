@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tiling Cost Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: auto;
+      background: #f9f9f9;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    label, input, select {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    input, select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .adslot {
+      background: #ecf0f1;
+      border: 2px dashed #bdc3c7;
+      text-align: center;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    #ad-container {
+      background: #e1f7d5;
+      padding: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+    #report-container {
+      display: none;
+    }
+    pre {
+      white-space: pre-wrap;
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tiling Cost Calculator</h1>
+
+  <div class="adslot">🔗 Ad Slot (AdSense / Adsterra)</div>
+
+  <div id="ad-container">
+    Please watch this short ad to unlock your tiling cost report. <br><br>
+    <button onclick="adWatchedComplete()">I watched the ad</button>
+  </div>
+
+  <div id="report-container">
+    <label>Total Area (sqft):</label>
+    <input type="number" id="area">
+
+    <label>Tile Type:</label>
+    <select id="tileType">
+      <option value="Ceramic">Ceramic</option>
+      <option value="Porcelain">Porcelain</option>
+      <option value="Mosaic">Mosaic</option>
+      <option value="Terracotta">Terracotta</option>
+    </select>
+
+    <label>Tile Size:</label>
+    <select id="tilePreset" onchange="updateTileSizeFromDropdown()">
+      <option value="3.87">2x2 (600×600 mm)</option>
+      <option value="7.75">2x4 (600×1200 mm)</option>
+      <option value="0.97">1x1 (300×300 mm)</option>
+      <option value="1.94">1x2 (300×600 mm)</option>
+      <option value="15.5">4x4 (1200×1200 mm)</option>
+      <option value="custom">Custom Size</option>
+    </select>
+
+    <div id="customTileSizeInput" style="display:none;">
+      Tile Size (sqft): <input type="number" id="tileSizeSqft" step="0.01">
+    </div>
+
+    <label>Tile Price (LKR per tile):</label>
+    <input type="number" id="tilePrice">
+
+    <label>Skirting Length (ft):</label>
+    <input type="number" id="skirting" placeholder="Leave blank for auto 20%">
+
+    <label>Cement Price (50kg bag):</label>
+    <input type="number" id="cementPrice">
+
+    <label>Sand Price (1 cube):</label>
+    <input type="number" id="sandPrice">
+
+    <label>Tile Adhesive Price (25kg bag):</label>
+    <input type="number" id="adhesivePrice">
+
+    <label>Leveling Clip Price (100 pcs):</label>
+    <input type="number" id="clipPrice">
+
+    <label>Grout Price (1kg):</label>
+    <input type="number" id="groutPrice">
+
+    <label>Labor Rate (LKR per sqft):</label>
+    <input type="number" id="laborRate" placeholder="Optional">
+
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="downloadPDF()">Download PDF</button>
+
+    <pre id="output"></pre>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    const { jsPDF } = window.jspdf;
+    let adWatched = false;
+
+    function adWatchedComplete() {
+      adWatched = true;
+      document.getElementById("ad-container").style.display = "none";
+      document.getElementById("report-container").style.display = "block";
+    }
+
+    function updateTileSizeFromDropdown() {
+      const preset = document.getElementById("tilePreset").value;
+      const customInput = document.getElementById("customTileSizeInput");
+      if (preset === "custom") {
+        customInput.style.display = "block";
+      } else {
+        customInput.style.display = "none";
+        document.getElementById("tileSizeSqft").value = preset;
+      }
+    }
+
+    function calculate() {
+      if (!adWatched) {
+        alert("Please watch the ad first.");
+        return;
+      }
+
+      const sqft = parseFloat(document.getElementById("area").value);
+      const tileAreaSqft = parseFloat(document.getElementById("tileSizeSqft").value);
+      const skirtingInput = document.getElementById("skirting").value;
+      const skirting = skirtingInput ? parseFloat(skirtingInput) : Math.ceil(sqft * 0.2);
+      const tilePrice = parseFloat(document.getElementById("tilePrice").value) || 0;
+      const tileType = document.getElementById("tileType").value;
+
+      const floorTiles = Math.ceil(sqft / tileAreaSqft);
+      const skirtingTiles = Math.ceil(skirting / 12);
+      const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
+      const tileCost = totalTiles * tilePrice;
+
+      const cementPrice = parseFloat(document.getElementById("cementPrice").value) || 0;
+      const sandPrice = parseFloat(document.getElementById("sandPrice").value) || 0;
+      const adhesivePrice = parseFloat(document.getElementById("adhesivePrice").value) || 0;
+      const clipPrice = parseFloat(document.getElementById("clipPrice").value) || 0;
+      const groutPrice = parseFloat(document.getElementById("groutPrice").value) || 0;
+      const laborRate = parseFloat(document.getElementById("laborRate").value) || 0;
+
+      const cementQty = [10, 14].map(f => (f * sqft / 1000).toFixed(2));
+      const sandQty = [1.25, 1.75].map(f => (f * sqft / 1000).toFixed(2));
+      const adhesiveQty = [25, 40].map(f => (f * sqft / 1000).toFixed(2));
+      const clips = Math.ceil(sqft / 100);
+      const grout = Math.ceil(sqft / 175);
+      const laborCost = laborRate ? laborRate * sqft : 0;
+
+      const output = `
+📐 Area: ${sqft} sqft
+🧱 Tile Type: ${tileType}
+📏 Skirting: ${skirting} ft
+🧮 Total Tiles Needed: ${totalTiles}
+💰 Tile Cost: LKR ${tileCost.toFixed(0)}
+
+📦 Materials:
+- Cement: ${cementQty.join(' - ')} bags
+- Sand: ${sandQty.join(' - ')} cubes
+- Tile Adhesive: ${adhesiveQty.join(' - ')} bags
+- Clips: ${clips} packs
+- Grout: ${grout} packs
+
+💸 Labor Cost: LKR ${laborCost.toFixed(0)}
+`;
+
+      document.getElementById("output").innerText = output;
+      window.latestReport = output;
+    }
+
+    function downloadPDF() {
+      if (!window.latestReport) {
+        alert("Please calculate first.");
+        return;
+      }
+      const doc = new jsPDF();
+      doc.text(window.latestReport, 10, 10);
+      doc.save("tiling_report.pdf");
+    }
+  </script>
+</body>
+</html>
