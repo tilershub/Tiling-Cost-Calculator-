@@ -265,10 +265,51 @@ function downloadPDF() {
     alert("Please calculate first.");
     return;
   }
+
   const doc = new jsPDF();
-  const lines = doc.splitTextToSize(window.latestReport, 180);
-  doc.text(lines, 10, 10);
-  doc.save("tiling_report.pdf");
+  const logoBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABQAAAAUACAIAAACXhmigAAEAAElEQVR4nOz9ebCsW5bYha219v6GHM9453vfUPVq6OpuuqtptUQ3"; // shorten for brevity
+
+  const img = new Image();
+  img.src = logoBase64;
+
+  img.onload = () => {
+    // Add header
+    doc.addImage(img, "PNG", 10, 8, 30, 15); // Logo at top-left
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("Tiling Cost Estimator – TilersHUB", 50, 18);
+
+    // Report text
+    const reportLines = doc.splitTextToSize(window.latestReport, 180);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    doc.text(reportLines, 10, 35);
+
+    // Footer
+    const pageHeight = doc.internal.pageSize.height;
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+    doc.text("Find 100% verified professional tilers – www.tilershub.lk", 10, pageHeight - 10);
+    doc.text(`Page 1 of 1`, 170, pageHeight - 10);
+
+    doc.save("tiling_report.pdf");
+  };
+
+  img.onerror = () => {
+    // Fallback without logo
+    const reportLines = doc.splitTextToSize(window.latestReport, 180);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    doc.text(reportLines, 10, 20);
+
+    const pageHeight = doc.internal.pageSize.height;
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+    doc.text("Find 100% verified professional tilers – www.tilershub.lk", 10, pageHeight - 10);
+    doc.text(`Page 1 of 1`, 170, pageHeight - 10);
+
+    doc.save("tiling_report.pdf");
+  };
 }
 </script>
 </body>
