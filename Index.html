@@ -48,9 +48,6 @@
       .container {
         padding: 15px;
       }
-      input, select, button {
-        font-size: 16px;
-      }
     }
   </style>
 </head>
@@ -86,22 +83,22 @@
       if (selected === "300x300") {
         return { sqft: 0.96, laborMin: 80, laborMax: 120, skirtingCoverage: 3 };
       } else if (selected === "600x600") {
-        return { sqft: 3.87, laborMin: 110, laborMax: 150, skirtingCoverage: 12 };
+        return { sqft: 3.87, laborMin: 80, laborMax: 120, skirtingCoverage: 12 };
       } else if (selected === "600x1200") {
-        return { sqft: 7.75, laborMin: 200, laborMax: 300, skirtingCoverage: 24 };
+        return { sqft: 7.75, laborMin: 110, laborMax: 150, skirtingCoverage: 24 };
       }
-      return { sqft: 1, laborMin: 100, laborMax: 100, skirtingCoverage: 10 };
     }
 
     function calculate() {
       const sqft = parseFloat(document.getElementById("area").value);
       const tileType = document.getElementById("tileSize").value;
       const settings = getTileSettings(tileType);
-      const skirting = Math.ceil(sqft * 0.2); // auto 20%
+      const skirting = Math.ceil(sqft * 0.2);
 
       const floorTiles = Math.ceil(sqft / settings.sqft);
       const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
-      const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
+      const totalTilesNoWastage = floorTiles + skirtingTiles;
+      const totalTiles = Math.ceil(totalTilesNoWastage * 1.05);
       const tilePrice = parseFloat(document.getElementById("tilePrice").value);
       const tileCost = tilePrice * totalTiles;
 
@@ -132,7 +129,8 @@ Skirting (auto): ${skirting} ft
 MATERIALS ESTIMATE
 - Floor Tile Quantity: ${floorTiles}
 - Skirting Tile Quantity: ${skirtingTiles}
-- Total Tile Quantity: ${totalTiles}
+- Total Tile Quantity (before wastage): ${totalTilesNoWastage}
+- Total Tile Quantity (with 5% wastage): ${totalTiles}
 - Tile Cost: LKR ${tileCost.toFixed(0)}
 - Cement: ${cementMin.toFixed(2)} – ${cementMax.toFixed(2)} bags
 - Sand: ${sandMin.toFixed(2)} – ${sandMax.toFixed(2)} cubes
