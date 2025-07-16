@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard – TilersHUB</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f9f9f9; color: #222; }
+    input, button { padding: 10px; margin: 10px 0; width: 100%; font-size: 16px; }
+    .hidden { display: none; }
+    .box { max-width: 400px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 8px #ccc; }
+    h2 { text-align: center; color: #004aad; }
+  </style>
+</head>
+<body>
+<div class="box" id="loginBox">
+  <h2>Admin Login</h2>
+  <input type="password" id="adminPin" placeholder="Enter PIN" />
+  <button onclick="verifyPin()">Login</button>
+</div>
+
+<div class="box hidden" id="dashboard">
+  <h2>Update Material Prices</h2>
+  <input id="cementPriceAdmin" type="number" placeholder="Cement Price (e.g. 1900)" />
+  <input id="sandPriceAdmin" type="number" placeholder="Sand Price (e.g. 25000)" />
+  <input id="adhesivePriceAdmin" type="number" placeholder="Adhesive Price (e.g. 2200)" />
+  <input id="clipPriceAdmin" type="number" placeholder="Tile Clip Price (e.g. 1500)" />
+  <input id="groutPriceAdmin" type="number" placeholder="Grout Price (e.g. 300)" />
+  <button onclick="savePrices()">💾 Save Prices</button>
+  <p style="color:green;" id="saveMsg"></p>
+</div>
+
+<script>
+function verifyPin() {
+  const pin = document.getElementById("adminPin").value;
+  if (pin === "1234") {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("dashboard").classList.remove("hidden");
+  } else {
+    alert("Incorrect PIN");
+  }
+}
+
+function savePrices() {
+  localStorage.setItem("cementPrice", document.getElementById("cementPriceAdmin").value);
+  localStorage.setItem("sandPrice", document.getElementById("sandPriceAdmin").value);
+  localStorage.setItem("adhesivePrice", document.getElementById("adhesivePriceAdmin").value);
+  localStorage.setItem("clipPrice", document.getElementById("clipPriceAdmin").value);
+  localStorage.setItem("groutPrice", document.getElementById("groutPriceAdmin").value);
+  document.getElementById("saveMsg").innerText = "Prices saved successfully!";
+}
+</script>
+</body>
+</html>
