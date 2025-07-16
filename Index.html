@@ -2,44 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TilersHUB Cost Estimator</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; color: #222; padding: 20px; }
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      font-size: 16px;
-    }
-    button {
-      background: #004aad;
-      color: white;
-      border: none;
-    }
-    .report {
-      margin-top: 25px;
-      padding: 15px;
-      background: #f0f8ff;
-      border-left: 5px solid #004aad;
-      border-radius: 5px;
-      white-space: pre-wrap;
-    }
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; color: #222; }
+    .container { max-width: 700px; margin: auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    input, select, button { width: 100%; padding: 10px; margin: 8px 0; font-size: 16px; }
+    button { background: #004aad; color: white; border: none; }
+    .report { margin-top: 25px; padding: 15px; background: #f0f8ff; border-left: 5px solid #004aad; border-radius: 5px; white-space: pre-wrap; }
   </style>
 </head>
 <body>
 <div class="container">
   <h2 style="text-align:center; color:#004aad;">Tiling Cost Estimator – TilersHUB</h2>
-
   <input id="area" type="number" placeholder="Total Area (sqft)" />
   <label for="tileSize">Select Tile Size:</label>
   <select id="tileSize">
@@ -48,15 +23,8 @@
     <option value="600x1200">600mm x 1200mm</option>
   </select>
   <input id="tilePrice" type="number" placeholder="Tile Price (LKR)" />
-  <input id="cementPrice" type="number" placeholder="Cement Price (LKR)" />
-  <input id="sandPrice" type="number" placeholder="Sand Price (LKR)" />
-  <input id="adhesivePrice" type="number" placeholder="Tile Adhesive Price (LKR)" />
-  <input id="clipPrice" type="number" placeholder="Leveling Clip Price (LKR)" />
-  <input id="groutPrice" type="number" placeholder="Grout Price (LKR)" />
-
   <button onclick="calculate()">Calculate</button>
   <button onclick="downloadPDF()">Download PDF</button>
-
   <div id="report" class="report" style="display:none;"></div>
 </div>
 
@@ -71,6 +39,10 @@ function getTileSettings(selected) {
 
 let latestReport = "";
 
+function getPrice(key, defaultValue) {
+  return parseFloat(localStorage.getItem(key) || defaultValue);
+}
+
 function calculate() {
   const sqft = parseFloat(document.getElementById("area").value);
   const tileType = document.getElementById("tileSize").value;
@@ -84,18 +56,15 @@ function calculate() {
   const tilePrice = parseFloat(document.getElementById("tilePrice").value);
   const tileCost = tilePrice * totalTiles;
 
-  const cementPrice = parseFloat(document.getElementById("cementPrice").value);
-  const sandPrice = parseFloat(document.getElementById("sandPrice").value);
-  const adhesivePrice = parseFloat(document.getElementById("adhesivePrice").value);
-  const clipPrice = parseFloat(document.getElementById("clipPrice").value);
-  const groutPrice = parseFloat(document.getElementById("groutPrice").value);
+  const cementPrice = getPrice("cementPrice", 1900);
+  const sandPrice = getPrice("sandPrice", 25000);
+  const adhesivePrice = getPrice("adhesivePrice", 2200);
+  const clipPrice = getPrice("clipPrice", 1500);
+  const groutPrice = getPrice("groutPrice", 300);
 
-  const cementMin = 10 * sqft / 1000;
-  const cementMax = 14 * sqft / 1000;
-  const sandMin = 1.25 * sqft / 1000;
-  const sandMax = 1.75 * sqft / 1000;
-  const adhesiveMin = 25 * sqft / 1000;
-  const adhesiveMax = 40 * sqft / 1000;
+  const cementMin = 10 * sqft / 1000, cementMax = 14 * sqft / 1000;
+  const sandMin = 1.25 * sqft / 1000, sandMax = 1.75 * sqft / 1000;
+  const adhesiveMin = 25 * sqft / 1000, adhesiveMax = 40 * sqft / 1000;
   const clipQty = Math.ceil(sqft / 100);
   const groutQty = Math.ceil(sqft / 175);
 
