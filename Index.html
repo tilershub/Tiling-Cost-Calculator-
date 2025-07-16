@@ -3,116 +3,206 @@
 <head>
   <meta charset="UTF-8" />
   <title>TilersHUB Cost Estimator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; color: #222; }
-    .container { max-width: 700px; margin: auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    input, select, button { width: 100%; padding: 10px; margin: 8px 0; font-size: 16px; }
-    button { background: #004aad; color: white; border: none; }
-    .report { margin-top: 25px; padding: 15px; background: #f0f8ff; border-left: 5px solid #004aad; border-radius: 5px; white-space: pre-wrap; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 15px;
+      color: #222;
+    }
+
+    .container {
+      max-width: 100%;
+      width: 100%;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background: #004aad;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .report {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f0f8ff;
+      border-left: 5px solid #004aad;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 10px;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    th {
+      background: #eaf1ff;
+    }
+
+    @media (max-width: 600px) {
+      th, td {
+        font-size: 13px;
+        padding: 8px;
+      }
+      h2 {
+        font-size: 20px;
+      }
+    }
   </style>
 </head>
 <body>
-<div class="container">
-  <h2 style="text-align:center; color:#004aad;">Tiling Cost Estimator – TilersHUB</h2>
-  <input id="area" type="number" placeholder="Total Area (sqft)" />
-  <label for="tileSize">Select Tile Size:</label>
-  <select id="tileSize">
-    <option value="300x300">300mm x 300mm</option>
-    <option value="600x600">600mm x 600mm</option>
-    <option value="600x1200">600mm x 1200mm</option>
-  </select>
-  <input id="tilePrice" type="number" placeholder="Tile Price (LKR)" />
-  <button onclick="calculate()">Calculate</button>
-  <button onclick="downloadPDF()">Download PDF</button>
-  <div id="report" class="report" style="display:none;"></div>
-</div>
+  <div class="container">
+    <h2 style="text-align:center; color:#004aad;">Tiling Cost Estimator – TilersHUB</h2>
 
-<script>
-const { jsPDF } = window.jspdf;
+    <input id="area" type="number" placeholder="Total Area (sqft)" />
+    <label for="tileSize">Select Tile Size:</label>
+    <select id="tileSize">
+      <option value="300x300">300mm x 300mm</option>
+      <option value="600x600">600mm x 600mm</option>
+      <option value="600x1200">600mm x 1200mm</option>
+    </select>
+    <input id="tilePrice" type="number" placeholder="Tile Price (LKR per sqft)" />
 
-function getTileSettings(selected) {
-  if (selected === "300x300") return { sqft: 0.96, laborMin: 80, laborMax: 120, skirtingCoverage: 3 };
-  if (selected === "600x600") return { sqft: 3.87, laborMin: 80, laborMax: 120, skirtingCoverage: 12 };
-  if (selected === "600x1200") return { sqft: 7.75, laborMin: 110, laborMax: 150, skirtingCoverage: 24 };
-}
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="downloadPDF()">Download PDF</button>
 
-let latestReport = "";
+    <div id="report" class="report" style="display:none;"></div>
+  </div>
 
-function getPrice(key, defaultValue) {
-  return parseFloat(localStorage.getItem(key) || defaultValue);
-}
+  <script>
+    const { jsPDF } = window.jspdf;
 
-function calculate() {
-  const sqft = parseFloat(document.getElementById("area").value);
-  const tileType = document.getElementById("tileSize").value;
-  const settings = getTileSettings(tileType);
-  const skirting = Math.ceil(sqft * 0.2);
+    function getTileSettings(selected) {
+      if (selected === "300x300") return { sqft: 0.96, laborMin: 80, laborMax: 120, skirtingCoverage: 3 };
+      if (selected === "600x600") return { sqft: 3.87, laborMin: 80, laborMax: 120, skirtingCoverage: 12 };
+      if (selected === "600x1200") return { sqft: 7.75, laborMin: 110, laborMax: 150, skirtingCoverage: 24 };
+    }
 
-  const floorTiles = Math.ceil(sqft / settings.sqft);
-  const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
-  const totalTilesNoWastage = floorTiles + skirtingTiles;
-  const totalTiles = Math.ceil(totalTilesNoWastage * 1.05);
-  const tilePrice = parseFloat(document.getElementById("tilePrice").value);
-  const tileCost = tilePrice * totalTiles;
+    function getPrice(key, defaultValue) {
+      return parseFloat(localStorage.getItem(key) || defaultValue);
+    }
 
-  const cementPrice = getPrice("cementPrice", 1900);
-  const sandPrice = getPrice("sandPrice", 25000);
-  const adhesivePrice = getPrice("adhesivePrice", 2200);
-  const clipPrice = getPrice("clipPrice", 1500);
-  const groutPrice = getPrice("groutPrice", 300);
+    let latestReportText = "";
 
-  const cementMin = 10 * sqft / 1000, cementMax = 14 * sqft / 1000;
-  const sandMin = 1.25 * sqft / 1000, sandMax = 1.75 * sqft / 1000;
-  const adhesiveMin = 25 * sqft / 1000, adhesiveMax = 40 * sqft / 1000;
-  const clipQty = Math.ceil(sqft / 100);
-  const groutQty = Math.ceil(sqft / 175);
+    function calculate() {
+      const sqft = parseFloat(document.getElementById("area").value);
+      const tileType = document.getElementById("tileSize").value;
+      const tilePrice = parseFloat(document.getElementById("tilePrice").value);
+      const settings = getTileSettings(tileType);
+      const skirting = Math.ceil(sqft * 0.2);
 
-  const materialMin = tileCost + cementMin * cementPrice + sandMin * sandPrice + adhesiveMin * adhesivePrice + clipQty * clipPrice + groutQty * groutPrice;
-  const materialMax = tileCost + cementMax * cementPrice + sandMax * sandPrice + adhesiveMax * adhesivePrice + clipQty * clipPrice + groutQty * groutPrice;
+      const floorTiles = Math.ceil(sqft / settings.sqft);
+      const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
+      const totalTilesNoWastage = floorTiles + skirtingTiles;
+      const totalTiles = Math.ceil(totalTilesNoWastage * 1.05);
+      const tileCost = tilePrice * totalTiles;
 
-  latestReport = `📐 Project Summary
-Area: ${sqft} sqft
-Tile Size: ${tileType.replace("x", "mm x ")} mm
-Skirting (auto): ${skirting} ft
+      const cementPrice = getPrice("cementPrice", 1900);
+      const sandPrice = getPrice("sandPrice", 25000);
+      const adhesivePrice = getPrice("adhesivePrice", 2200);
+      const clipPrice = getPrice("clipPrice", 1500);
+      const groutPrice = getPrice("groutPrice", 300);
 
-📦 Materials Estimate
-Floor Tile Quantity: ${floorTiles}
-Skirting Tile Quantity: ${skirtingTiles}
-Total Tile Quantity (before wastage): ${totalTilesNoWastage}
-Total Tile Quantity (with 5% wastage): ${totalTiles}
-Tile Cost: LKR ${tileCost.toFixed(0)}
-Cement: ${cementMin.toFixed(2)} – ${cementMax.toFixed(2)} bags
-Sand: ${sandMin.toFixed(2)} – ${sandMax.toFixed(2)} cubes
-Tile Adhesive: ${adhesiveMin.toFixed(2)} – ${adhesiveMax.toFixed(2)} bags
-Leveling Clips: ${clipQty} packs
-Grout: ${groutQty} kg
+      const cementMin = 10 * sqft / 1000, cementMax = 14 * sqft / 1000;
+      const sandMin = 1.25 * sqft / 1000, sandMax = 1.75 * sqft / 1000;
+      const adhesiveMin = 25 * sqft / 1000, adhesiveMax = 40 * sqft / 1000;
+      const clipQty = Math.ceil(sqft / 100);
+      const groutQty = Math.ceil(sqft / 175);
 
-👷 Labor Cost Range
-LKR ${settings.laborMin * sqft} – LKR ${settings.laborMax * sqft}
+      const cementCostMin = cementMin * cementPrice, cementCostMax = cementMax * cementPrice;
+      const sandCostMin = sandMin * sandPrice, sandCostMax = sandMax * sandPrice;
+      const adhesiveCostMin = adhesiveMin * adhesivePrice, adhesiveCostMax = adhesiveMax * adhesivePrice;
+      const clipsCost = clipQty * clipPrice;
+      const groutCost = groutQty * groutPrice;
 
-💰 Total Project Estimate
-Minimum: LKR ${(materialMin + settings.laborMin * sqft).toFixed(0)}
-Maximum: LKR ${(materialMax + settings.laborMax * sqft).toFixed(0)}
-`;
+      const laborMin = settings.laborMin * sqft;
+      const laborMax = settings.laborMax * sqft;
 
-  document.getElementById("report").innerText = latestReport;
-  document.getElementById("report").style.display = "block";
-}
+      const totalMin = tileCost + cementCostMin + sandCostMin + adhesiveCostMin + clipsCost + groutCost + laborMin;
+      const totalMax = tileCost + cementCostMax + sandCostMax + adhesiveCostMax + clipsCost + groutCost + laborMax;
 
-function downloadPDF() {
-  const doc = new jsPDF();
-  doc.setFontSize(14);
-  doc.setTextColor(0);
-  const lines = doc.splitTextToSize(latestReport, 180);
-  doc.text(lines, 10, 20);
-  const height = doc.internal.pageSize.height;
-  doc.setFontSize(9);
-  doc.setTextColor(100);
-  doc.text("Find 100% verified professional tilers – www.tilershub.lk", 10, height - 15);
-  doc.text("WhatsApp: 0774503744", 10, height - 8);
-  doc.save("TilersHUB_Tiling_Report.pdf");
-}
-</script>
+      const html = `
+        <h3>📐 Project Summary</h3>
+        <table>
+          <tr><th>Item</th><th>Value</th></tr>
+          <tr><td>Area</td><td>${sqft} sqft</td></tr>
+          <tr><td>Tile Size</td><td>${tileType.replace("x", "mm x ")} mm</td></tr>
+          <tr><td>Skirting (auto)</td><td>${skirting} ft</td></tr>
+        </table>
+
+        <h3>📦 Materials Estimate</h3>
+        <table>
+          <tr><th>Material</th><th>Qty</th><th>Unit Price</th><th>Total Cost</th></tr>
+          <tr><td>Floor Tiles</td><td>${floorTiles}</td><td>—</td><td>—</td></tr>
+          <tr><td>Skirting Tiles</td><td>${skirtingTiles}</td><td>—</td><td>—</td></tr>
+          <tr><td><b>Total Tiles (w/ waste)</b></td><td>${totalTiles}</td><td>${tilePrice}</td><td><b>LKR ${tileCost.toFixed(0)}</b></td></tr>
+          <tr><td>Cement</td><td>${cementMin.toFixed(2)}–${cementMax.toFixed(2)} bags</td><td>${cementPrice}</td><td>LKR ${cementCostMin.toFixed(0)}–${cementCostMax.toFixed(0)}</td></tr>
+          <tr><td>Sand</td><td>${sandMin.toFixed(2)}–${sandMax.toFixed(2)} cubes</td><td>${sandPrice}</td><td>LKR ${sandCostMin.toFixed(0)}–${sandCostMax.toFixed(0)}</td></tr>
+          <tr><td>Adhesive</td><td>${adhesiveMin.toFixed(2)}–${adhesiveMax.toFixed(2)} bags</td><td>${adhesivePrice}</td><td>LKR ${adhesiveCostMin.toFixed(0)}–${adhesiveCostMax.toFixed(0)}</td></tr>
+          <tr><td>Clips</td><td>${clipQty} packs</td><td>${clipPrice}</td><td>LKR ${clipsCost.toFixed(0)}</td></tr>
+          <tr><td>Grout</td><td>${groutQty} kg</td><td>${groutPrice}</td><td>LKR ${groutCost.toFixed(0)}</td></tr>
+        </table>
+
+        <h3>👷 Labor Cost Range</h3>
+        <table>
+          <tr><th>Tile Size</th><th>Rate</th><th>Cost</th></tr>
+          <tr><td>${tileType}</td><td>${settings.laborMin}–${settings.laborMax} LKR/sqft</td><td>LKR ${laborMin.toFixed(0)}–${laborMax.toFixed(0)}</td></tr>
+        </table>
+
+        <h3>💰 Total Project Estimate</h3>
+        <table>
+          <tr><th>Type</th><th>Amount</th></tr>
+          <tr><td>Minimum</td><td><b>LKR ${totalMin.toFixed(0)}</b></td></tr>
+          <tr><td>Maximum</td><td><b>LKR ${totalMax.toFixed(0)}</b></td></tr>
+        </table>
+      `;
+
+      document.getElementById("report").innerHTML = html;
+      document.getElementById("report").style.display = "block";
+
+      latestReportText = `TilersHUB Report – ${sqft} sqft\nTotal: LKR ${totalMin.toFixed(0)} – ${totalMax.toFixed(0)}`;
+    }
+
+    function downloadPDF() {
+      const doc = new jsPDF();
+      doc.setFontSize(12);
+      doc.text(latestReportText, 10, 20);
+      doc.setFontSize(9);
+      doc.text("Find 100% verified professional tilers – www.tilershub.lk", 10, 280);
+      doc.text("WhatsApp: 0774503744", 10, 287);
+      doc.save("TilersHUB_Tiling_Report.pdf");
+    }
+  </script>
 </body>
 </html>
