@@ -62,8 +62,8 @@
 </head>
 <body>
 <div class="container">
-  <!-- ✅ Logo with base64 -->
-  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABQAAAAUACAYAAAAY5P/3AAEAAElEQVR4nOz9eZ..." class="logo" alt="TilersHUB Logo" />
+  <!-- ✅ Logo at the top -->
+  <img src="data:image/png;base64,PASTE_FULL_BASE64_HERE" class="logo" alt="TilersHUB Logo" />
   <h2 style="color:#004aad;">Tiling Cost Estimator – TilersHUB</h2>
 
   <input id="area" type="number" placeholder="Total Area (sqft)" />
@@ -88,7 +88,7 @@
 <script>
   const { jsPDF } = window.jspdf;
 
-  const logoBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABQAAAAUACAYAAAAY5P/3AAEAAElEQVR4nOz9eZ..."; // (paste full base64 string here)
+  const logoBase64 = "data:image/png;base64,PASTE_FULL_BASE64_HERE";
 
   function getTileSettings(selected) {
     if (selected === "300x300") {
@@ -166,7 +166,6 @@
 
   function downloadPDF() {
     const doc = new jsPDF();
-
     const logo = new Image();
     logo.src = logoBase64;
 
@@ -177,7 +176,6 @@
       doc.setFontSize(14);
       doc.setTextColor(255);
       doc.text("Tiling Cost Estimator – TilersHUB", 45, 18);
-
       doc.setFontSize(11);
       doc.setTextColor(0);
       doc.text(latestLines, 10, 40);
