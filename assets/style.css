@@ -1,105 +1,77 @@
-:root {
-  --primary: #004aad;
-  --secondary: #ffffff;
-  --accent: #f0f4ff;
-  --text: #222;
-  --border: #e0e0e0;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: var(--secondary);
-  color: var(--text);
-  line-height: 1.6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background-color: #ffffff;
+  color: #222;
 }
-
-.header {
+header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--primary);
+  background: #004aad;
   padding: 10px 20px;
-  color: #fff;
 }
-
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo img {
-  width: 40px;
   height: 40px;
 }
-
-.logo span {
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.nav a {
+nav a {
   color: #fff;
-  margin-left: 15px;
+  margin: 0 10px;
   text-decoration: none;
-  font-size: 16px;
+  font-weight: 500;
 }
-
-.nav a:hover {
-  text-decoration: underline;
-}
-
-.main {
+main {
   padding: 20px;
+}
+.calculator-container {
   max-width: 600px;
   margin: auto;
 }
-
-h1 {
-  color: var(--primary);
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.calculator input,
-.calculator select,
-.calculator button {
+input, select, button {
   width: 100%;
-  margin: 10px 0;
   padding: 12px;
+  margin: 10px 0;
   font-size: 16px;
-  border: 1px solid var(--border);
   border-radius: 5px;
+  border: 1px solid #ccc;
 }
-
-.calculator button {
-  background: var(--primary);
-  color: #fff;
+button {
+  background-color: #004aad;
+  color: white;
   font-weight: bold;
-  border: none;
   cursor: pointer;
 }
-
-.calculator button:hover {
-  background: #003a8c;
+button:hover {
+  background-color: #00337f;
 }
-
-.footer {
-  text-align: center;
-  font-size: 14px;
+.report {
+  margin-top: 20px;
+  background: #eef4ff;
   padding: 15px;
-  background: var(--primary);
-  color: white;
-  margin-top: 40px;
+  border-radius: 8px;
 }
-
-.footer a {
-  color: #fff;
-  text-decoration: underline;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  font-size: 14px;
+}
+th {
+  background: #dce8ff;
+}
+footer {
+  text-align: center;
+  padding: 15px;
+  background: #004aad;
+  color: white;
+}
+@media (max-width: 600px) {
+  nav a {
+    display: block;
+    margin: 5px 0;
+  }
 }
