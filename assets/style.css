@@ -1,76 +1,78 @@
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
-  background: #ffffff;
+  background: #fff;
   color: #222;
 }
 
 .container {
-  max-width: 720px;
+  max-width: 750px;
   margin: auto;
-  padding: 16px;
+  padding: 0 16px;
 }
 
+/* Header */
 .site-header {
   background: #004aad;
-  color: white;
-  padding: 10px 0;
+  padding: 14px 0;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.logo-nav {
+.header-flex {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
-  height: 40px;
+  height: 38px;
 }
 
-nav a {
+/* Navigation */
+.nav a {
   color: white;
-  margin-left: 20px;
+  margin-left: 18px;
   font-weight: 500;
   text-decoration: none;
+  font-size: 15px;
 }
 
-nav a:hover {
+.nav a:hover {
   text-decoration: underline;
 }
 
-.main-content {
-  padding-top: 30px;
-}
-
-.calculator-box {
+/* Calculator Box */
+.calculator-card {
   background: #f4f8ff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.03);
+  padding: 24px;
+  border-radius: 10px;
+  margin-top: 32px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-.calculator-box h1 {
-  font-size: 1.6rem;
-  color: #004aad;
+.calculator-card h1 {
+  font-size: 1.7rem;
   margin-bottom: 20px;
+  color: #004aad;
 }
 
 input, select, button {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
+  padding: 14px;
+  margin-bottom: 12px;
   font-size: 16px;
-  border-radius: 6px;
   border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
 }
 
 button {
   background-color: #004aad;
-  color: #fff;
+  color: white;
   font-weight: 600;
-  border: none;
+  cursor: pointer;
   transition: background 0.2s ease;
+  border: none;
 }
 
 button:hover {
@@ -78,16 +80,17 @@ button:hover {
 }
 
 .report {
-  margin-top: 20px;
-  background: #ffffff;
-  padding: 15px;
+  background: white;
+  padding: 16px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  margin-top: 20px;
 }
 
+/* Share */
 .share {
   text-align: right;
-  margin-top: 15px;
+  margin-top: 16px;
   display: none;
 }
 
@@ -96,31 +99,34 @@ button:hover {
   height: 36px;
 }
 
+/* Footer */
 .site-footer {
   background: #004aad;
   color: white;
   text-align: center;
   padding: 16px;
+  margin-top: 40px;
   font-size: 14px;
-  margin-top: 30px;
 }
 
 .site-footer a {
-  color: #fff;
+  color: white;
   text-decoration: underline;
 }
 
-@media (max-width: 480px) {
-  nav a {
-    margin-left: 10px;
-    font-size: 14px;
+/* Responsive */
+@media (max-width: 600px) {
+  .header-flex {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .logo {
-    height: 30px;
+  .nav {
+    margin-top: 10px;
   }
 
-  .calculator-box h1 {
-    font-size: 1.3rem;
+  .nav a {
+    display: inline-block;
+    margin: 8px 12px 0 0;
   }
 }
