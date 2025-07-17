@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>TilersHUB Cost Estimator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Quick tiling cost estimator for Sri Lanka — area, tile size, material & labor cost. Share via WhatsApp!" />
+  <meta name="description" content="Tiling cost calculator for Sri Lanka — material estimate, tile cost, labor rate & WhatsApp sharing." />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -27,7 +27,6 @@
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 5px;
-      box-sizing: border-box;
     }
     button {
       background: #25D366;
@@ -62,8 +61,6 @@
     h2 {
       text-align: center;
       color: #004aad;
-      margin: 0 0 15px;
-      font-size: 22px;
     }
     @media (max-width: 400px) {
       input, select, button { font-size: 14px; padding: 10px; }
@@ -84,7 +81,7 @@
     </select>
     <input id="tilePrice" type="number" placeholder="Tile Price (LKR per sqft)" />
 
-    <button id="calcBtn" onclick="calculate()">Calculate</button>
+    <button onclick="calculate()">Calculate</button>
 
     <div id="report" class="report" style="display:none;"></div>
 
@@ -99,55 +96,96 @@
     function getTileSettings(sz) {
       const map = {
         "600x600": { sqft: 3.87, laborMin: 80, laborMax: 120, skirtingCoverage: 12 },
-        "600x1200": { sqft: 7.75, laborMin: 110, laborMax: 150, skirtingCoverage: 24 },
+        "600x1200": { sqft: 7.75, laborMin: 110, laborMax: 150, skirtingCoverage: 24 }
       };
       return map[sz];
     }
 
-    let reportText = "";
-
     function calculate() {
-      const sqft = parseFloat(document.getElementById("area").value);
+      const area = parseFloat(document.getElementById("area").value);
       const tileSize = document.getElementById("tileSize").value;
       const tilePrice = parseFloat(document.getElementById("tilePrice").value);
-      if (!sqft || !tileSize || !tilePrice) {
+
+      if (!area || !tileSize || !tilePrice) {
         alert("Please fill all fields.");
         return;
       }
 
-      const s = getTileSettings(tileSize);
-      const skirting = Math.ceil(sqft * 0.2);
-      const floorTiles = Math.ceil(sqft / s.sqft);
-      const skirtingTiles = Math.ceil(skirting / s.skirtingCoverage);
+      const settings = getTileSettings(tileSize);
+      const skirtingLength = Math.ceil(area * 0.2);
+      const floorTiles = Math.ceil(area / settings.sqft);
+      const skirtingTiles = Math.ceil(skirtingLength / settings.skirtingCoverage);
       const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
+
+      const cementBagsMin = 8 * area / 800;
+      const cementBagsMax = 8 * area / 600;
+      const sandCubesMin = 1 * area / 800;
+      const sandCubesMax = 1 * area / 600;
+      const adhesiveBagsMin = area / 40;
+      const adhesiveBagsMax = area / 30;
+      const clipsPackets = area / 100;
+      const groutPackets = area / 175;
+
       const tileCost = totalTiles * tilePrice;
-      const laborMin = s.laborMin * sqft;
-      const laborMax = s.laborMax * sqft;
+      const cementCost = ((cementBagsMin + cementBagsMax) / 2) * 1900;
+      const sandCost = ((sandCubesMin + sandCubesMax) / 2) * 25000;
+      const adhesiveCost = ((adhesiveBagsMin + adhesiveBagsMax) / 2) * 2200;
+      const clipsCost = clipsPackets * 1500;
+      const groutCost = groutPackets * 300;
+      const materialTotal = tileCost + cementCost + sandCost + adhesiveCost + clipsCost + groutCost;
+      const laborMin = settings.laborMin * area;
+      const laborMax = settings.laborMax * area;
+      const grandMin = materialTotal + laborMin;
+      const grandMax = materialTotal + laborMax;
+
+      const reportText = `
+        📐 Area: ${area} sqft
+        📦 Total Tiles: ${totalTiles}
+        💰 Material Cost: ~LKR ${materialTotal.toFixed(0)}
+        👷 Labor: LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)}
+      `;
+      window.reportText = reportText;
 
       document.getElementById("report").innerHTML = `
-        <h3>Project Summary</h3>
+        <h3>📌 Project Summary</h3>
         <table>
-          <tr><th>Item</th><th>Value</th></tr>
-          <tr><td>Area</td><td>${sqft} sqft</td></tr>
-          <tr><td>Tile Size</td><td>${tileSize}</td></tr>
-          <tr><td>Skirting</td><td>${skirting} ft</td></tr>
+          <tr><th>Area</th><td>${area} sqft</td></tr>
+          <tr><th>Skirting</th><td>${skirtingLength} ft</td></tr>
+          <tr><th>Tile Size</th><td>${tileSize}</td></tr>
         </table>
-        <h3>Tile & Labor Estimate</h3>
+
+        <h3>🧱 Tile Estimate</h3>
         <table>
-          <tr><th>Item</th><th>Amount</th></tr>
-          <tr><td>Total Tiles (with waste)</td><td>${totalTiles}</td></tr>
-          <tr><td>Tile Cost</td><td>LKR ${tileCost.toFixed(0)}</td></tr>
-          <tr><td>Labor Range</td><td>LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)}</td></tr>
+          <tr><th>Floor Tiles</th><td>${floorTiles}</td></tr>
+          <tr><th>Skirting Tiles</th><td>${skirtingTiles}</td></tr>
+          <tr><th>Total Tiles (w/ waste)</th><td>${totalTiles}</td></tr>
+          <tr><th>Tile Cost</th><td>LKR ${tileCost.toFixed(0)}</td></tr>
+        </table>
+
+        <h3>🔧 Other Materials Estimate</h3>
+        <table>
+          <tr><th>Material</th><th>Quantity</th><th>Cost (LKR)</th></tr>
+          <tr><td>Cement (50kg)</td><td>${cementBagsMin.toFixed(1)} – ${cementBagsMax.toFixed(1)}</td><td>${cementCost.toFixed(0)}</td></tr>
+          <tr><td>Sand (cubes)</td><td>${sandCubesMin.toFixed(2)} – ${sandCubesMax.toFixed(2)}</td><td>${sandCost.toFixed(0)}</td></tr>
+          <tr><td>Adhesive (25kg)</td><td>${adhesiveBagsMin.toFixed(1)} – ${adhesiveBagsMax.toFixed(1)}</td><td>${adhesiveCost.toFixed(0)}</td></tr>
+          <tr><td>Clips (100 pcs)</td><td>${clipsPackets.toFixed(1)}</td><td>${clipsCost.toFixed(0)}</td></tr>
+          <tr><td>Grout (1kg)</td><td>${groutPackets.toFixed(1)}</td><td>${groutCost.toFixed(0)}</td></tr>
+        </table>
+
+        <h3>💰 Total Cost Estimate</h3>
+        <table>
+          <tr><th>Material Total</th><td>LKR ${materialTotal.toFixed(0)}</td></tr>
+          <tr><th>Labor</th><td>LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)}</td></tr>
+          <tr><th>Grand Total</th><td><b>LKR ${grandMin.toFixed(0)} – ${grandMax.toFixed(0)}</b></td></tr>
         </table>
       `;
 
-      reportText = `📐 TilersHUB Estimate: ${sqft} sqft, Tile: ${tileSize}, Cost: LKR ${tileCost.toFixed(0)} + Labor`;
       document.getElementById("report").style.display = "block";
       document.getElementById("shareIcon").style.display = "block";
     }
 
     function shareOnWhatsApp() {
-      const url = `https://wa.me/?text=${encodeURIComponent(reportText)}`;
+      const url = `https://wa.me/?text=${encodeURIComponent(window.reportText)}`;
       window.open(url, "_blank");
     }
   </script>
