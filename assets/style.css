@@ -1,132 +1,175 @@
-body {
-  font-family: 'Inter', sans-serif;
+/* Reset and Base Styles */
+* {
   margin: 0;
-  background: #fff;
-  color: #222;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.container {
-  max-width: 750px;
-  margin: auto;
-  padding: 0 16px;
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background-color: #ffffff;
+  color: #222;
+  line-height: 1.6;
 }
 
 /* Header */
-.site-header {
-  background: #004aad;
-  padding: 14px 0;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+header {
+  background-color: #004aad;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 0 20px;
 }
 
 .header-flex {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .logo {
-  height: 38px;
+  height: 36px;
+  margin-right: 16px;
 }
 
 /* Navigation */
-.nav a {
-  color: white;
-  margin-left: 18px;
-  font-weight: 500;
-  text-decoration: none;
-  font-size: 15px;
+nav {
+  display: flex;
+  gap: 20px;
 }
 
-.nav a:hover {
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+nav a:hover {
   text-decoration: underline;
 }
 
-/* Calculator Box */
-.calculator-card {
-  background: #f4f8ff;
-  padding: 24px;
+/* Main Section */
+main {
+  padding: 30px 20px;
+}
+
+.calculator-container {
+  max-width: 600px;
+  margin: auto;
+  background: #f9f9f9;
+  padding: 25px;
   border-radius: 10px;
-  margin-top: 32px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.calculator-card h1 {
-  font-size: 1.7rem;
-  margin-bottom: 20px;
+h1, h2, h3 {
   color: #004aad;
+  margin-bottom: 15px;
 }
 
+/* Form Elements */
 input, select, button {
   width: 100%;
-  padding: 14px;
-  margin-bottom: 12px;
+  padding: 12px;
+  margin: 10px 0;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  box-sizing: border-box;
 }
 
 button {
   background-color: #004aad;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
+  color: #fff;
+  font-weight: bold;
   border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #003a8c;
+  background-color: #003b8c;
 }
 
+/* Report Section */
 .report {
-  background: white;
-  padding: 16px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  margin-top: 20px;
+  margin-top: 30px;
+  background: #f0f8ff;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-/* Share */
-.share {
-  text-align: right;
-  margin-top: 16px;
-  display: none;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
 }
 
-.share img {
-  width: 36px;
-  height: 36px;
+th, td {
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+}
+
+th {
+  background: #eaf1ff;
 }
 
 /* Footer */
-.site-footer {
-  background: #004aad;
+footer {
+  background-color: #004aad;
   color: white;
   text-align: center;
-  padding: 16px;
-  margin-top: 40px;
+  padding: 15px 10px;
   font-size: 14px;
+  margin-top: 40px;
 }
 
-.site-footer a {
-  color: white;
-  text-decoration: underline;
+/* WhatsApp Share Icon */
+.share {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.share img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
 }
 
 /* Responsive */
 @media (max-width: 600px) {
-  .header-flex {
+  nav {
     flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .nav {
+    gap: 10px;
     margin-top: 10px;
   }
 
-  .nav a {
-    display: inline-block;
-    margin: 8px 12px 0 0;
+  .calculator-container {
+    padding: 20px 15px;
+  }
+
+  input, select, button {
+    font-size: 15px;
+  }
+
+  th, td {
+    font-size: 14px;
+  }
+
+  .header-flex {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .logo {
+    height: 32px;
   }
 }
