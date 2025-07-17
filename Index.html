@@ -13,7 +13,10 @@
       border: 1px solid #ccc; border-radius: 5px;
     }
     button {
-      background: #25D366; color: white; border: none; font-weight: bold; cursor: pointer;
+      background: #004aad; color: white; border: none; font-weight: bold; cursor: pointer;
+    }
+    button:hover {
+      background: #003a8c;
     }
     .report { margin-top: 20px; padding: 15px; background: #f0f8ff; border-radius: 6px; }
     table { width: 100%; border-collapse: collapse; margin: 10px 0; }
@@ -40,7 +43,7 @@
     </select>
     <input id="tilePrice" type="number" placeholder="Tile Price (LKR per sqft)" />
 
-    <button onclick="calculate()">Calculate</button>
+    <button onclick="startCalculation()">Calculate</button>
 
     <div id="report" class="report" style="display:none;"></div>
 
@@ -59,25 +62,33 @@
       }[size];
     }
 
-    function calculate() {
+    function startCalculation() {
       const area = parseFloat(document.getElementById("area").value);
       const tileSize = document.getElementById("tileSize").value;
       const tilePrice = parseFloat(document.getElementById("tilePrice").value);
       if (!area || !tileSize || !tilePrice) return alert("Please fill all fields.");
 
+      // ✅ Open Adsterra ad in new tab
+      window.open("https://www.profitableratecpm.com/kt9k1rrxm?key=de2f677dc7757f2334fea3a41a50ba74", "_blank");
+
+      // ✅ Delay report by 2 seconds
+      setTimeout(() => {
+        generateReport(area, tileSize, tilePrice);
+      }, 2000);
+    }
+
+    function generateReport(area, tileSize, tilePrice) {
       const settings = getTileSettings(tileSize);
       const skirting = Math.ceil(area * 0.2);
       const floorTiles = Math.ceil(area / settings.sqft);
       const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
       const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
 
-      // Floor Bed Estimate
-      const cementMin = 8 * area / 800, cementMax = 8 * area / 600;
+      const cementMin = Math.round(8 * area / 800), cementMax = Math.round(8 * area / 600);
       const sandMin = area / 800, sandMax = area / 600;
       const cementCostMin = cementMin * 1900, cementCostMax = cementMax * 1900;
       const sandCostMin = sandMin * 25000, sandCostMax = sandMax * 25000;
 
-      // Tiling Estimate
       const adhesiveMin = area / 40, adhesiveMax = area / 30;
       const clips = area / 100;
       const grout = area / 175;
@@ -86,7 +97,6 @@
       const groutCost = grout * 300;
       const tileCost = totalTiles * tilePrice;
 
-      // Labor
       const laborMin = area * settings.laborMin;
       const laborMax = area * settings.laborMax;
 
@@ -95,7 +105,6 @@
       const totalMin = materialMin + laborMin;
       const totalMax = materialMax + laborMax;
 
-      // Report Text (for WhatsApp)
       window.reportText = `📐 Area: ${area} sqft\nTiles: ${totalTiles}\nMaterials: LKR ${materialMin.toFixed(0)} – ${materialMax.toFixed(0)}\nLabor: LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)}\nTotal: LKR ${totalMin.toFixed(0)} – ${totalMax.toFixed(0)}\nShared via tilershub.lk`;
 
       document.getElementById("report").innerHTML = `
@@ -109,7 +118,7 @@
         <h3>🧱 Floor Bed Estimate</h3>
         <table>
           <tr><th>Material</th><th>Qty</th><th>Cost (LKR)</th></tr>
-          <tr><td>Cement (50kg)</td><td>${cementMin.toFixed(1)} – ${cementMax.toFixed(1)}</td><td>${cementCostMin.toFixed(0)} – ${cementCostMax.toFixed(0)}</td></tr>
+          <tr><td>Cement (50kg)</td><td>${cementMin} – ${cementMax}</td><td>${cementCostMin.toFixed(0)} – ${cementCostMax.toFixed(0)}</td></tr>
           <tr><td>Sand (1 cube)</td><td>${sandMin.toFixed(2)} – ${sandMax.toFixed(2)}</td><td>${sandCostMin.toFixed(0)} – ${sandCostMax.toFixed(0)}</td></tr>
         </table>
 
@@ -141,7 +150,7 @@
     }
 
     function shareOnWhatsApp() {
-      const url = `https://wa.me/?text=${encodeURIComponent(window.reportText)}`;
+      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(window.reportText)}`;
       window.open(url, "_blank");
     }
   </script>
