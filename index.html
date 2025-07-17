@@ -3,55 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TilersHUB - Tiling Cost Estimator</title>
-  <meta name="description" content="Tiling cost calculator for Sri Lanka — estimate tiles, adhesive, labor, and total cost.">
-  <link rel="stylesheet" href="assets/style.css">
+  <title>TilersHUB – Tiling Cost Calculator</title>
+  <meta name="description" content="Free modern tiling cost calculator for Sri Lanka. Estimate material, labor and project cost in seconds." />
+  <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <div class="container header-flex">
-      <img src="assets/logo.png" alt="TilersHUB Logo" class="logo">
-      <nav>
-        <a href="/">Calculator</a>
-        <a href="/blog/">Blog</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-      </nav>
+  <header class="header">
+    <div class="logo">
+      <img src="assets/logo.png" alt="TilersHUB Logo">
+      <span>TilersHUB</span>
     </div>
+    <nav class="nav">
+      <a href="/">Calculator</a>
+      <a href="/blog/">Blog</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
   </header>
 
-  <!-- Main Calculator -->
-  <main>
-    <div class="calculator-container">
-      <h2>Tiling Cost Estimator</h2>
-
-      <input id="area" type="number" placeholder="Total Area (sqft)" />
-      <select id="tileSize">
-        <option value="">Select Tile Size</option>
-        <option value="600x600">600mm × 600mm</option>
-        <option value="600x1200">600mm × 1200mm</option>
-        <option value="800x800">800mm × 800mm</option>
+  <main class="main">
+    <section class="calculator">
+      <h1>Tiling Cost Estimator</h1>
+      <input type="number" placeholder="Total Area (sqft)" />
+      <select>
+        <option>Select Tile Size</option>
+        <option>600mm × 600mm</option>
+        <option>600mm × 1200mm</option>
+        <option>800mm × 800mm</option>
       </select>
-      <input id="tilePrice" type="number" placeholder="Tile Price (LKR per Tile)" />
-
-      <button onclick="startCalculation()">Calculate</button>
-
-      <div id="report" class="report" style="display:none;"></div>
-
-      <div class="share" id="shareIcon" style="display:none;">
-        <a href="#" onclick="shareOnWhatsApp()" title="Share via WhatsApp">
-          <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp">
-        </a>
-      </div>
-    </div>
+      <input type="number" placeholder="Tile Price (LKR per Tile)" />
+      <button>Calculate</button>
+    </section>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 TilersHUB.lk • Find 100% Verified Professional Tilers • WhatsApp: <a href="https://wa.me/94774503744" style="color: white; text-decoration: underline;">0774503744</a></p>
+  <footer class="footer">
+    <p>© 2025 <strong>TilersHUB.lk</strong> • Find 100% Verified Professional Tilers • WhatsApp: <a href="https://wa.me/94774503744">0774503744</a></p>
   </footer>
-
-  <script src="assets/script.js"></script>
 </body>
 </html>
