@@ -105,8 +105,6 @@
       const totalMin = materialMin + laborMin;
       const totalMax = materialMax + laborMax;
 
-      window.reportText = `📐 Area: ${area} sqft\nTiles: ${totalTiles}\nMaterials: LKR ${materialMin.toFixed(0)} – ${materialMax.toFixed(0)}\nLabor: LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)}\nTotal: LKR ${totalMin.toFixed(0)} – ${totalMax.toFixed(0)}\nShared via tilershub.lk`;
-
       document.getElementById("report").innerHTML = `
         <h3>📌 Project Summary</h3>
         <table>
@@ -150,9 +148,28 @@
     }
 
     function shareOnWhatsApp() {
-      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(window.reportText)}`;
+      const area = document.getElementById("area").value;
+      const tileSize = document.getElementById("tileSize").value;
+      const tilePrice = document.getElementById("tilePrice").value;
+      const link = `${location.origin}${location.pathname}?area=${area}&tileSize=${tileSize}&price=${tilePrice}`;
+      const message = `📐 Your tiling estimate: ${link} \nShared via tilershub.lk`;
+      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
       window.open(url, "_blank");
     }
+
+    window.onload = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const area = urlParams.get('area');
+      const tileSize = urlParams.get('tileSize');
+      const price = urlParams.get('price');
+
+      if (area && tileSize && price) {
+        document.getElementById("area").value = area;
+        document.getElementById("tileSize").value = tileSize;
+        document.getElementById("tilePrice").value = price;
+        generateReport(parseFloat(area), tileSize, parseFloat(price));
+      }
+    };
   </script>
 </body>
 </html>
