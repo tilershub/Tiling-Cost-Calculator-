@@ -2,52 +2,116 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Dashboard – TilersHUB</title>
+  <title>Admin Panel – TilersHUB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { font-family: Arial; padding: 20px; background: #f9f9f9; color: #222; }
-    input, button { padding: 10px; margin: 10px 0; width: 100%; font-size: 16px; }
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+    .box { max-width: 500px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 10px; }
+    h2, h3 { text-align: center; color: #004aad; margin: 10px 0; }
+    label { font-weight: bold; display: block; margin-top: 15px; }
+    input { width: 100%; padding: 10px; margin-top: 5px; font-size: 16px; box-sizing: border-box; }
+    button { width: 100%; padding: 12px; margin-top: 20px; font-size: 16px; background: #004aad; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #00337d; }
     .hidden { display: none; }
-    .box { max-width: 400px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 8px #ccc; }
-    h2 { text-align: center; color: #004aad; }
+    #msg { text-align: center; color: green; margin-top: 10px; }
   </style>
 </head>
 <body>
-<div class="box" id="loginBox">
-  <h2>Admin Login</h2>
-  <input type="password" id="adminPin" placeholder="Enter PIN" />
-  <button onclick="verifyPin()">Login</button>
-</div>
 
-<div class="box hidden" id="dashboard">
-  <h2>Update Material Prices</h2>
-  <input id="cementPriceAdmin" type="number" placeholder="Cement Price (e.g. 1900)" />
-  <input id="sandPriceAdmin" type="number" placeholder="Sand Price (e.g. 25000)" />
-  <input id="adhesivePriceAdmin" type="number" placeholder="Adhesive Price (e.g. 2200)" />
-  <input id="clipPriceAdmin" type="number" placeholder="Tile Clip Price (e.g. 1500)" />
-  <input id="groutPriceAdmin" type="number" placeholder="Grout Price (e.g. 300)" />
-  <button onclick="savePrices()">💾 Save Prices</button>
-  <p style="color:green;" id="saveMsg"></p>
-</div>
+  <div class="box" id="loginBox">
+    <h2>🔐 Admin Login</h2>
+    <input type="password" id="adminPin" placeholder="Enter PIN (e.g. 1234)" />
+    <button onclick="verifyPin()">Login</button>
+  </div>
 
-<script>
-function verifyPin() {
-  const pin = document.getElementById("adminPin").value;
-  if (pin === "1234") {
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("dashboard").classList.remove("hidden");
-  } else {
-    alert("Incorrect PIN");
-  }
-}
+  <div class="box hidden" id="dashboard">
+    <h2>🛠 Update Material Prices & Ratios</h2>
 
-function savePrices() {
-  localStorage.setItem("cementPrice", document.getElementById("cementPriceAdmin").value);
-  localStorage.setItem("sandPrice", document.getElementById("sandPriceAdmin").value);
-  localStorage.setItem("adhesivePrice", document.getElementById("adhesivePriceAdmin").value);
-  localStorage.setItem("clipPrice", document.getElementById("clipPriceAdmin").value);
-  localStorage.setItem("groutPrice", document.getElementById("groutPriceAdmin").value);
-  document.getElementById("saveMsg").innerText = "Prices saved successfully!";
-}
-</script>
+    <h3>💰 Material Prices (LKR)</h3>
+    <label for="cementPrice">Cement (50kg)</label>
+    <input type="number" id="cementPrice" />
+
+    <label for="sandPrice">Sand (1 cube)</label>
+    <input type="number" id="sandPrice" />
+
+    <label for="adhesivePrice">Tile Adhesive (25kg)</label>
+    <input type="number" id="adhesivePrice" />
+
+    <label for="clipsPrice">Leveling Clips (100 pcs)</label>
+    <input type="number" id="clipsPrice" />
+
+    <label for="groutPrice">Grout (1kg)</label>
+    <input type="number" id="groutPrice" />
+
+    <h3>📐 Ratios (per sqft)</h3>
+    <label for="ratioCement">Cement Bags (floor bed)</label>
+    <input type="number" id="ratioCement" step="0.0001" />
+
+    <label for="ratioSand">Sand Cubes (floor bed)</label>
+    <input type="number" id="ratioSand" step="0.0001" />
+
+    <label for="ratioAdhesive">Adhesive Bags</label>
+    <input type="number" id="ratioAdhesive" step="0.0001" />
+
+    <label for="ratioClips">Leveling Clips (packs)</label>
+    <input type="number" id="ratioClips" step="0.0001" />
+
+    <label for="ratioGrout">Grout (kg)</label>
+    <input type="number" id="ratioGrout" step="0.0001" />
+
+    <label for="tileWastageRatio">Tile Wastage Ratio (e.g. 0.05 for 5%)</label>
+    <input type="number" id="tileWastageRatio" step="0.001" />
+
+    <label for="ratioSkirtingFromArea">Skirting Length Ratio (e.g. 0.2 for 20%)</label>
+    <input type="number" id="ratioSkirtingFromArea" step="0.01" />
+
+    <button onclick="saveSettings()">💾 Save Settings</button>
+    <p id="msg"></p>
+  </div>
+
+  <script>
+    const defaults = {
+      cementPrice: 1900,
+      sandPrice: 25000,
+      adhesivePrice: 2200,
+      clipsPrice: 1500,
+      groutPrice: 300,
+      ratioCement: 0.0125,
+      ratioSand: 0.00125,
+      ratioAdhesive: 0.025,
+      ratioClips: 0.01,
+      ratioGrout: 0.0057,
+      tileWastageRatio: 0.05,
+      ratioSkirtingFromArea: 0.2
+    };
+
+    function verifyPin() {
+      const pin = document.getElementById("adminPin").value;
+      if (pin === "1234") {
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("dashboard").classList.remove("hidden");
+        loadSettings();
+      } else {
+        alert("❌ Incorrect PIN");
+      }
+    }
+
+    function loadSettings() {
+      for (let key in defaults) {
+        const value = localStorage.getItem(key);
+        document.getElementById(key).value = value !== null ? value : defaults[key];
+      }
+    }
+
+    function saveSettings() {
+      for (let key in defaults) {
+        const input = document.getElementById(key);
+        localStorage.setItem(key, input.value);
+      }
+      const msg = document.getElementById("msg");
+      msg.textContent = "✅ Settings saved successfully!";
+      setTimeout(() => msg.textContent = "", 3000);
+    }
+  </script>
 </body>
 </html>
