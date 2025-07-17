@@ -1,4 +1,11 @@
-/* Reset and Base Styles */
+:root {
+  --primary: #004aad;
+  --secondary: #ffffff;
+  --accent: #f0f4ff;
+  --text: #222;
+  --border: #e0e0e0;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,170 +13,93 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  background-color: #ffffff;
-  color: #222;
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--secondary);
+  color: var(--text);
   line-height: 1.6;
 }
 
-/* Header */
-header {
-  background-color: #004aad;
-  color: #fff;
-  padding: 10px 20px;
-}
-
-.container {
-  max-width: 1000px;
-  margin: auto;
-  padding: 0 20px;
-}
-
-.header-flex {
+.header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
+  align-items: center;
+  background: var(--primary);
+  padding: 10px 20px;
+  color: #fff;
 }
 
 .logo {
-  height: 36px;
-  margin-right: 16px;
-}
-
-/* Navigation */
-nav {
   display: flex;
-  gap: 20px;
+  align-items: center;
+  gap: 10px;
 }
 
-nav a {
-  color: white;
+.logo img {
+  width: 40px;
+  height: 40px;
+}
+
+.logo span {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.nav a {
+  color: #fff;
+  margin-left: 15px;
   text-decoration: none;
-  font-weight: 500;
   font-size: 16px;
 }
 
-nav a:hover {
+.nav a:hover {
   text-decoration: underline;
 }
 
-/* Main Section */
-main {
-  padding: 30px 20px;
-}
-
-.calculator-container {
+.main {
+  padding: 20px;
   max-width: 600px;
   margin: auto;
-  background: #f9f9f9;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-h1, h2, h3 {
-  color: #004aad;
-  margin-bottom: 15px;
+h1 {
+  color: var(--primary);
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
-/* Form Elements */
-input, select, button {
+.calculator input,
+.calculator select,
+.calculator button {
   width: 100%;
-  padding: 12px;
   margin: 10px 0;
+  padding: 12px;
   font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
 }
 
-button {
-  background-color: #004aad;
+.calculator button {
+  background: var(--primary);
   color: #fff;
   font-weight: bold;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #003b8c;
+.calculator button:hover {
+  background: #003a8c;
 }
 
-/* Report Section */
-.report {
-  margin-top: 30px;
-  background: #f0f8ff;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 15px 0;
-}
-
-th, td {
-  text-align: left;
-  padding: 10px;
-  border: 1px solid #ddd;
-  font-size: 15px;
-}
-
-th {
-  background: #eaf1ff;
-}
-
-/* Footer */
-footer {
-  background-color: #004aad;
-  color: white;
+.footer {
   text-align: center;
-  padding: 15px 10px;
   font-size: 14px;
+  padding: 15px;
+  background: var(--primary);
+  color: white;
   margin-top: 40px;
 }
 
-/* WhatsApp Share Icon */
-.share {
-  text-align: right;
-  margin-top: 20px;
-}
-
-.share img {
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  nav {
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
-  }
-
-  .calculator-container {
-    padding: 20px 15px;
-  }
-
-  input, select, button {
-    font-size: 15px;
-  }
-
-  th, td {
-    font-size: 14px;
-  }
-
-  .header-flex {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .logo {
-    height: 32px;
-  }
+.footer a {
+  color: #fff;
+  text-decoration: underline;
 }
