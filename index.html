@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TilersHUB - Tiling Cost Calculator</title>
-  <meta name="description" content="Free online tiling cost calculator for Sri Lanka — accurate, mobile-friendly." />
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <title>TilersHUB - Tiling Cost Estimator</title>
+  <meta name="description" content="Tiling cost calculator for Sri Lanka — estimate tiles, adhesive, labor, and total cost.">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-
   <!-- Header -->
-  <header class="site-header">
+  <header>
     <div class="container header-flex">
       <img src="assets/logo.png" alt="TilersHUB Logo" class="logo">
-      <nav class="nav">
+      <nav>
         <a href="/">Calculator</a>
         <a href="/blog/">Blog</a>
         <a href="/about.html">About</a>
@@ -23,10 +21,11 @@
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="main-content container">
-    <section class="calculator-card">
-      <h1>Tiling Cost Estimator</h1>
+  <!-- Main Calculator -->
+  <main>
+    <div class="calculator-container">
+      <h2>Tiling Cost Estimator</h2>
+
       <input id="area" type="number" placeholder="Total Area (sqft)" />
       <select id="tileSize">
         <option value="">Select Tile Size</option>
@@ -35,25 +34,24 @@
         <option value="800x800">800mm × 800mm</option>
       </select>
       <input id="tilePrice" type="number" placeholder="Tile Price (LKR per Tile)" />
+
       <button onclick="startCalculation()">Calculate</button>
 
       <div id="report" class="report" style="display:none;"></div>
 
-      <div class="share" id="shareIcon">
-        <a href="#" onclick="shareOnWhatsApp()">
-          <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="Share on WhatsApp">
+      <div class="share" id="shareIcon" style="display:none;">
+        <a href="#" onclick="shareOnWhatsApp()" title="Share via WhatsApp">
+          <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp">
         </a>
       </div>
-    </section>
+    </div>
   </main>
 
   <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      <p>© 2025 TilersHUB.lk • 100% Verified Tilers • WhatsApp: <a href="https://wa.me/94774503744">0774503744</a></p>
-    </div>
+  <footer>
+    <p>© 2025 TilersHUB.lk • Find 100% Verified Professional Tilers • WhatsApp: <a href="https://wa.me/94774503744" style="color: white; text-decoration: underline;">0774503744</a></p>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="assets/script.js"></script>
 </body>
 </html>
