@@ -1,1 +1,126 @@
-body { font-family: Arial; } header { background: #004aad; color: white; padding: 10px; }
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  background: #ffffff;
+  color: #222;
+}
+
+.container {
+  max-width: 720px;
+  margin: auto;
+  padding: 16px;
+}
+
+.site-header {
+  background: #004aad;
+  color: white;
+  padding: 10px 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.logo-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  height: 40px;
+}
+
+nav a {
+  color: white;
+  margin-left: 20px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.main-content {
+  padding-top: 30px;
+}
+
+.calculator-box {
+  background: #f4f8ff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.03);
+}
+
+.calculator-box h1 {
+  font-size: 1.6rem;
+  color: #004aad;
+  margin-bottom: 20px;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #004aad;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background-color: #003a8c;
+}
+
+.report {
+  margin-top: 20px;
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.share {
+  text-align: right;
+  margin-top: 15px;
+  display: none;
+}
+
+.share img {
+  width: 36px;
+  height: 36px;
+}
+
+.site-footer {
+  background: #004aad;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  font-size: 14px;
+  margin-top: 30px;
+}
+
+.site-footer a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  nav a {
+    margin-left: 10px;
+    font-size: 14px;
+  }
+
+  .logo {
+    height: 30px;
+  }
+
+  .calculator-box h1 {
+    font-size: 1.3rem;
+  }
+}
