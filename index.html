@@ -2,49 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TilersHUB - Free Tiling Cost Calculator</title>
-  <meta name="description" content="Estimate your tiling project cost instantly using the free TilersHUB calculator.">
-  <meta name="theme-color" content="#004aad" />
-  <link rel="stylesheet" href="assets/style.css">
-  <link rel="manifest" href="manifest.json" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TILERSHUB - Tiling Cost Calculator</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <header>
-    <img src="icons/logo.png" alt="TilersHUB Logo" class="logo">
-    <nav>
-      <a href="/">Calculator</a>
-      <a href="/blog/">Blog</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
-    </nav>
+    TILERSHUB
   </header>
 
   <main>
-    <div class="calculator-container">
+    <div class="calculator-card">
       <h1>Tiling Cost Calculator</h1>
-      <input id="area" type="number" placeholder="Total Area (sqft)" />
-      <select id="tileSize">
-        <option value="">Select Tile Size</option>
-        <option value="600x600">600mm × 600mm</option>
-        <option value="600x1200">600mm × 1200mm</option>
-        <option value="800x800">800mm × 800mm</option>
-      </select>
-      <input id="tilePrice" type="number" placeholder="Tile Price (LKR per Tile)" />
-      <button onclick="startCalculation()">Calculate</button>
-      <div id="report" class="report" style="display:none;"></div>
-      <div class="share" id="shareIcon">
-        <a href="#" onclick="shareOnWhatsApp()" title="Share via WhatsApp">
-          <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp">
-        </a>
-      </div>
+
+      <label for="totalArea">Total Area (sqft)</label>
+      <input id="totalArea" type="number" placeholder="Enter total area in sqft" min="1" />
+
+      <label for="tileSize">Tile Size (e.g. 600x600)</label>
+      <input id="tileSize" type="text" placeholder="Enter tile size" />
+
+      <label for="materialQuality">Material Quality (Budget / Standard / Premium)</label>
+      <input id="materialQuality" type="text" placeholder="Enter material quality" />
+
+      <button id="calculateBtn">Calculate</button>
     </div>
   </main>
 
   <footer>
-    <p>© 2025 TilersHUB.lk • Find 100% Verified Professional Tilers</p>
+    &copy; 2025 TILERSHUB — All rights reserved
   </footer>
 
-  <script src="assets/script.js" defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
