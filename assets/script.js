@@ -60,7 +60,7 @@ function generateReport(area, tileSize, tilePrice) {
     <tr><th>Total</th><td><b>LKR ${totalMin} – ${totalMax}</b></td></tr></table>
   `;
   document.getElementById("report").style.display = "block";
-  document.getElementById("shareIcon").style.display = "block";
+  document.getElementById("shareIcon").style.display = "inline-block";
 }
 
 function shareOnWhatsApp() {
@@ -68,8 +68,5 @@ function shareOnWhatsApp() {
   const tileSize = document.getElementById("tileSize").value;
   const tilePrice = document.getElementById("tilePrice").value;
   const link = `${location.origin}${location.pathname}?area=${area}&tileSize=${tileSize}&price=${tilePrice}`;
-  const message = `📐 Your tiling estimate: ${link} 
-Shared via tilershub.lk`;
-  const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
-  window.open(url, "_blank");
-}
+  const message = `📐 Your tiling estimate: ${link} \nShared via tilershub.lk`;
+  const url = `https://api.whatsapp.com/send
