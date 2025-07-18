@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,16 +16,27 @@
     <div class="calculator-card">
       <h1>Tiling Cost Calculator</h1>
 
-      <label for="totalArea">Total Area (sqft)</label>
-      <input id="totalArea" type="number" placeholder="Enter total area in sqft" min="1" />
+      <label for="area">Total Area (sqft)</label>
+      <input id="area" type="number" placeholder="Enter total area in sqft" min="1" />
 
-      <label for="tileSize">Tile Size (e.g. 600x600)</label>
-      <input id="tileSize" type="text" placeholder="Enter tile size" />
+      <label for="tileSize">Tile Size</label>
+      <select id="tileSize" >
+        <option value="">Select tile size</option>
+        <option value="600x600">600x600</option>
+        <option value="600x1200">600x1200</option>
+        <option value="800x800">800x800</option>
+      </select>
 
-      <label for="materialQuality">Material Quality (Budget / Standard / Premium)</label>
-      <input id="materialQuality" type="text" placeholder="Enter material quality" />
+      <label for="tilePrice">Tile Price (LKR)</label>
+      <input id="tilePrice" type="number" placeholder="Price per tile" min="0" />
 
       <button id="calculateBtn">Calculate</button>
+
+      <div id="report" style="display:none; margin-top: 20px;"></div>
+
+      <button id="shareIcon" style="display:none; margin-top: 15px; background:#25D366; color:white; border:none; padding:10px 15px; border-radius:6px; cursor:pointer;">
+        Share on WhatsApp
+      </button>
     </div>
   </main>
 
