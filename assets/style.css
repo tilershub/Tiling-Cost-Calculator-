@@ -1,4 +1,3 @@
-/* Reset and base */
 * {
   box-sizing: border-box;
 }
@@ -10,8 +9,6 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
-
-/* Header */
 header {
   background: #ff6600;
   color: white;
@@ -22,16 +19,13 @@ header {
   letter-spacing: 2px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.1);
 }
-
-/* Main content */
 main {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding: 30px 15px;
 }
-
 .calculator-card {
   background: white;
   max-width: 420px;
@@ -40,7 +34,6 @@ main {
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
-
 .calculator-card h1 {
   margin: 0 0 20px;
   text-align: center;
@@ -48,7 +41,6 @@ main {
   font-weight: 700;
   font-size: 2rem;
 }
-
 label {
   display: block;
   margin-bottom: 6px;
@@ -56,8 +48,7 @@ label {
   color: #444;
   font-size: 0.95rem;
 }
-
-input[type="number"], input[type="text"] {
+input[type="number"], select {
   width: 100%;
   padding: 12px 15px;
   margin-bottom: 20px;
@@ -66,11 +57,10 @@ input[type="number"], input[type="text"] {
   font-size: 1rem;
   transition: border-color 0.3s ease;
 }
-input[type="number"]:focus, input[type="text"]:focus {
+input[type="number"]:focus, select:focus {
   border-color: #ff6600;
   outline: none;
 }
-
 button#calculateBtn {
   width: 100%;
   background: #ff6600;
@@ -86,8 +76,6 @@ button#calculateBtn {
 button#calculateBtn:hover {
   background: #e65c00;
 }
-
-/* Footer */
 footer {
   background: #222;
   color: #ddd;
@@ -97,8 +85,19 @@ footer {
   letter-spacing: 1px;
   user-select: none;
 }
-
-/* Responsive */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+th, td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid #ddd;
+}
+th {
+  background: #f0f0f0;
+}
 @media (max-width: 480px) {
   .calculator-card {
     padding: 20px;
