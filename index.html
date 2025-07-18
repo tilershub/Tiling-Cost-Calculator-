@@ -1,49 +1,34 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TILERSHUB - Tiling Cost Calculator</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
-
   <header>
-    TILERSHUB
+    <h1>TILERSHUB</h1>
+    <p>Professional Tiling Cost Calculator</p>
   </header>
 
-  <main>
-    <div class="calculator-card">
-      <h1>Tiling Cost Calculator</h1>
+  <main class="calculator">
+    <label for="area">Total Area (sqft):</label>
+    <input type="number" id="area" placeholder="e.g. 1000" />
 
-      <label for="area">Total Area (sqft)</label>
-      <input id="area" type="number" placeholder="Enter total area in sqft" min="1" />
+    <label for="tileSize">Tile Size (e.g. 600x600):</label>
+    <input type="text" id="tileSize" placeholder="e.g. 600x600" />
 
-      <label for="tileSize">Tile Size</label>
-      <select id="tileSize" >
-        <option value="">Select tile size</option>
-        <option value="600x600">600x600</option>
-        <option value="600x1200">600x1200</option>
-        <option value="800x800">800x800</option>
-      </select>
+    <label for="tilePrice">Tile Price (LKR per tile):</label>
+    <input type="number" id="tilePrice" placeholder="e.g. 500" />
 
-      <label for="tilePrice">Tile Price (LKR)</label>
-      <input id="tilePrice" type="number" placeholder="Price per tile" min="0" />
-
-      <button id="calculateBtn">Calculate</button>
-
-      <div id="report" style="display:none; margin-top: 20px;"></div>
-
-      <button id="shareIcon" style="display:none; margin-top: 15px; background:#25D366; color:white; border:none; padding:10px 15px; border-radius:6px; cursor:pointer;">
-        Share on WhatsApp
-      </button>
-    </div>
+    <button onclick="startCalculation()">Calculate</button>
   </main>
 
   <footer>
-    &copy; 2025 TILERSHUB — All rights reserved
+    <p>&copy; 2025 TILERSHUB. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="assets/script.js"></script>
 </body>
 </html>
