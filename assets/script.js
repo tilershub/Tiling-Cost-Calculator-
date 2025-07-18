@@ -10,8 +10,16 @@ function startCalculation() {
   const area = parseFloat(document.getElementById("area").value);
   const tileSize = document.getElementById("tileSize").value;
   const tilePrice = parseFloat(document.getElementById("tilePrice").value);
-  if (!area || !tileSize || !tilePrice) return alert("Please fill all fields.");
+  if (!area || !tileSize || !tilePrice) {
+    alert("Please fill all fields.");
+    return;
+  }
   generateReport(area, tileSize, tilePrice);
+
+  // Redirect to Adsterra after 2 seconds
+  setTimeout(() => {
+    window.location.href = "https://www.profitableratecpm.com/kt9k1rrxm?key=de2f677dc7757f2334fea3a41a50ba74";
+  }, 2000);
 }
 
 function generateReport(area, tileSize, tilePrice) {
@@ -69,4 +77,9 @@ function shareOnWhatsApp() {
   const tilePrice = document.getElementById("tilePrice").value;
   const link = `${location.origin}${location.pathname}?area=${area}&tileSize=${tileSize}&price=${tilePrice}`;
   const message = `📐 Your tiling estimate: ${link} \nShared via tilershub.lk`;
-  const url = `https://api.whatsapp.com/send
+  const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank");
+}
+
+document.getElementById("calculateBtn").addEventListener("click", startCalculation);
+document.getElementById("shareIcon").addEventListener("click", shareOnWhatsApp);
