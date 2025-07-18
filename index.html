@@ -12,21 +12,28 @@
     <p>Professional Tiling Cost Calculator</p>
   </header>
 
-  <main class="calculator">
-    <label for="area">Total Area (sqft):</label>
-    <input type="number" id="area" placeholder="e.g. 1000" />
+  <main>
+    <section class="calculator">
+      <h2>Estimate Your Tiling Cost</h2>
+      <label for="area">Floor Area (sqft):</label>
+      <input type="number" id="area" placeholder="Enter area in sqft" />
 
-    <label for="tileSize">Tile Size (e.g. 600x600):</label>
-    <input type="text" id="tileSize" placeholder="e.g. 600x600" />
+      <label for="tileSize">Tile Size:</label>
+      <select id="tileSize">
+        <option value="600x600">600 x 600 mm</option>
+        <option value="300x300">300 x 300 mm</option>
+        <option value="1200x1200">1200 x 1200 mm</option>
+      </select>
 
-    <label for="tilePrice">Tile Price (LKR per tile):</label>
-    <input type="number" id="tilePrice" placeholder="e.g. 500" />
+      <label for="tilePrice">Tile Price per sqft (LKR):</label>
+      <input type="number" id="tilePrice" placeholder="e.g. 350" />
 
-    <button onclick="startCalculation()">Calculate</button>
+      <button id="calculateBtn">Calculate</button>
+    </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 TILERSHUB. All rights reserved.</p>
+    <p>© 2025 TILERSHUB. All rights reserved.</p>
   </footer>
 
   <script src="assets/script.js"></script>
