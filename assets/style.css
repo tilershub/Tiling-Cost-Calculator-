@@ -1,75 +1,51 @@
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f9f9f9;
-  margin: 0;
-  padding: 0;
-  color: #222;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
-
 header {
-  background: #1e3a8a;
-  color: white;
-  text-align: center;
-  padding: 20px 0;
+    background-color: #4CAF50;
+    padding: 20px;
+    color: white;
+    text-align: center;
 }
-
-main {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
-}
-
 .calculator {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+    padding: 20px;
+    background: white;
+    max-width: 600px;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-
-.calculator label {
-  font-weight: 600;
+.calculator label, .calculator input, .calculator select {
+    display: block;
+    margin: 10px 0;
+    width: 100%;
 }
-
-.calculator input,
-.calculator select {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+button {
+    padding: 10px;
+    width: 100%;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
 }
-
-.calculator button {
-  background-color: #1e3a8a;
-  color: white;
-  padding: 14px;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+button:hover {
+    background: #45a049;
 }
-
-.calculator button:hover {
-  background-color: #374fc1;
-}
-
 .report {
-  margin-top: 30px;
-  padding: 20px;
-  background: #e6f0ff;
-  border-left: 6px solid #1e3a8a;
-  border-radius: 8px;
-  font-size: 16px;
-  line-height: 1.5;
-  white-space: pre-line;
+    background: #fff;
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-
 footer {
-  text-align: center;
-  padding: 20px;
-  color: #555;
-  font-size: 0.9rem;
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
 }

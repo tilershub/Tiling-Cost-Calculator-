@@ -1,127 +1,48 @@
-function roundToQuarter(num) {
-  return Math.round(num * 4) / 4;
-}
 
-function getTileSettings(size) {
-  // tileSize: sqft, labor min/max, skirting coverage (linear ft per tile)
-  return {
-    "600x600": { sqft: 3.87, laborMin: 80, laborMax: 120, skirtingCoverage: 12 },
-    "600x1200": { sqft: 7.75, laborMin: 110, laborMax: 150, skirtingCoverage: 24 },
-    "800x800": { sqft: 6.89, laborMin: 110, laborMax: 150, skirtingCoverage: 20 }
-  }[size];
-}
+function calculate() {
+    const area = parseFloat(document.getElementById("area").value);
+    const skirtingLength = parseFloat(document.getElementById("skirting").value) || 0;
+    const tileSize = document.getElementById("tileSize").value;
 
-function startCalculation() {
-  const area = parseFloat(document.getElementById("area").value);
-  const tileSize = document.getElementById("tileSize").value;
-  const tilePrice = parseFloat(document.getElementById("tilePrice").value);
+    let tileCoverage = tileSize === "300" ? 0.96 : tileSize === "600" ? 3.87 : 15.5;
+    let skirtingPerTile = tileSize === "300" ? 3 : tileSize === "600" ? 6 : 48;
 
-  if (!area || !tileSize || !tilePrice || area <= 0 || tilePrice <= 0) {
-    alert("Please fill in all fields with valid positive numbers.");
-    return;
-  }
+    const tileCount = Math.ceil((area / tileCoverage) * 1.05);
+    const skirtingTiles = Math.ceil(skirtingLength / skirtingPerTile);
+    const totalTiles = tileCount + skirtingTiles;
 
-  const s = getTileSettings(tileSize);
-  if (!s) {
-    alert("Invalid tile size selected.");
-    return;
-  }
+    const tileCost = totalTiles * 250;
 
-  // Open Adsterra link in new tab instantly
-  window.open("https://www.profitableratecpm.com/kt9k1rrxm?key=de2f677dc7757f2334fea3a41a50ba74", "_blank");
+    const cementBags = Math.ceil((area / 700) * 8);
+    const sandCubes = Math.ceil((area / 700) * 1 * 4) / 4;
 
-  // Calculate skirting length (20% of area in linear ft)
-  const skirting = Math.ceil(area * 0.2);
+    const adhesiveLow = Math.ceil(area / 45);
+    const adhesiveHigh = Math.ceil(area / 25);
+    const adhesiveCostLow = adhesiveLow * 2500;
+    const adhesiveCostHigh = adhesiveHigh * 2500;
 
-  // Tiles needed (floor)
-  const floorTiles = Math.ceil(area / s.sqft);
+    const clipsCost = Math.ceil(area / 100) * 1000;
+    const groutCost = Math.ceil(area / 300) * 300;
 
-  // Skirting tiles needed
-  const skirtingTiles = Math.ceil(skirting / s.skirtingCoverage);
+    const laborLow = area * 80;
+    const laborHigh = area * 120;
 
-  // Total tiles including 5% wastage
-  const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
+    const totalLow = tileCost + adhesiveCostLow + clipsCost + groutCost + laborLow;
+    const totalHigh = tileCost + adhesiveCostHigh + clipsCost + groutCost + laborHigh;
 
-  // Adhesive bags (25kg) 25 - 45 bags per area approx
-  const adhesiveMin = 25;
-  const adhesiveMax = 45;
-  const adhesiveCostMin = adhesiveMin * 2200;
-  const adhesiveCostMax = adhesiveMax * 2200;
+    const report = `
+    <h3>Calculation Report</h3>
+    <p><strong>Tiles (Floor + Skirting):</strong> ${totalTiles}</p>
+    <p><strong>Tile Cost:</strong> LKR ${tileCost.toLocaleString()}</p>
+    <p><strong>Floor Bedwork:</strong> ${cementBags} bags cement, ${sandCubes} cubes sand</p>
+    <p><strong>Adhesive:</strong> LKR ${adhesiveCostLow.toLocaleString()} – ${adhesiveCostHigh.toLocaleString()}</p>
+    <p><strong>Clips:</strong> LKR ${clipsCost.toLocaleString()}</p>
+    <p><strong>Grout:</strong> LKR ${groutCost.toLocaleString()}</p>
+    <p><strong>Labor:</strong> LKR ${laborLow.toLocaleString()} – ${laborHigh.toLocaleString()}</p>
+    <h4>Total Estimated Cost: LKR ${totalLow.toLocaleString()} – ${totalHigh.toLocaleString()}</h4>
+    `;
 
-  // Clips (100 pcs per 100 sqft)
-  const clips = Math.ceil(area / 100);
-  const clipsCost = clips * 1500;
+    document.getElementById("report").innerHTML = report;
 
-  // Grout (1kg per 175 sqft)
-  const grout = Math.ceil(area / 175);
-  const groutCost = grout * 300;
-
-  // Cement bags (50kg) 8 to 14 bags approx
-  const cementMin = Math.round(8 * area / 1000); // scale by area (8 bags per 1000 sqft)
-  const cementMax = Math.round(14 * area / 1000);
-
-  const cementCostMin = cementMin * 1900;
-  const cementCostMax = cementMax * 1900;
-
-  // Sand cubes (rounded to nearest 0.25)
-  const sandMinRaw = area / 800;
-  const sandMaxRaw = area / 600;
-  const sandMin = roundToQuarter(sandMinRaw);
-  const sandMax = roundToQuarter(sandMaxRaw);
-
-  const sandCostMin = sandMin * 25000;
-  const sandCostMax = sandMax * 25000;
-
-  // Tile cost
-  const tileCost = totalTiles * tilePrice;
-
-  // Labor cost
-  const laborMin = area * s.laborMin;
-  const laborMax = area * s.laborMax;
-
-  // Material cost min/max
-  const materialMin = tileCost + cementCostMin + sandCostMin + adhesiveCostMin + clipsCost + groutCost;
-  const materialMax = tileCost + cementCostMax + sandCostMax + adhesiveCostMax + clipsCost + groutCost;
-
-  // Total cost min/max
-  const totalMin = materialMin + laborMin;
-  const totalMax = materialMax + laborMax;
-
-  // Build report string
-  const report = `
-📌 Project Summary
-Area: ${area.toLocaleString()} sqft
-Skirting length: ${skirting} ft
-Tile Size: ${tileSize}
-
-🧱 Floor Bed Estimate
-Cement (50kg bags): ${cementMin} – ${cementMax} bags
-Cement Cost: LKR ${cementCostMin.toLocaleString()} – ${cementCostMax.toLocaleString()}
-Sand (cubes): ${sandMin} – ${sandMax}
-Sand Cost: LKR ${sandCostMin.toLocaleString()} – ${sandCostMax.toLocaleString()}
-
-🧱 Tiling Estimate
-Floor Tiles: ${floorTiles}
-Skirting Tiles: ${skirtingTiles}
-Total Tiles (with 5% wastage): ${totalTiles}
-Tile Cost: LKR ${tileCost.toLocaleString()}
-Adhesive (25kg bags): ${adhesiveMin} – ${adhesiveMax}
-Adhesive Cost: LKR ${adhesiveCostMin.toLocaleString()} – ${adhesiveCostMax.toLocaleString()}
-Clips (packets of 100 pcs): ${clips}
-Clips Cost: LKR ${clipsCost.toLocaleString()}
-Grout (kg): ${grout}
-Grout Cost: LKR ${groutCost.toLocaleString()}
-
-👷 Labor Cost
-Labor Cost Estimate: LKR ${laborMin.toLocaleString()} – ${laborMax.toLocaleString()}
-
-💰 Total Cost Estimate
-Materials: LKR ${materialMin.toLocaleString()} – ${materialMax.toLocaleString()}
-Labor: LKR ${laborMin.toLocaleString()} – ${laborMax.toLocaleString()}
-Total: LKR ${totalMin.toLocaleString()} – ${totalMax.toLocaleString()}
-  `;
-
-  const reportDiv = document.getElementById("report");
-  reportDiv.style.display = "block";
-  reportDiv.textContent = report;
+    window.open("https://www.profitableratecpm.com/kt9k1rrxm?key=de2f677dc7757f2334fea3a41a50ba74", "_blank");
 }
