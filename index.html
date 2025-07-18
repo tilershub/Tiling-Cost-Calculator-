@@ -12,28 +12,30 @@
     <p>Professional Tiling Cost Calculator</p>
   </header>
 
-  <main>
-    <section class="calculator">
-      <h2>Estimate Your Tiling Cost</h2>
-      <label for="area">Floor Area (sqft):</label>
-      <input type="number" id="area" placeholder="Enter area in sqft" />
+  <main class="calculator">
+    <label for="area">Total Area (sqft):</label>
+    <input type="number" id="area" placeholder="e.g., 1000" />
 
-      <label for="tileSize">Tile Size:</label>
-      <select id="tileSize">
-        <option value="600x600">600 x 600 mm</option>
-        <option value="300x300">300 x 300 mm</option>
-        <option value="1200x1200">1200 x 1200 mm</option>
-      </select>
+    <label for="tileSize">Tile Size:</label>
+    <select id="tileSize">
+      <option value="300x300">300mm x 300mm</option>
+      <option value="600x600">600mm x 600mm</option>
+      <option value="1200x1200">1200mm x 1200mm</option>
+    </select>
 
-      <label for="tilePrice">Tile Price per sqft (LKR):</label>
-      <input type="number" id="tilePrice" placeholder="e.g. 350" />
+    <label for="tilePrice">Price per Tile (LKR):</label>
+    <input type="number" id="tilePrice" placeholder="e.g., 250" />
 
-      <button id="calculateBtn">Calculate</button>
-    </section>
+    <button onclick="startCalculation()">Calculate</button>
+
+    <div id="report" class="report" style="display:none;"></div>
+    <div id="shareIcon" style="display:none;">
+      <button onclick="shareOnWhatsApp()">Share on WhatsApp</button>
+    </div>
   </main>
 
   <footer>
-    <p>© 2025 TILERSHUB. All rights reserved.</p>
+    <p>&copy; 2025 TILERSHUB. All rights reserved.</p>
   </footer>
 
   <script src="assets/script.js"></script>
