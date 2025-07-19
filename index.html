@@ -9,78 +9,167 @@
   <meta property="og:description" content="Estimate material, labor, and total cost of tiling in Sri Lanka." />
   <meta property="og:image" content="https://tilershub.lk/share.jpg" />
   <meta property="og:url" content="https://tilershub.lk/estimator" />
-  <style>
-    body { font-family: Arial, sans-serif; background: #fff; color: #222; margin: 0; padding: 0; }
+<style>
+  :root {
+    --primary: #40677f;
+    --accent: #c89158;
+    --background: #f8f9fa;
+    --text: #232d33;
+    --light: #ffffff;
+    --soft-blue: #5e7f99;
+  }
 
-    header, footer {
-      background-color: #004aad;
-      color: white;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+  body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+  }
+
+  header, footer {
+    background-color: var(--primary);
+    color: var(--light);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  header img, footer img {
+    height: 36px;
+    margin-right: 10px;
+  }
+
+  header h1, footer p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .container {
+    max-width: 700px;
+    margin: auto;
+    padding: 30px 20px;
+    background: var(--light);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    border-radius: 8px;
+  }
+
+  input, select, button {
+    width: 100%;
+    padding: 12px 14px;
+    margin: 12px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  button {
+    background: var(--primary);
+    color: var(--light);
+    font-weight: bold;
+    border: none;
+    transition: background 0.3s ease;
+  }
+
+  button:hover {
+    background: var(--soft-blue);
+  }
+
+  .report {
+    margin-top: 24px;
+    padding: 20px;
+    background: #eef5f9;
+    border-radius: 8px;
+    font-size: 15px;
+  }
+
+  h2 {
+    color: var(--primary);
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    color: var(--primary);
+    font-size: 18px;
+    margin-top: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+
+  th {
+    background: #dbe8f1;
+    font-weight: 600;
+  }
+
+  .cta {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 15px;
+  }
+
+  .cta a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .cta a:hover {
+    color: var(--accent);
+  }
+
+  .share {
+    text-align: right;
+    margin-top: 18px;
+    display: none;
+  }
+
+  .share img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+
+  .footer-disclaimer {
+    font-size: 12px;
+    color: #bbb;
+    text-align: center;
+    padding: 12px 20px;
+    background: #2c3a45;
+  }
+
+  @media (max-width: 480px) {
+    header h1 {
+      font-size: 17px;
     }
-
-    header img, footer img {
-      height: 32px;
-      margin-right: 10px;
-    }
-
-    header h1, footer p {
-      margin: 0;
-      font-size: 18px;
-    }
-
-    .container {
-      max-width: 650px;
-      margin: auto;
-      padding: 20px;
-      background: #f9f9f9;
-    }
-
     input, select, button {
-      width: 100%; padding: 12px; margin: 10px 0; font-size: 16px;
-      border: 1px solid #ccc; border-radius: 5px;
+      font-size: 15px;
     }
-
-    button {
-      background: #004aad; color: white; border: none; font-weight: bold; cursor: pointer;
+    th, td {
+      font-size: 13px;
     }
-
-    button:hover { background: #003a8c; }
-
-    .report { margin-top: 20px; padding: 15px; background: #f0f8ff; border-radius: 6px; }
-
-    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-
-    th, td { border: 1px solid #ddd; padding: 8px; font-size: 14px; text-align: left; }
-
-    th { background: #eaf1ff; }
-
-    h2, h3 { color: #004aad; }
-
-    .share { text-align: right; margin-top: 15px; display: none; }
-
-    .share img { width: 32px; height: 32px; cursor: pointer; }
-
-    .cta { text-align: center; margin-top: 20px; }
-
-    .cta a { color: #004aad; font-weight: bold; text-decoration: none; }
-
-    .footer-disclaimer {
-      font-size: 12px;
-      color: #ccc;
-      text-align: center;
-      padding: 10px 20px;
-      background: #002d73;
-    }
-
-    @media (max-width: 480px) {
-      header h1 { font-size: 16px; }
-      input, select, button { font-size: 15px; }
-      th, td { font-size: 13px; }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <header>
