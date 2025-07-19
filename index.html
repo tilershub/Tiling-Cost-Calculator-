@@ -5,8 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TILERSHUB Tiling Cost Estimator</title>
   <meta name="description" content="Tiling cost calculator for Sri Lanka — estimate materials, labor, and total cost.">
+  <meta property="og:title" content="Tiling Cost Estimator – TILERSHUB" />
+  <meta property="og:description" content="Estimate material, labor, and total cost of tiling in Sri Lanka." />
+  <meta property="og:image" content="https://tilershub.lk/share.jpg" />
+  <meta property="og:url" content="https://tilershub.lk/estimator" />
   <style>
-    body { font-family: Arial, sans-serif; padding: 10px; background: #fff; color: #222; }
+    body { font-family: Arial, sans-serif; background: #fff; color: #222; padding: 10px; }
     .container { max-width: 650px; margin: auto; background: #f9f9f9; padding: 20px; border-radius: 8px; }
     input, select, button {
       width: 100%; padding: 12px; margin: 10px 0; font-size: 16px;
@@ -23,6 +27,9 @@
     h2, h3 { color: #004aad; }
     .share { text-align: right; margin-top: 15px; display: none; }
     .share img { width: 32px; height: 32px; cursor: pointer; }
+    .footer { font-size: 12px; color: #777; text-align: center; margin-top: 30px; }
+    .cta { text-align: center; margin-top: 20px; }
+    .cta a { color: #004aad; font-weight: bold; text-decoration: none; }
     @media (max-width: 480px) {
       input, select, button { font-size: 15px; }
       th, td { font-size: 13px; }
@@ -31,7 +38,7 @@
 </head>
 <body>
   <div class="container">
-    <h2>TilersHUB Tiling Cost Estimator</h2>
+    <h2>TILERSHUB Tiling Cost Estimator</h2>
 
     <input id="area" type="number" placeholder="Total Area (sqft)" />
     <select id="tileSize">
@@ -40,16 +47,24 @@
       <option value="600x1200">600mm × 1200mm</option>
       <option value="800x800">800mm × 800mm</option>
     </select>
-    <input id="tilePrice" type="number" placeholder="Tile Price (LKR per Tile)" />
+    <input id="tilePrice" type="number" placeholder="Tile Price (LKR per tile)" />
 
-    <button onclick="startCalculation()">Calculate</button>
+    <button onclick="startCalculation()">📊 Calculate</button>
 
     <div id="report" class="report" style="display:none;"></div>
 
     <div class="share" id="shareIcon">
       <a href="#" onclick="shareOnWhatsApp()" title="Share via WhatsApp">
-        <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp">
+        <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="Share">
       </a>
+    </div>
+
+    <div class="cta">
+      🔗 <a href="https://tilershub.lk" target="_blank">Visit TILERSHUB for Certified Tilers & More Tools</a>
+    </div>
+
+    <div class="footer">
+      * Estimates are approximate. Actual costs may vary depending on material rates, region, and labor quality.
     </div>
   </div>
 
@@ -66,15 +81,13 @@
       const area = parseFloat(document.getElementById("area").value);
       const tileSize = document.getElementById("tileSize").value;
       const tilePrice = parseFloat(document.getElementById("tilePrice").value);
-      if (!area || !tileSize || !tilePrice) return alert("Please fill all fields.");
 
-      // Open Adsterra ad
+      if (!area || area <= 0 || !tileSize || !tilePrice || tilePrice <= 0) {
+        return alert("❗ Please enter valid area, tile size, and tile price.");
+      }
+
       window.open("https://www.profitableratecpm.com/kt9k1rrxm?key=de2f677dc7757f2334fea3a41a50ba74", "_blank");
-
-      // Delay then generate
-      setTimeout(() => {
-        generateReport(area, tileSize, tilePrice);
-      }, 2000);
+      generateReport(area, tileSize, tilePrice);
     }
 
     function generateReport(area, tileSize, tilePrice) {
@@ -84,7 +97,8 @@
       const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
       const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
 
-      const cementMin = Math.round(8 * area / 800), cementMax = Math.round(8 * area / 600);
+      const cementMin = Math.ceil(8 * area / 800);
+      const cementMax = Math.ceil(8 * area / 600);
       const sandMin = Math.round((area / 800) * 4) / 4;
       const sandMax = Math.round((area / 600) * 4) / 4;
       const cementCostMin = cementMin * 1900, cementCostMax = cementMax * 1900;
@@ -123,10 +137,9 @@
 
         <h3>🧱 Tiling Estimate</h3>
         <table>
-          <tr><th>Item</th><th>Qty</th><th>Cost (LKR)</th></tr>
           <tr><td>Floor Tiles</td><td>${floorTiles}</td><td>-</td></tr>
           <tr><td>Skirting Tiles</td><td>${skirtingTiles}</td><td>-</td></tr>
-          <tr><td><b>Total Tiles (with 5% wastage)</b></td><td>${totalTiles}</td><td>${tileCost.toFixed(0)}</td></tr>
+          <tr><td><b>Total Tiles (5% wastage)</b></td><td>${totalTiles}</td><td>${tileCost.toFixed(0)}</td></tr>
           <tr><td>Adhesive (25kg)</td><td>${adhesiveMin} – ${adhesiveMax}</td><td>${adhesiveCostMin.toFixed(0)} – ${adhesiveCostMax.toFixed(0)}</td></tr>
           <tr><td>Clips (100 pcs)</td><td>${clips}</td><td>${clipsCost.toFixed(0)}</td></tr>
           <tr><td>Grout (1kg)</td><td>${grout}</td><td>${groutCost.toFixed(0)}</td></tr>
