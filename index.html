@@ -10,35 +10,88 @@
   <meta property="og:image" content="https://tilershub.lk/share.jpg" />
   <meta property="og:url" content="https://tilershub.lk/estimator" />
   <style>
-    body { font-family: Arial, sans-serif; background: #fff; color: #222; padding: 10px; }
-    .container { max-width: 650px; margin: auto; background: #f9f9f9; padding: 20px; border-radius: 8px; }
+    body { font-family: Arial, sans-serif; background: #fff; color: #222; margin: 0; padding: 0; }
+
+    header, footer {
+      background-color: #004aad;
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header img, footer img {
+      height: 32px;
+      margin-right: 10px;
+    }
+
+    header h1, footer p {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+
     input, select, button {
       width: 100%; padding: 12px; margin: 10px 0; font-size: 16px;
       border: 1px solid #ccc; border-radius: 5px;
     }
+
     button {
       background: #004aad; color: white; border: none; font-weight: bold; cursor: pointer;
     }
+
     button:hover { background: #003a8c; }
+
     .report { margin-top: 20px; padding: 15px; background: #f0f8ff; border-radius: 6px; }
+
     table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+
     th, td { border: 1px solid #ddd; padding: 8px; font-size: 14px; text-align: left; }
+
     th { background: #eaf1ff; }
+
     h2, h3 { color: #004aad; }
+
     .share { text-align: right; margin-top: 15px; display: none; }
+
     .share img { width: 32px; height: 32px; cursor: pointer; }
-    .footer { font-size: 12px; color: #777; text-align: center; margin-top: 30px; }
+
     .cta { text-align: center; margin-top: 20px; }
+
     .cta a { color: #004aad; font-weight: bold; text-decoration: none; }
+
+    .footer-disclaimer {
+      font-size: 12px;
+      color: #ccc;
+      text-align: center;
+      padding: 10px 20px;
+      background: #002d73;
+    }
+
     @media (max-width: 480px) {
+      header h1 { font-size: 16px; }
       input, select, button { font-size: 15px; }
       th, td { font-size: 13px; }
     }
   </style>
 </head>
 <body>
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="icons/logo.png" alt="TILERSHUB Logo">
+      <h1>TILERSHUB</h1>
+    </div>
+  </header>
+
   <div class="container">
-    <h2>TILERSHUB Tiling Cost Estimator</h2>
+    <h2>Tiling Cost Estimator</h2>
 
     <input id="area" type="number" placeholder="Total Area (sqft)" />
     <select id="tileSize">
@@ -62,10 +115,13 @@
     <div class="cta">
       🔗 <a href="https://tilershub.lk" target="_blank">Visit TILERSHUB for Certified Tilers & More Tools</a>
     </div>
+  </div>
 
-    <div class="footer">
-      * Estimates are approximate. Actual costs may vary depending on material rates, region, and labor quality.
-    </div>
+  <footer>
+    <p>© 2025 TILERSHUB. All rights reserved.</p>
+  </footer>
+  <div class="footer-disclaimer">
+    * Estimates are approximate. Actual costs may vary by region and supplier.
   </div>
 
   <script>
