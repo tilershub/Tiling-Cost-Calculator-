@@ -18,7 +18,6 @@
       --light: #ffffff;
       --soft-blue: #5e7f99;
     }
-
     body {
       font-family: 'Segoe UI', Roboto, sans-serif;
       background: var(--background);
@@ -27,7 +26,6 @@
       padding: 0;
       font-size: 16px;
     }
-
     header, footer {
       background-color: var(--primary);
       color: var(--light);
@@ -36,18 +34,15 @@
       align-items: center;
       justify-content: space-between;
     }
-
     header img, footer img {
       height: 36px;
       margin-right: 10px;
     }
-
     header h1, footer p {
       margin: 0;
       font-size: 20px;
       font-weight: 600;
     }
-
     .container {
       max-width: 700px;
       margin: auto;
@@ -56,7 +51,6 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
       border-radius: 8px;
     }
-
     input, select, button {
       width: 100%;
       padding: 12px 14px;
@@ -66,12 +60,6 @@
       border-radius: 6px;
       box-sizing: border-box;
     }
-
-    input:focus, select:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
     button {
       background: var(--primary);
       color: var(--light);
@@ -79,11 +67,7 @@
       border: none;
       transition: background 0.3s ease;
     }
-
-    button:hover {
-      background: var(--soft-blue);
-    }
-
+    button:hover { background: var(--soft-blue); }
     .report {
       margin-top: 24px;
       padding: 20px;
@@ -91,65 +75,41 @@
       border-radius: 8px;
       font-size: 15px;
     }
-
-    h2 {
-      color: var(--primary);
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-
-    h3 {
-      color: var(--primary);
-      font-size: 18px;
-      margin-top: 20px;
-    }
-
+    h2 { color: var(--primary); font-size: 24px; margin-bottom: 10px; }
+    h3 { color: var(--primary); font-size: 18px; margin-top: 20px; }
     table {
       width: 100%;
       border-collapse: collapse;
       margin: 12px 0;
       font-size: 14px;
     }
-
     th, td {
       border: 1px solid #ddd;
       padding: 10px;
       text-align: left;
     }
-
-    th {
-      background: #dbe8f1;
-      font-weight: 600;
-    }
-
+    th { background: #dbe8f1; font-weight: 600; }
     .cta {
       text-align: center;
       margin-top: 30px;
       font-size: 15px;
     }
-
     .cta a {
       color: var(--primary);
       text-decoration: none;
       font-weight: 600;
     }
-
-    .cta a:hover {
-      color: var(--accent);
-    }
-
+    .cta a:hover { color: var(--accent); }
     .share {
       text-align: right;
       margin-top: 18px;
       display: none;
     }
-
     .share img {
       width: 30px;
       height: 30px;
       cursor: pointer;
     }
-
     .footer-disclaimer {
       font-size: 12px;
       color: #bbb;
@@ -157,29 +117,15 @@
       padding: 12px 20px;
       background: #2c3a45;
     }
-
     fieldset {
       margin-top: 20px;
       border: 1px solid #ccc;
       padding: 12px 14px;
       border-radius: 6px;
     }
-
     legend {
       font-weight: bold;
       color: var(--primary);
-    }
-
-    @media (max-width: 480px) {
-      header h1 {
-        font-size: 17px;
-      }
-      input, select, button {
-        font-size: 15px;
-      }
-      th, td {
-        font-size: 13px;
-      }
     }
   </style>
 </head>
@@ -193,7 +139,6 @@
 
   <div class="container">
     <h2>Tiling Cost Estimator</h2>
-
     <input id="area" type="number" placeholder="Total Area (sqft)" />
     <select id="tileSize">
       <option value="">Select Tile Size</option>
@@ -206,24 +151,18 @@
       <option value="800x1800">800mm × 1800mm</option>
     </select>
     <input id="tilePrice" type="number" placeholder="Tile Price (LKR per tile)" />
-
     <fieldset>
       <legend>Optional Manual Inputs</legend>
       <input id="skirting" type="number" placeholder="Skirting (ft) – optional" />
-      <input id="laborMin" type="number" placeholder="Labor rate min (LKR/sqft) – optional" />
-      <input id="laborMax" type="number" placeholder="Labor rate max (LKR/sqft) – optional" />
+      <input id="laborRate" type="number" placeholder="Labor rate (LKR/sqft) – optional" />
     </fieldset>
-
     <button onclick="startCalculation()">📊 Calculate</button>
-
     <div id="report" class="report" style="display:none;"></div>
-
     <div class="share" id="shareIcon">
       <a href="#" onclick="shareOnWhatsApp()" title="Share via WhatsApp">
         <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="Share">
       </a>
     </div>
-
     <div class="cta">
       🔗 <a href="https://tilershub.lk" target="_blank">Visit TILERSHUB for Certified Tilers & More Tools</a>
     </div>
@@ -258,7 +197,6 @@
         return alert("❗ Please enter valid area, tile size, and tile price.");
       }
 
-      // Ad redirect
       window.open("https://www.profitableratecpm.com/kt9k1rrxm?key=de2f677dc7757f2334fea3a41a50ba74", "_blank");
       generateReport(area, tileSize, tilePrice);
     }
@@ -266,12 +204,10 @@
     function generateReport(area, tileSize, tilePrice) {
       const settings = getTileSettings(tileSize);
       const userSkirting = parseFloat(document.getElementById("skirting").value);
-      const userLaborMin = parseFloat(document.getElementById("laborMin").value);
-      const userLaborMax = parseFloat(document.getElementById("laborMax").value);
+      const userLaborRate = parseFloat(document.getElementById("laborRate").value);
 
       const skirting = isNaN(userSkirting) || userSkirting <= 0 ? Math.ceil(area * 0.2) : userSkirting;
-      const laborRateMin = isNaN(userLaborMin) || userLaborMin <= 0 ? settings.laborMin : userLaborMin;
-      const laborRateMax = isNaN(userLaborMax) || userLaborMax <= 0 ? settings.laborMax : userLaborMax;
+      const useDefaultLabor = isNaN(userLaborRate) || userLaborRate <= 0;
 
       const floorTiles = Math.ceil(area / settings.sqft);
       const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
@@ -281,26 +217,27 @@
       const cementMax = Math.ceil(8 * area / 600);
       const sandMin = Math.round((area / 800) * 4) / 4;
       const sandMax = Math.round((area / 600) * 4) / 4;
-
       const cementCostMin = cementMin * 1900, cementCostMax = cementMax * 1900;
       const sandCostMin = sandMin * 25000, sandCostMax = sandMax * 25000;
-
       const adhesiveMin = Math.ceil(area / 40), adhesiveMax = Math.ceil(area / 30);
       const clips = Math.ceil(area / 100);
       const grout = Math.ceil(area / 175);
-
       const adhesiveCostMin = adhesiveMin * 2200, adhesiveCostMax = adhesiveMax * 2200;
       const clipsCost = clips * 1500;
       const groutCost = grout * 300;
       const tileCost = totalTiles * tilePrice;
 
-      const laborMin = area * laborRateMin;
-      const laborMax = area * laborRateMax;
+      const laborMin = useDefaultLabor ? area * settings.laborMin : area * userLaborRate;
+      const laborMax = useDefaultLabor ? area * settings.laborMax : area * userLaborRate;
 
       const materialMin = tileCost + cementCostMin + sandCostMin + adhesiveCostMin + clipsCost + groutCost;
       const materialMax = tileCost + cementCostMax + sandCostMax + adhesiveCostMax + clipsCost + groutCost;
       const totalMin = materialMin + laborMin;
       const totalMax = materialMax + laborMax;
+
+      const laborCostText = useDefaultLabor
+        ? `LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)} (based on tile size)`
+        : `LKR ${laborMin.toFixed(0)}`;
 
       document.getElementById("report").innerHTML = `
         <h3>📌 Project Summary</h3>
@@ -309,36 +246,29 @@
           <tr><th>Skirting</th><td>${skirting} ft</td></tr>
           <tr><th>Tile Size</th><td>${tileSize}</td></tr>
         </table>
-
         <h3>🧱 Floor Bed Estimate</h3>
         <table>
           <tr><th>Material</th><th>Qty</th><th>Cost (LKR)</th></tr>
-          <tr><td>Cement (50kg)</td><td>${cementMin} – ${cementMax}</td><td>${cementCostMin.toFixed(0)} – ${cementCostMax.toFixed(0)}</td></tr>
-          <tr><td>Sand (1 cube)</td><td>${sandMin.toFixed(2)} – ${sandMax.toFixed(2)}</td><td>${sandCostMin.toFixed(0)} – ${sandCostMax.toFixed(0)}</td></tr>
+          <tr><td>Cement (50kg)</td><td>${cementMin} – ${cementMax}</td><td>${cementCostMin} – ${cementCostMax}</td></tr>
+          <tr><td>Sand (1 cube)</td><td>${sandMin} – ${sandMax}</td><td>${sandCostMin} – ${sandCostMax}</td></tr>
         </table>
-
         <h3>🧱 Tiling Estimate</h3>
         <table>
           <tr><td>Floor Tiles</td><td>${floorTiles}</td><td>-</td></tr>
           <tr><td>Skirting Tiles</td><td>${skirtingTiles}</td><td>-</td></tr>
-          <tr><td><b>Total Tiles (5% wastage)</b></td><td>${totalTiles}</td><td>${tileCost.toFixed(0)}</td></tr>
-          <tr><td>Adhesive (25kg)</td><td>${adhesiveMin} – ${adhesiveMax}</td><td>${adhesiveCostMin.toFixed(0)} – ${adhesiveCostMax.toFixed(0)}</td></tr>
-          <tr><td>Clips (100 pcs)</td><td>${clips}</td><td>${clipsCost.toFixed(0)}</td></tr>
-          <tr><td>Grout (1kg)</td><td>${grout}</td><td>${groutCost.toFixed(0)}</td></tr>
+          <tr><td><b>Total Tiles (5% wastage)</b></td><td>${totalTiles}</td><td>${tileCost}</td></tr>
+          <tr><td>Adhesive (25kg)</td><td>${adhesiveMin} – ${adhesiveMax}</td><td>${adhesiveCostMin} – ${adhesiveCostMax}</td></tr>
+          <tr><td>Clips (100 pcs)</td><td>${clips}</td><td>${clipsCost}</td></tr>
+          <tr><td>Grout (1kg)</td><td>${grout}</td><td>${groutCost}</td></tr>
         </table>
-
         <h3>👷 Labor Cost</h3>
-        <table>
-          <tr><td>Labor</td><td>LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)}</td></tr>
-        </table>
-
+        <table><tr><td>Labor</td><td>${laborCostText}</td></tr></table>
         <h3>💰 Total Cost Estimate</h3>
         <table>
           <tr><th>Materials</th><td>LKR ${materialMin.toFixed(0)} – ${materialMax.toFixed(0)}</td></tr>
-          <tr><th>Labor</th><td>LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)}</td></tr>
+          <tr><th>Labor</th><td>${laborCostText}</td></tr>
           <tr><th>Total</th><td><b>LKR ${totalMin.toFixed(0)} – ${totalMax.toFixed(0)}</b></td></tr>
-        </table>
-      `;
+        </table>`;
 
       document.getElementById("report").style.display = "block";
       document.getElementById("shareIcon").style.display = "block";
@@ -349,24 +279,11 @@
       const tileSize = document.getElementById("tileSize").value;
       const tilePrice = document.getElementById("tilePrice").value;
       const link = `${location.origin}${location.pathname}?area=${area}&tileSize=${tileSize}&price=${tilePrice}`;
-      const message = `📐 Your tiling estimate: ${link} \nShared via tilershub.lk`;
+      const message = `📐 Your tiling estimate: ${link} 
+Shared via tilershub.lk`;
       const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
       window.open(url, "_blank");
     }
-
-    window.onload = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const area = urlParams.get('area');
-      const tileSize = urlParams.get('tileSize');
-      const price = urlParams.get('price');
-
-      if (area && tileSize && price) {
-        document.getElementById("area").value = area;
-        document.getElementById("tileSize").value = tileSize;
-        document.getElementById("tilePrice").value = price;
-        generateReport(parseFloat(area), tileSize, parseFloat(price));
-      }
-    };
   </script>
 </body>
 </html>
