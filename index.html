@@ -1,1 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TILERSHUB Tiling Cost Estimator</title>
+  <meta name="description" content="Tiling cost calculator for Sri Lanka — estimate materials, labor, and total cost.">
+  <meta property="og:title" content="Tiling Cost Estimator – TILERSHUB" />
+  <meta property="og:description" content="Estimate material, labor, and total cost of tiling in Sri Lanka." />
+  <meta property="og:image" content="https://tilershub.lk/share.jpg" />
+  <meta property="og:url" content="https://tilershub.lk/estimator" />
+  <style>
+    :root {
+      --primary: #40677f;
+      --accent: #c89158;
+      --background: #f8f9fa;
+      --text: #232d33;
+      --light: #ffffff;
+      --soft-blue: #5e7f99;
+    }
 
+    body {
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      font-size: 16px;
+    }
+
+    header, footer {
+      background-color: var(--primary);
+      color: var(--light);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header img, footer img {
+      height: 36px;
+      margin-right: 10px;
+    }
+
+    header h1, footer p {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px 20px;
+      background: var(--light);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      border-radius: 8px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px 14px;
+      margin: 12px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    button {
+      background: var(--primary);
+      color: var(--light);
+      font-weight: bold;
+      border: none;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: var(--soft-blue);
+    }
+
+    .report {
+      margin-top: 24px;
+      padding: 20px;
+      background: #eef5f9;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      color: var(--primary);
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #dbe8f1;
+      font-weight: 600;
+    }
+
+    .cta {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 15px;
+    }
+
+    .cta a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .cta a:hover {
+      color: var(--accent);
+    }
+
+    .share {
+      text-align: right;
+      margin-top: 18px;
+      display: none;
+    }
+
+    .share img {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+
+    .footer-disclaimer {
+      font-size: 12px;
+      color: #bbb;
+      text-align: center;
+      padding: 12px 20px;
+      background: #2c3a45;
+    }
+
+    fieldset {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 12px 14px;
+      border-radius: 6px;
+    }
+
+    legend {
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 17px;
+      }
+      input, select, button {
+        font-size: 15px;
+      }
+      th, td {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="icons/logo.png" alt="TILERSHUB Logo">
+      <h1>TILERSHUB</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    <h2>Tiling Cost Estimator</h2>
+
+    <input id="area" type="number" placeholder="Total Area (sqft)" />
+    <select id="tileSize">
+      <option value="">Select Tile Size</option>
+      <option value="300x300">300mm × 300mm</option>
+      <option value="300x600">300mm × 600mm</option>
+      <option value="600x600">600mm × 600mm</option>
+      <option value="600x1200">600mm × 1200mm</option>
+      <option value="800x800">800mm × 800mm</option>
+      <option value="1200x1200">1200mm × 1200mm</option>
+      <option value="800x1800">800mm × 1800mm</option>
+    </select>
+    <input id="tilePrice" type="number" placeholder="Tile Price (LKR per tile)" />
+
+    <fieldset>
+      <legend>Optional Manual Inputs</legend>
+      <input id="skirting" type="number" placeholder="Skirting (ft) – optional" />
+      <input id="laborMin" type="number" placeholder="Labor rate min (LKR/sqft) – optional" />
+      <input id="laborMax" type="number" placeholder="Labor rate max (LKR/sqft) – optional" />
+    </fieldset>
+
+    <button onclick="startCalculation()">📊 Calculate</button>
+
+    <div id="report" class="report" style="display:none;"></div>
+
+    <div class="share" id="shareIcon">
+      <a href="#" onclick="shareOnWhatsApp()" title="Share via WhatsApp">
+        <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="Share">
+      </a>
+    </div>
+
+    <div class="cta">
+      🔗 <a href="https://tilershub.lk" target="_blank">Visit TILERSHUB for Certified Tilers & More Tools</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 TILERSHUB. All rights reserved.</p>
+  </footer>
+  <div class="footer-disclaimer">
+    * Estimates are approximate. Actual costs may vary by region and supplier.
+  </div>
+
+  <script>
+    function getTileSettings(size) {
+      return {
+        "300x300": { sqft: 0.96, laborMin: 80, laborMax: 120, skirtingCoverage: 3 },
+        "300x600": { sqft: 1.94, laborMin: 80, laborMax: 120, skirtingCoverage: 6 },
+        "600x600": { sqft: 3.87, laborMin: 80, laborMax: 120, skirtingCoverage: 12 },
+        "600x1200": { sqft: 7.75, laborMin: 110, laborMax: 150, skirtingCoverage: 24 },
+        "800x800": { sqft: 6.89, laborMin: 110, laborMax: 150, skirtingCoverage: 20 },
+        "1200x1200": { sqft: 12.9, laborMin: 200, laborMax: 300, skirtingCoverage: 48 },
+        "800x1800": { sqft: 15.3, laborMin: 200, laborMax: 300, skirtingCoverage: 48 }
+      }[size];
+    }
+
+    function startCalculation() {
+      const area = parseFloat(document.getElementById("area").value);
+      const tileSize = document.getElementById("tileSize").value;
+      const tilePrice = parseFloat(document.getElementById("tilePrice").value);
+
+      if (!area || area <= 0 || !tileSize || !tilePrice || tilePrice <= 0) {
+        return alert("❗ Please enter valid area, tile size, and tile price.");
+      }
+
+      // Ad redirect
+      window.open("https://www.profitableratecpm.com/kt9k1rrxm?key=de2f677dc7757f2334fea3a41a50ba74", "_blank");
+      generateReport(area, tileSize, tilePrice);
+    }
+
+    function generateReport(area, tileSize, tilePrice) {
+      const settings = getTileSettings(tileSize);
+      const userSkirting = parseFloat(document.getElementById("skirting").value);
+      const userLaborMin = parseFloat(document.getElementById("laborMin").value);
+      const userLaborMax = parseFloat(document.getElementById("laborMax").value);
+
+      const skirting = isNaN(userSkirting) || userSkirting <= 0 ? Math.ceil(area * 0.2) : userSkirting;
+      const laborRateMin = isNaN(userLaborMin) || userLaborMin <= 0 ? settings.laborMin : userLaborMin;
+      const laborRateMax = isNaN(userLaborMax) || userLaborMax <= 0 ? settings.laborMax : userLaborMax;
+
+      const floorTiles = Math.ceil(area / settings.sqft);
+      const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
+      const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
+
+      const cementMin = Math.ceil(8 * area / 800);
+      const cementMax = Math.ceil(8 * area / 600);
+      const sandMin = Math.round((area / 800) * 4) / 4;
+      const sandMax = Math.round((area / 600) * 4) / 4;
+
+      const cementCostMin = cementMin * 1900, cementCostMax = cementMax * 1900;
+      const sandCostMin = sandMin * 25000, sandCostMax = sandMax * 25000;
+
+      const adhesiveMin = Math.ceil(area / 40), adhesiveMax = Math.ceil(area / 30);
+      const clips = Math.ceil(area / 100);
+      const grout = Math.ceil(area / 175);
+
+      const adhesiveCostMin = adhesiveMin * 2200, adhesiveCostMax = adhesiveMax * 2200;
+      const clipsCost = clips * 1500;
+      const groutCost = grout * 300;
+      const tileCost = totalTiles * tilePrice;
+
+      const laborMin = area * laborRateMin;
+      const laborMax = area * laborRateMax;
+
+      const materialMin = tileCost + cementCostMin + sandCostMin + adhesiveCostMin + clipsCost + groutCost;
+      const materialMax = tileCost + cementCostMax + sandCostMax + adhesiveCostMax + clipsCost + groutCost;
+      const totalMin = materialMin + laborMin;
+      const totalMax = materialMax + laborMax;
+
+      document.getElementById("report").innerHTML = `
+        <h3>📌 Project Summary</h3>
+        <table>
+          <tr><th>Area</th><td>${area} sqft</td></tr>
+          <tr><th>Skirting</th><td>${skirting} ft</td></tr>
+          <tr><th>Tile Size</th><td>${tileSize}</td></tr>
+        </table>
+
+        <h3>🧱 Floor Bed Estimate</h3>
+        <table>
+          <tr><th>Material</th><th>Qty</th><th>Cost (LKR)</th></tr>
+          <tr><td>Cement (50kg)</td><td>${cementMin} – ${cementMax}</td><td>${cementCostMin.toFixed(0)} – ${cementCostMax.toFixed(0)}</td></tr>
+          <tr><td>Sand (1 cube)</td><td>${sandMin.toFixed(2)} – ${sandMax.toFixed(2)}</td><td>${sandCostMin.toFixed(0)} – ${sandCostMax.toFixed(0)}</td></tr>
+        </table>
+
+        <h3>🧱 Tiling Estimate</h3>
+        <table>
+          <tr><td>Floor Tiles</td><td>${floorTiles}</td><td>-</td></tr>
+          <tr><td>Skirting Tiles</td><td>${skirtingTiles}</td><td>-</td></tr>
+          <tr><td><b>Total Tiles (5% wastage)</b></td><td>${totalTiles}</td><td>${tileCost.toFixed(0)}</td></tr>
+          <tr><td>Adhesive (25kg)</td><td>${adhesiveMin} – ${adhesiveMax}</td><td>${adhesiveCostMin.toFixed(0)} – ${adhesiveCostMax.toFixed(0)}</td></tr>
+          <tr><td>Clips (100 pcs)</td><td>${clips}</td><td>${clipsCost.toFixed(0)}</td></tr>
+          <tr><td>Grout (1kg)</td><td>${grout}</td><td>${groutCost.toFixed(0)}</td></tr>
+        </table>
+
+        <h3>👷 Labor Cost</h3>
+        <table>
+          <tr><td>Labor</td><td>LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)}</td></tr>
+        </table>
+
+        <h3>💰 Total Cost Estimate</h3>
+        <table>
+          <tr><th>Materials</th><td>LKR ${materialMin.toFixed(0)} – ${materialMax.toFixed(0)}</td></tr>
+          <tr><th>Labor</th><td>LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)}</td></tr>
+          <tr><th>Total</th><td><b>LKR ${totalMin.toFixed(0)} – ${totalMax.toFixed(0)}</b></td></tr>
+        </table>
+      `;
+
+      document.getElementById("report").style.display = "block";
+      document.getElementById("shareIcon").style.display = "block";
+    }
+
+    function shareOnWhatsApp() {
+      const area = document.getElementById("area").value;
+      const tileSize = document.getElementById("tileSize").value;
+      const tilePrice = document.getElementById("tilePrice").value;
+      const link = `${location.origin}${location.pathname}?area=${area}&tileSize=${tileSize}&price=${tilePrice}`;
+      const message = `📐 Your tiling estimate: ${link} \nShared via tilershub.lk`;
+      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank");
+    }
+
+    window.onload = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const area = urlParams.get('area');
+      const tileSize = urlParams.get('tileSize');
+      const price = urlParams.get('price');
+
+      if (area && tileSize && price) {
+        document.getElementById("area").value = area;
+        document.getElementById("tileSize").value = tileSize;
+        document.getElementById("tilePrice").value = price;
+        generateReport(parseFloat(area), tileSize, parseFloat(price));
+      }
+    };
+  </script>
+</body>
+</html>
