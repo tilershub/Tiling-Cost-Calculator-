@@ -199,13 +199,8 @@
         return;
       }
 
-      // Open Adsterra link in new tab immediately
-      window.open("https://www.profitableratecpm.com/kt9k1rrxm?key=de2f677dc7757f2334fea3a41a50ba74", "_blank");
-
-      // Delay 2.5 seconds before generating the report
-      setTimeout(() => {
-        generateReport(area, tileSize, tilePrice);
-      }, 2500);
+      // ✅ Directly generate the report (no Adsterra / no delay)
+      generateReport(area, tileSize, tilePrice);
     }
 
     function generateReport(area, tileSize, tilePrice) {
@@ -286,8 +281,7 @@
       const tileSize = document.getElementById("tileSize").value;
       const tilePrice = document.getElementById("tilePrice").value;
       const link = `${location.origin}${location.pathname}?area=${area}&tileSize=${tileSize}&price=${tilePrice}`;
-      const message = `📐 Your tiling estimate: ${link} 
-Shared via tilershub.lk`;
+      const message = `📐 Your tiling estimate: ${link} \nShared via tilershub.lk`;
       const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
       window.open(url, "_blank");
     }
