@@ -34,7 +34,7 @@
       align-items: center;
       justify-content: space-between;
     }
-    header img, footer img {
+    header img {
       height: 36px;
       margin-right: 10px;
     }
@@ -51,10 +51,15 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
       border-radius: 8px;
     }
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: 600;
+    }
     input, select, button {
       width: 100%;
       padding: 12px 14px;
-      margin: 12px 0;
+      margin-top: 6px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 6px;
@@ -66,6 +71,8 @@
       font-weight: bold;
       border: none;
       transition: background 0.3s ease;
+      margin-top: 20px;
+      cursor: pointer;
     }
     button:hover { background: var(--soft-blue); }
     .report {
@@ -128,6 +135,11 @@
       font-weight: bold;
       color: var(--primary);
     }
+    .reset-btn {
+      background-color: #bbb;
+      margin-top: 10px;
+    }
+    .reset-btn:hover { background: #999; }
   </style>
 </head>
 <body>
@@ -140,7 +152,11 @@
 
   <div class="container">
     <h2>Tiling Cost Estimator</h2>
-    <input id="area" type="number" placeholder="Total Area (sqft)" />
+
+    <label for="area">Total Area (sqft)</label>
+    <input id="area" type="number" placeholder="Enter total area in sqft" />
+
+    <label for="tileSize">Select Tile Size</label>
     <select id="tileSize">
       <option value="">Select Tile Size</option>
       <option value="300x300">300mm × 300mm</option>
@@ -151,19 +167,37 @@
       <option value="1200x1200">1200mm × 1200mm</option>
       <option value="800x1800">800mm × 1800mm</option>
     </select>
-    <input id="tilePrice" type="number" placeholder="Tile Price (LKR per tile)" />
+
+    <label for="tilePrice">Tile Price (LKR per tile)</label>
+    <input id="tilePrice" type="number" placeholder="LKR per tile" />
+
     <fieldset>
       <legend>Optional Manual Inputs</legend>
-      <input id="skirting" type="number" placeholder="Skirting (ft) – optional" />
-      <input id="laborRate" type="number" placeholder="Labor rate (LKR/sqft) – optional" />
+
+      <label for="skirting">
+        Skirting (ft)
+        <span title="If left blank, 20% of area will be used as default">ℹ️</span>
+      </label>
+      <input id="skirting" type="number" placeholder="Optional skirting length" />
+
+      <label for="laborRate">
+        Labor Rate (LKR/sqft)
+        <span title="If left blank, estimated range based on tile size is used">ℹ️</span>
+      </label>
+      <input id="laborRate" type="number" placeholder="Optional custom labor rate" />
     </fieldset>
-    <button onclick="startCalculation()">📊 Calculate</button>
+
+    <button id="calcBtn" onclick="startCalculation()">📊 Calculate</button>
+    <button class="reset-btn" onclick="resetForm()">🔄 Reset</button>
+
     <div id="report" class="report"></div>
+
     <div class="share" id="shareIcon">
       <a href="#" onclick="shareOnWhatsApp()" title="Share via WhatsApp">
         <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="Share">
       </a>
     </div>
+
     <div class="cta">
       🔗 <a href="https://tilershub.lk" target="_blank">Visit TILERSHUB for Certified Tilers & More Tools</a>
     </div>
@@ -190,17 +224,26 @@
     }
 
     function startCalculation() {
-      const area = parseFloat(document.getElementById("area").value);
-      const tileSize = document.getElementById("tileSize").value;
-      const tilePrice = parseFloat(document.getElementById("tilePrice").value);
+      const btn = document.getElementById("calcBtn");
+      btn.disabled = true;
+      btn.innerText = "Calculating...";
 
-      if (!area || area <= 0 || !tileSize || !tilePrice || tilePrice <= 0) {
-        alert("❗ Please enter valid area, tile size, and tile price.");
-        return;
-      }
+      setTimeout(() => {
+        const area = parseFloat(document.getElementById("area").value);
+        const tileSize = document.getElementById("tileSize").value;
+        const tilePrice = parseFloat(document.getElementById("tilePrice").value);
 
-      // ✅ Directly generate the report (no Adsterra / no delay)
-      generateReport(area, tileSize, tilePrice);
+        if (!area || area <= 0 || !tileSize || !tilePrice || tilePrice <= 0) {
+          alert("❗ Please enter valid area, tile size, and tile price.");
+          btn.disabled = false;
+          btn.innerText = "📊 Calculate";
+          return;
+        }
+
+        generateReport(area, tileSize, tilePrice);
+        btn.disabled = false;
+        btn.innerText = "📊 Calculate";
+      }, 600);
     }
 
     function generateReport(area, tileSize, tilePrice) {
@@ -285,9 +328,23 @@
       const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
       window.open(url, "_blank");
     }
+
+    function resetForm() {
+      document.getElementById("area").value = "";
+      document.getElementById("tileSize").value = "";
+      document.getElementById("tilePrice").value = "";
+      document.getElementById("skirting").value = "";
+      document.getElementById("laborRate").value = "";
+      document.getElementById("report").style.display = "none";
+      document.getElementById("shareIcon").style.display = "none";
+    }
+
+    window.onload = () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('area')) document.getElementById('area').value = params.get('area');
+      if (params.has('tileSize')) document.getElementById('tileSize').value = params.get('tileSize');
+      if (params.has('price')) document.getElementById('tilePrice').value = params.get('price');
+    };
   </script>
-  <script async="async" data-cfasync="false" src="//pl27222629.profitableratecpm.com/6b696c2e31f26fe495e9147353998d8f/invoke.js"></script>
-<div id="container-6b696c2e31f26fe495e9147353998d8f"></div>
-  <script type='text/javascript' src='//pl27222626.profitableratecpm.com/6c/19/4f/6c194fd015bd1303b1f88a08f4ee5410.js'></script>
 </body>
 </html>
