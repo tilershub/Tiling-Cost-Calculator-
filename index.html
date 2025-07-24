@@ -33,6 +33,53 @@
       margin-top: 0;
     }
 
+    input, select, button {
+      width: 100%;
+      padding: 12px 14px;
+      margin: 12px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background: #003049;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005f88;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #e6f0f8;
+      font-weight: 600;
+    }
+
+    .report {
+      background: #f8fbfc;
+      padding: 20px;
+      border-radius: 8px;
+      display: none;
+    }
+
     a {
       color: #0077cc;
       text-decoration: none;
@@ -116,17 +163,30 @@
   <!-- Dynamic Header -->
   <div id="header"></div>
 
-  <!-- Main Page Content -->
   <main>
     <section class="container">
-      <h2>🧮 Calculators</h2>
-      <!-- Embedded Tiling Cost Estimator -->
-      <iframe 
-        src="/floor-tiling-estimator/index.html" 
-        width="100%" 
-        height="1300" 
-        style="border: none; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-      </iframe>
+      <h2>🧮 Floor Tiling Estimator</h2>
+
+      <input id="area" type="number" placeholder="Total Area (sqft)" />
+      <select id="tileSize">
+        <option value="">Select Tile Size</option>
+        <option value="300x300">300mm × 300mm</option>
+        <option value="300x600">300mm × 600mm</option>
+        <option value="600x600">600mm × 600mm</option>
+        <option value="600x1200">600mm × 1200mm</option>
+        <option value="800x800">800mm × 800mm</option>
+        <option value="1200x1200">1200mm × 1200mm</option>
+        <option value="800x1800">800mm × 1800mm</option>
+      </select>
+      <input id="tilePrice" type="number" placeholder="Tile Price (LKR per tile)" />
+      <fieldset>
+        <legend>Optional Manual Inputs</legend>
+        <input id="skirting" type="number" placeholder="Skirting (ft) – optional" />
+        <input id="laborRate" type="number" placeholder="Labor rate (LKR/sqft) – optional" />
+      </fieldset>
+      <button onclick="startCalculation()">📊 Calculate</button>
+
+      <div id="report" class="report"></div>
     </section>
 
     <section class="container">
@@ -151,7 +211,7 @@
   <!-- Dynamic Footer -->
   <div id="footer"></div>
 
-  <!-- JS Header & Footer Injection -->
+  <!-- Header & Footer Injection -->
   <script>
     const headerHTML = `
       <header class="header">
@@ -171,22 +231,19 @@
 
     const footerHTML = `
       <footer style="background:#003049; color:#fff; text-align:center; padding:12px 20px; margin-top:40px;">
-        © 2025 TILERSHUB. All rights reserved. | 
-        <a href="/about.html" style="color:#fff;">About</a> | 
+        © 2025 TILERSHUB. All rights reserved. |
+        <a href="/about.html" style="color:#fff;">About</a> |
         <a href="/contact.html" style="color:#fff;">Contact</a>
       </footer>
     `;
 
     function toggleNav() {
-      const nav = document.getElementById('nav-menu');
-      nav.classList.toggle('active');
+      document.getElementById('nav-menu').classList.toggle('active');
     }
 
-    // Inject header and footer
     document.getElementById('header').innerHTML = headerHTML;
     document.getElementById('footer').innerHTML = footerHTML;
 
-    // Highlight active nav link
     const currentPath = window.location.pathname;
     document.querySelectorAll('#nav-menu a').forEach(link => {
       if (link.getAttribute('href') === currentPath) {
@@ -195,5 +252,104 @@
     });
   </script>
 
+  <!-- Calculator Logic -->
+  <script>
+    function getTileSettings(size) {
+      return {
+        "300x300": { sqft: 0.96, laborMin: 80, laborMax: 120, skirtingCoverage: 3 },
+        "300x600": { sqft: 1.94, laborMin: 80, laborMax: 120, skirtingCoverage: 6 },
+        "600x600": { sqft: 3.87, laborMin: 80, laborMax: 120, skirtingCoverage: 12 },
+        "600x1200": { sqft: 7.75, laborMin: 110, laborMax: 150, skirtingCoverage: 24 },
+        "800x800": { sqft: 6.89, laborMin: 110, laborMax: 150, skirtingCoverage: 20 },
+        "1200x1200": { sqft: 12.9, laborMin: 200, laborMax: 300, skirtingCoverage: 48 },
+        "800x1800": { sqft: 15.3, laborMin: 200, laborMax: 300, skirtingCoverage: 48 }
+      }[size];
+    }
+
+    function startCalculation() {
+      const area = parseFloat(document.getElementById("area").value);
+      const tileSize = document.getElementById("tileSize").value;
+      const tilePrice = parseFloat(document.getElementById("tilePrice").value);
+
+      if (!area || area <= 0 || !tileSize || !tilePrice || tilePrice <= 0) {
+        alert("❗ Please enter valid area, tile size, and tile price.");
+        return;
+      }
+
+      generateReport(area, tileSize, tilePrice);
+    }
+
+    function generateReport(area, tileSize, tilePrice) {
+      const settings = getTileSettings(tileSize);
+      const userSkirting = parseFloat(document.getElementById("skirting").value);
+      const userLaborRate = parseFloat(document.getElementById("laborRate").value);
+
+      const skirting = isNaN(userSkirting) || userSkirting <= 0 ? Math.ceil(area * 0.2) : userSkirting;
+      const useDefaultLabor = isNaN(userLaborRate) || userLaborRate <= 0;
+
+      const floorTiles = Math.ceil(area / settings.sqft);
+      const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
+      const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
+
+      const cementMin = Math.ceil(8 * area / 800);
+      const cementMax = Math.ceil(8 * area / 600);
+      const sandMin = Math.round((area / 800) * 4) / 4;
+      const sandMax = Math.round((area / 600) * 4) / 4;
+      const cementCostMin = cementMin * 1900, cementCostMax = cementMax * 1900;
+      const sandCostMin = sandMin * 25000, sandCostMax = sandMax * 25000;
+      const adhesiveMin = Math.ceil(area / 40), adhesiveMax = Math.ceil(area / 30);
+      const clips = Math.ceil(area / 100);
+      const grout = Math.ceil(area / 175);
+      const adhesiveCostMin = adhesiveMin * 2200, adhesiveCostMax = adhesiveMax * 2200;
+      const clipsCost = clips * 1500;
+      const groutCost = grout * 300;
+      const tileCost = totalTiles * tilePrice;
+
+      const laborMin = useDefaultLabor ? area * settings.laborMin : area * userLaborRate;
+      const laborMax = useDefaultLabor ? area * settings.laborMax : area * userLaborRate;
+
+      const materialMin = tileCost + cementCostMin + sandCostMin + adhesiveCostMin + clipsCost + groutCost;
+      const materialMax = tileCost + cementCostMax + sandCostMax + adhesiveCostMax + clipsCost + groutCost;
+      const totalMin = materialMin + laborMin;
+      const totalMax = materialMax + laborMax;
+
+      const laborCostText = useDefaultLabor
+        ? `LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)} (based on tile size)`
+        : `LKR ${laborMin.toFixed(0)}`;
+
+      document.getElementById("report").innerHTML = `
+        <h3>📌 Project Summary</h3>
+        <table>
+          <tr><th>Area</th><td>${area} sqft</td></tr>
+          <tr><th>Skirting</th><td>${skirting} ft</td></tr>
+          <tr><th>Tile Size</th><td>${tileSize}</td></tr>
+        </table>
+        <h3>🧱 Floor Bed Estimate</h3>
+        <table>
+          <tr><th>Material</th><th>Qty</th><th>Cost (LKR)</th></tr>
+          <tr><td>Cement (50kg)</td><td>${cementMin} – ${cementMax}</td><td>${cementCostMin} – ${cementCostMax}</td></tr>
+          <tr><td>Sand (1 cube)</td><td>${sandMin} – ${sandMax}</td><td>${sandCostMin} – ${sandCostMax}</td></tr>
+        </table>
+        <h3>🧱 Tiling Estimate</h3>
+        <table>
+          <tr><td>Floor Tiles</td><td>${floorTiles}</td><td>-</td></tr>
+          <tr><td>Skirting Tiles</td><td>${skirtingTiles}</td><td>-</td></tr>
+          <tr><td><b>Total Tiles (5% wastage)</b></td><td>${totalTiles}</td><td>${tileCost}</td></tr>
+          <tr><td>Adhesive (25kg)</td><td>${adhesiveMin} – ${adhesiveMax}</td><td>${adhesiveCostMin} – ${adhesiveCostMax}</td></tr>
+          <tr><td>Clips (100 pcs)</td><td>${clips}</td><td>${clipsCost}</td></tr>
+          <tr><td>Grout (1kg)</td><td>${grout}</td><td>${groutCost}</td></tr>
+        </table>
+        <h3>👷 Labor Cost</h3>
+        <table><tr><td>Labor</td><td>${laborCostText}</td></tr></table>
+        <h3>💰 Total Cost Estimate</h3>
+        <table>
+          <tr><th>Materials</th><td>LKR ${materialMin.toFixed(0)} – ${materialMax.toFixed(0)}</td></tr>
+          <tr><th>Labor</th><td>${laborCostText}</td></tr>
+          <tr><th>Total</th><td><b>LKR ${totalMin.toFixed(0)} – ${totalMax.toFixed(0)}</b></td></tr>
+        </table>`;
+
+      document.getElementById("report").style.display = "block";
+    }
+  </script>
 </body>
 </html>
