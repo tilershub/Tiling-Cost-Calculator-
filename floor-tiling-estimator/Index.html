@@ -26,23 +26,6 @@
       padding: 0;
       font-size: 16px;
     }
-    header, footer {
-      background-color: var(--primary);
-      color: var(--light);
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    header img, footer img {
-      height: 36px;
-      margin-right: 10px;
-    }
-    header h1, footer p {
-      margin: 0;
-      font-size: 20px;
-      font-weight: 600;
-    }
     .container {
       max-width: 700px;
       margin: auto;
@@ -111,13 +94,6 @@
       height: 30px;
       cursor: pointer;
     }
-    .footer-disclaimer {
-      font-size: 12px;
-      color: #bbb;
-      text-align: center;
-      padding: 12px 20px;
-      background: #2c3a45;
-    }
     fieldset {
       margin-top: 20px;
       border: 1px solid #ccc;
@@ -131,13 +107,6 @@
   </style>
 </head>
 <body>
-  <header>
-    <div style="display: flex; align-items: center;">
-      <img src="icons/logo.png" alt="TILERSHUB Logo">
-      <h1>TILERSHUB</h1>
-    </div>
-  </header>
-
   <div class="container">
     <h2>Tiling Cost Estimator</h2>
     <input id="area" type="number" placeholder="Total Area (sqft)" />
@@ -167,13 +136,6 @@
     <div class="cta">
       🔗 <a href="https://tilershub.lk" target="_blank">Visit TILERSHUB for Certified Tilers & More Tools</a>
     </div>
-  </div>
-
-  <footer>
-    <p>© 2025 TILERSHUB. All rights reserved.</p>
-  </footer>
-  <div class="footer-disclaimer">
-    * Estimates are approximate. Actual costs may vary by region and supplier.
   </div>
 
   <script>
@@ -270,7 +232,7 @@
           <tr><th>Labor</th><td>${laborCostText}</td></tr>
           <tr><th>Total</th><td><b>LKR ${totalMin.toFixed(0)} – ${totalMax.toFixed(0)}</b></td></tr>
         </table>`;
-
+        
       document.getElementById("report").style.display = "block";
       document.getElementById("shareIcon").style.display = "block";
     }
