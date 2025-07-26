@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TILERSHUB Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #003366;
+      margin-bottom: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: scale(1.03);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 10px 15px;
+      flex-grow: 1;
+    }
+
+    .product-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .product-price {
+      color: #0077aa;
+      font-weight: bold;
+    }
+
+    .order-btn {
+      background: #0077aa;
+      color: white;
+      padding: 10px;
+      margin: 10px 15px 15px;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 600;
+      display: block;
+    }
+
+    .order-btn:hover {
+      background: #005f8a;
+    }
+
+    footer {
+      background: #003366;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        font-size: 1.5rem;
+      }
+      .product-title {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>TILERSHUB Shop</header>
+
+  <div class="container">
+    <h2>Buy Tiling Tools & Materials</h2>
+    <div class="grid">
+
+      <!-- Product 1 -->
+      <div class="product-card">
+        <img src="https://via.placeholder.com/300x200?text=21V+Tile+Vibrator" alt="21V Tile Vibrator">
+        <div class="product-info">
+          <div class="product-title">21V Tile Vibrator</div>
+          <div class="product-price">Rs. 12,500</div>
+        </div>
+        <a class="order-btn" href="https://wa.me/94774503744?text=I%20want%20to%20buy%20the%2021V%20Tile%20Vibrator">Order Now</a>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="product-card">
+        <img src="https://via.placeholder.com/300x200?text=Tile+Clips" alt="Tile Clips">
+        <div class="product-info">
+          <div class="product-title">Tile Leveling Clips (100 pcs)</div>
+          <div class="product-price">Rs. 950</div>
+        </div>
+        <a class="order-btn" href="https://wa.me/94774503744?text=I%20want%20to%20buy%20Tile%20Clips%20(100pcs)">Order Now</a>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="product-card">
+        <img src="https://via.placeholder.com/300x200?text=Manual+Tile+Cutter" alt="Manual Tile Cutter">
+        <div class="product-info">
+          <div class="product-title">Manual Tile Cutter - 800mm</div>
+          <div class="product-price">Rs. 17,000</div>
+        </div>
+        <a class="order-btn" href="https://wa.me/94774503744?text=I%20want%20to%20buy%20the%20Manual%20Tile%20Cutter%20800mm">Order Now</a>
+      </div>
+
+      <!-- Product 4 -->
+      <div class="product-card">
+        <img src="https://via.placeholder.com/300x200?text=Tile+Adhesive" alt="Tile Adhesive">
+        <div class="product-info">
+          <div class="product-title">Tile Adhesive 25kg</div>
+          <div class="product-price">Rs. 3,500</div>
+        </div>
+        <a class="order-btn" href="https://wa.me/94774503744?text=I%20want%20to%20buy%20Tile%20Adhesive%2025KG">Order Now</a>
+      </div>
+
+      <!-- Add More Products Below -->
+      
+    </div>
+  </div>
+
+  <footer>
+    © 2025 TILERSHUB | All Rights Reserved
+  </footer>
+
+</body>
+</html>
