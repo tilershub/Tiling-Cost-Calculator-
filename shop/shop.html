@@ -153,17 +153,49 @@
 </head>
 <body>
 
-  <!-- Header (copied from homepage) -->
-  <header class="main-header">
-    <div class="logo">TILERSHUB</div>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/tilers.html">Tilers</a>
-      <a href="/estimator/tiling-estimator.html">Estimator</a>
-      <a href="/shop/shop.html">Shop</a>
-    </nav>
-  </header>
+    <!-- Header & Footer Injection -->
+  <script>
+    const headerHTML = `
+      <header class="header">
+        <div class="logo-container">
+          <img src="/icons/logo.png" alt="TILERSHUB Logo" />
+          <div class="site-name">TILERSHUB</div>
+        </div>
+        <div class="nav-toggle" onclick="toggleNav()">☰</div>
+        <nav id="nav-menu" aria-label="Main Navigation">
+          <a href="/index.html">Home</a>
+          <a href="/estimator/tiling-estimator.html">Estimator</a>
+          <a href="/tilers/tilers.html">Tilers</a>
+          <a href="/shop/shop.html">Shop</a>
+        </nav>
+      </header>
+    `;
 
+    const footerHTML = `
+      <footer style="background:#003049; color:#fff; text-align:center; padding:12px 20px; margin-top:40px;">
+        © 2025 TILERSHUB. All rights reserved. |
+        <a href="/about.html" style="color:#fff;">About</a> |
+        <a href="/contact.html" style="color:#fff;">Contact</a>
+      </footer>
+    `;
+
+    function toggleNav() {
+      document.getElementById('nav-menu').classList.toggle('active');
+    }
+
+    document.getElementById('header').innerHTML = headerHTML;
+    document.getElementById('footer').innerHTML = footerHTML;
+
+    // Handle nav active link (handle trailing slash)
+    const currentPath = window.location.pathname.replace(/\/$/, '');
+    document.querySelectorAll('#nav-menu a').forEach(link => {
+      const href = link.getAttribute('href').replace(/\/$/, '');
+      if (href === currentPath) {
+        link.classList.add('active');
+      }
+    });
+  </script>
+  
   <!-- Shop container -->
   <div class="container">
     <h2>Buy Tiling Tools & Materials</h2>
@@ -171,11 +203,6 @@
       <!-- JS will load products here -->
     </div>
   </div>
-
-  <!-- Footer -->
-  <footer>
-    © 2025 TILERSHUB | All Rights Reserved
-  </footer>
 
   <script>
     // Load products from shop-products.json
