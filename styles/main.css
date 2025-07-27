@@ -1,75 +1,180 @@
 
+/* === Global Styles === */
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #f4f4f4;
+  background: #f9f9f9;
+  color: #333;
 }
-.header {
-  background: #002c3e;
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* === Header === */
+header {
+  background: #004aad;
   color: white;
-  padding: 10px 20px;
+  padding: 16px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
-.header img {
-  height: 40px;
-  margin-right: 10px;
+
+header h1 {
+  font-size: 20px;
+  margin: 0;
 }
+
 nav a {
   color: white;
-  margin: 0 10px;
+  margin-left: 20px;
   text-decoration: none;
+  font-weight: bold;
 }
-.container {
-  padding: 20px;
-  background: white;
-  margin: 20px auto;
-  max-width: 800px;
+
+/* === Estimator Form === */
+.estimator {
+  background: #fff;
   border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
-input, select, button {
+
+.estimator label {
   display: block;
-  margin: 10px 0;
-  padding: 10px;
-  width: 100%;
-  max-width: 400px;
+  margin-bottom: 6px;
+  font-weight: bold;
 }
-button {
-  background: #007bff;
+
+.estimator input,
+.estimator select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.estimator button {
+  background: #004aad;
   color: white;
   border: none;
-  cursor: pointer;
-}
-footer {
-  text-align: center;
-  padding: 15px;
-  background: #002c3e;
-  color: white;
-}
-.tiler-card {
-  display: inline-block;
-  width: 45%;
-  margin: 2.5%;
-  background: #fefefe;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  text-align: center;
-  cursor: pointer;
-}
-.tiler-card img {
-  width: 100%;
+  padding: 12px 20px;
+  font-size: 16px;
   border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
 }
-table {
+
+.estimator button:hover {
+  background: #003a8c;
+}
+
+/* === Report === */
+.report {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+  overflow-x: auto;
+}
+
+.report h3 {
+  margin-top: 0;
+}
+
+.report table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
 }
-table td {
+
+.report table th,
+.report table td {
   border: 1px solid #ddd;
   padding: 8px;
+  text-align: left;
+}
+
+.report table th {
+  background-color: #f4f4f4;
+}
+
+/* === Top Tilers Grid === */
+.top-tilers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Default: 2 per row (mobile) */
+  gap: 16px;
+  padding: 20px;
+}
+
+@media (min-width: 768px) {
+  .top-tilers {
+    grid-template-columns: repeat(4, 1fr); /* Desktop: 4 per row */
+  }
+}
+
+.tiler-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+
+.tiler-card:hover {
+  transform: translateY(-3px);
+}
+
+.tiler-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.tiler-card h4 {
+  margin: 8px 0 4px;
+  font-size: 16px;
+}
+
+.tiler-card p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.tiler-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.tiler-buttons a {
+  background-color: #004aad;
+  color: white;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+/* === Footer === */
+footer {
+  background: #004aad;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
 }
