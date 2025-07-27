@@ -2,247 +2,212 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TILERSHUB Shop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <title>Buy Tiling Tools & Materials - TILERSHUB Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fb;
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #f4f4f4;
+      padding: 20px;
       color: #222;
     }
-
-    /* Header */
-    .header {
-      background-color: #003366;
-      padding: 10px 20px;
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .product-card {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      background: #fff;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .product-card img {
+      width: 100%;
+      max-height: 180px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    .product-card h3 {
+      font-size: 16px;
+      margin: 10px 0 6px;
+    }
+    .product-card p {
+      margin: 4px 0;
+    }
+    .product-card .price {
+      color: green;
+      font-weight: bold;
+    }
+    .product-card a {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: #0077cc;
       color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    /* Header styles */
+    .header {
+      background: #003049;
+      color: #fff;
+      padding: 14px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-
     .logo-container {
       display: flex;
       align-items: center;
-      gap: 10px;
     }
-
     .logo-container img {
       height: 36px;
+      margin-right: 10px;
     }
-
     .site-name {
-      font-size: 1.5rem;
-      font-weight: bold;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .site-name, .logo-container a {
       color: white;
       text-decoration: none;
     }
-
+    .nav-toggle {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #fff;
+    }
     nav {
       display: flex;
-      gap: 15px;
+      gap: 12px;
     }
-
     nav a {
-      color: white;
+      color: #fff;
       text-decoration: none;
-      font-weight: 500;
-      padding: 8px 12px;
-      border-radius: 4px;
     }
-
-    nav a:hover,
     nav a.active {
-      background: #005f8a;
-    }
-
-    /* Shop styles */
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    h2 {
-      color: #003366;
-      margin-bottom: 10px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 20px;
-    }
-
-    .product-card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      transition: transform 0.2s ease;
-    }
-
-    .product-card:hover {
-      transform: scale(1.03);
-    }
-
-    .product-card img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-    }
-
-    .product-info {
-      padding: 10px 15px;
-      flex-grow: 1;
-    }
-
-    .product-title {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 5px;
-    }
-
-    .product-price {
-      color: #0077aa;
+      text-decoration: underline;
       font-weight: bold;
     }
-
-    .order-btn {
-      background: #0077aa;
-      color: white;
-      padding: 10px;
-      margin: 10px 15px 15px;
-      border: none;
-      border-radius: 5px;
-      text-align: center;
-      text-decoration: none;
-      font-weight: 600;
-      display: block;
-    }
-
-    .order-btn:hover {
-      background: #005f8a;
-    }
-
-    /* Footer */
-    footer {
-      background: #003049;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      margin-top: 30px;
-    }
-
-    footer a {
-      color: #fff;
-      text-decoration: underline;
-    }
-
-    @media (max-width: 600px) {
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
+    @media (max-width: 768px) {
       nav {
+        display: none;
         flex-direction: column;
         width: 100%;
+        margin-top: 10px;
       }
+      nav.active {
+        display: flex;
+      }
+      .nav-toggle {
+        display: block;
+      }
+    }
 
-      nav a {
-        padding: 10px 0;
-      }
-
-      .product-title {
-        font-size: 0.95rem;
-      }
+    /* Footer styles */
+    footer {
+      background: #003049;
+      color: #fff;
+      text-align: center;
+      padding: 12px 20px;
+      margin-top: 40px;
+    }
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+    footer a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
-  <!-- Injected Header -->
-  <div id="header"></div>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-container">
+      <a href="/"><img src="/icons/logo.png" alt="TILERSHUB Logo" /></a>
+      <a href="/" class="site-name">TILERSHUB</a>
+    </div>
+    <div class="nav-toggle" onclick="toggleNav()">☰</div>
+    <nav id="nav-menu" aria-label="Main Navigation">
+      <a href="/index.html">Home</a>
+      <a href="/floor-tiling-estimator/index.html">Estimator</a>
+      <a href="/tilers/tilers.html">Tilers</a>
+      <a href="/shop/shop.html" class="active">Shop</a>
+    </nav>
+  </header>
 
-  <!-- Shop Container -->
+  <!-- Main Content -->
   <div class="container">
-    <h2>Buy Tiling Tools & Materials</h2>
+    <h2 style="text-align:center;">🛠️ Tiling Tools & Materials for Sale</h2>
     <div class="grid" id="product-grid">
-      <!-- JS will load products here -->
+      <!-- JS will populate products -->
     </div>
   </div>
 
-  <!-- Injected Footer -->
-  <div id="footer"></div>
+  <!-- Footer -->
+  <footer>
+    © 2025 TILERSHUB. All rights reserved. |
+    <a href="/about.html">About</a> |
+    <a href="/contact.html">Contact</a>
+  </footer>
 
-  <!-- Header and Footer Script -->
   <script>
-    const headerHTML = `
-      <header class="header">
-        <div class="logo-container">
-          <a href="/"><img src="/icons/logo.png" alt="TILERSHUB Logo" /></a>
-          <a href="/" class="site-name">TILERSHUB</a>
-        </div>
-        <nav id="nav-menu" aria-label="Main Navigation">
-          <a href="/index.html">Home</a>
-          <a href="/estimator/tiling-estimator.html">Estimator</a>
-          <a href="/tilers/tilers.html">Tilers</a>
-          <a href="/shop/shop.html">Shop</a>
-        </nav>
-      </header>
-    `;
+    function toggleNav() {
+      document.getElementById('nav-menu').classList.toggle('active');
+    }
 
-    const footerHTML = `
-      <footer>
-        © 2025 <a href="/">TILERSHUB</a>. All rights reserved. |
-        <a href="/about.html">About</a> |
-        <a href="/contact.html">Contact</a>
-      </footer>
-    `;
-
-    document.getElementById('header').innerHTML = headerHTML;
-    document.getElementById('footer').innerHTML = footerHTML;
-
-    // Highlight current link
-    const currentPath = window.location.pathname.replace(/\/$/, '');
+    const currentPath = window.location.pathname;
     document.querySelectorAll('#nav-menu a').forEach(link => {
-      const href = link.getAttribute('href').replace(/\/$/, '');
-      if (href === currentPath) {
+      if (link.getAttribute('href') === currentPath) {
         link.classList.add('active');
       }
     });
-  </script>
 
-  <!-- Load Products -->
-  <script>
-    fetch('shop-products.json')
-      .then(response => response.json())
+    fetch('/shop/shop-products.json')
+      .then(res => res.json())
       .then(products => {
         const grid = document.getElementById('product-grid');
-        products.forEach(p => {
-          const card = document.createElement('div');
-          card.className = 'product-card';
-          card.innerHTML = `
-            <img src="${p.image}" alt="${p.title}">
-            <div class="product-info">
-              <div class="product-title">${p.title}</div>
-              <div class="product-price">${p.price}</div>
+        products.forEach(product => {
+          const card = `
+            <div class="product-card">
+              <img src="${product.image}" alt="${product.title}">
+              <h3>${product.title}</h3>
+              <p class="price">Rs. ${product.price}</p>
+              <p>${product.description || ''}</p>
+              <a href="${product.buy}" target="_blank" rel="noopener">Buy Now</a>
             </div>
-            <a class="order-btn" href="https://wa.me/94774503744?text=${encodeURIComponent(p.whatsapp)}">Order Now</a>
           `;
-          grid.appendChild(card);
+          grid.innerHTML += card;
         });
+      })
+      .catch(err => {
+        console.error("Failed to load products:", err);
+        document.getElementById('product-grid').innerHTML = "<p>Unable to load products at the moment.</p>";
       });
   </script>
+
 </body>
 </html>
