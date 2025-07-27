@@ -18,7 +18,7 @@
     }
 
     /* Header */
-    .main-header {
+    .header {
       background-color: #003366;
       padding: 10px 20px;
       color: #fff;
@@ -28,17 +28,29 @@
       flex-wrap: wrap;
     }
 
-    .main-header .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .main-header nav {
+    .logo-container img {
+      height: 36px;
+    }
+
+    .site-name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+    }
+
+    nav {
       display: flex;
       gap: 15px;
     }
 
-    .main-header nav a {
+    nav a {
       color: white;
       text-decoration: none;
       font-weight: 500;
@@ -46,7 +58,8 @@
       border-radius: 4px;
     }
 
-    .main-header nav a:hover {
+    nav a:hover,
+    nav a.active {
       background: #005f8a;
     }
 
@@ -123,25 +136,30 @@
 
     /* Footer */
     footer {
-      background: #003366;
+      background: #003049;
       color: white;
       text-align: center;
       padding: 15px;
       margin-top: 30px;
     }
 
+    footer a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
     @media (max-width: 600px) {
-      .main-header {
+      .header {
         flex-direction: column;
         align-items: flex-start;
       }
 
-      .main-header nav {
+      nav {
         flex-direction: column;
         width: 100%;
       }
 
-      .main-header nav a {
+      nav a {
         padding: 10px 0;
       }
 
@@ -153,15 +171,28 @@
 </head>
 <body>
 
-    <!-- Header & Footer Injection -->
+  <!-- Injected Header -->
+  <div id="header"></div>
+
+  <!-- Shop Container -->
+  <div class="container">
+    <h2>Buy Tiling Tools & Materials</h2>
+    <div class="grid" id="product-grid">
+      <!-- JS will load products here -->
+    </div>
+  </div>
+
+  <!-- Injected Footer -->
+  <div id="footer"></div>
+
+  <!-- Header and Footer Script -->
   <script>
     const headerHTML = `
       <header class="header">
         <div class="logo-container">
-          <img src="/icons/logo.png" alt="TILERSHUB Logo" />
-          <div class="site-name">TILERSHUB</div>
+          <a href="/"><img src="/icons/logo.png" alt="TILERSHUB Logo" /></a>
+          <a href="/" class="site-name">TILERSHUB</a>
         </div>
-        <div class="nav-toggle" onclick="toggleNav()">☰</div>
         <nav id="nav-menu" aria-label="Main Navigation">
           <a href="/index.html">Home</a>
           <a href="/estimator/tiling-estimator.html">Estimator</a>
@@ -172,21 +203,17 @@
     `;
 
     const footerHTML = `
-      <footer style="background:#003049; color:#fff; text-align:center; padding:12px 20px; margin-top:40px;">
-        © 2025 TILERSHUB. All rights reserved. |
-        <a href="/about.html" style="color:#fff;">About</a> |
-        <a href="/contact.html" style="color:#fff;">Contact</a>
+      <footer>
+        © 2025 <a href="/">TILERSHUB</a>. All rights reserved. |
+        <a href="/about.html">About</a> |
+        <a href="/contact.html">Contact</a>
       </footer>
     `;
-
-    function toggleNav() {
-      document.getElementById('nav-menu').classList.toggle('active');
-    }
 
     document.getElementById('header').innerHTML = headerHTML;
     document.getElementById('footer').innerHTML = footerHTML;
 
-    // Handle nav active link (handle trailing slash)
+    // Highlight current link
     const currentPath = window.location.pathname.replace(/\/$/, '');
     document.querySelectorAll('#nav-menu a').forEach(link => {
       const href = link.getAttribute('href').replace(/\/$/, '');
@@ -195,17 +222,9 @@
       }
     });
   </script>
-  
-  <!-- Shop container -->
-  <div class="container">
-    <h2>Buy Tiling Tools & Materials</h2>
-    <div class="grid" id="product-grid">
-      <!-- JS will load products here -->
-    </div>
-  </div>
 
+  <!-- Load Products -->
   <script>
-    // Load products from shop-products.json
     fetch('shop-products.json')
       .then(response => response.json())
       .then(products => {
@@ -225,6 +244,5 @@
         });
       });
   </script>
-
 </body>
 </html>
