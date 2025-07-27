@@ -4,46 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TILERSHUB | Home</title>
-  <meta name="description" content="TILERSHUB - Your Ultimate Tiling Community in Sri Lanka. Find tilers, calculate costs, read tips, and shop tools.">
   <link rel="icon" href="/icons/favicon.png" type="image/png" />
   <style>
     body { font-family: sans-serif; margin: 0; background: #f4f4f4; color: #222; }
     main { padding: 20px; }
-    .container {
-      background: white; margin-bottom: 20px; padding: 20px;
-      border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
+    .container { background: white; margin-bottom: 20px; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     .container h2 { margin-top: 0; }
-
     .blog-list, .shop-list, .tiler-list {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    }
+    @media (max-width: 500px) {
+      .blog-list, .shop-list, .tiler-list { grid-template-columns: 1fr; }
     }
     .blog-card, .shop-card, .tiler-card {
-      background: white; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      overflow: hidden; text-decoration: none; color: inherit; display: block;
-      transition: box-shadow 0.3s;
+      background: white; border-radius: 10px; text-decoration: none; color: inherit;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: box-shadow 0.3s;
     }
-    .blog-card:hover, .shop-card:hover, .tiler-card:hover {
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    .blog-card h4, .shop-card h4, .tiler-card h4 {
-      padding: 12px; margin: 0;
-    }
+    .blog-card:hover, .shop-card:hover, .tiler-card:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
     .blog-card img, .shop-card img, .tiler-card img {
       width: 100%; height: 160px; object-fit: cover;
     }
-    .tiler-card p {
-      padding: 0 12px; color: #555;
-    }
-
-    .view-more-btn {
-      display: inline-block; padding: 10px 20px; background: #0077cc; color: white;
-      border-radius: 5px; text-decoration: none; transition: background 0.3s;
-    }
-    .view-more-btn:hover { background: #005fa3; }
-
     .header {
-      background: #003049; color: white; padding: 14px 20px;
+      background: #003049; color: #fff; padding: 14px 20px;
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
       position: sticky; top: 0; z-index: 1000;
     }
@@ -52,37 +34,25 @@
     .site-name { font-size: 22px; font-weight: 600; }
     .nav-toggle { display: none; font-size: 28px; cursor: pointer; color: #fff; }
     nav { display: flex; gap: 12px; }
-    nav a { color: white; text-decoration: none; }
-
+    nav a { color: #fff; text-decoration: none; }
     @media (max-width: 768px) {
       .nav-toggle { display: block; }
       nav { display: none; flex-direction: column; width: 100%; margin-top: 10px; }
       nav.active { display: flex; }
     }
-
     input, select, button {
-      width: 100%; padding: 12px 14px; margin: 12px 0; font-size: 16px;
-      border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;
+      width: 100%; padding: 12px; margin: 12px 0; font-size: 16px;
+      border: 1px solid #ccc; border-radius: 6px;
     }
-    button {
-      background: #003049; color: white; font-weight: bold;
-      border: none; cursor: pointer; transition: background 0.3s;
-    }
-    button:hover { background: #005f88; }
-    fieldset {
-      border: 1px solid #ccc; padding: 12px; border-radius: 6px;
-    }
-    legend { font-weight: bold; padding: 0 6px; }
-    .report {
-      display: none; background: #eef5f8; padding: 16px; border-radius: 6px;
-    }
+    fieldset { border: 1px solid #ccc; padding: 12px; border-radius: 6px; }
+    .report { display: none; background: #eef5f8; padding: 16px; border-radius: 6px; }
   </style>
 </head>
 <body>
 
 <header class="header">
   <div class="logo-container">
-    <img src="/icons/logo.png" alt="Logo">
+    <img src="/icons/logo.png" alt="Logo" />
     <div class="site-name">TILERSHUB</div>
   </div>
   <div class="nav-toggle" onclick="toggleNav()">☰</div>
@@ -95,7 +65,6 @@
 </header>
 
 <main>
-
   <section class="container">
     <h2>🧮 Tiling Estimator</h2>
     <input id="area" type="number" placeholder="Total Area (sqft)" />
@@ -115,8 +84,8 @@
       <input id="skirting" type="number" placeholder="Skirting (ft) – optional" />
       <input id="laborRate" type="number" placeholder="Labor rate (LKR/sqft) – optional" />
     </fieldset>
-    <button onclick="alert('Estimation logic goes here')">Calculate</button>
-    <div class="report" id="report"></div>
+    <button onclick="alert('Estimation logic goes here')">📊 Calculate</button>
+    <div id="report" class="report"></div>
   </section>
 
   <section class="container">
@@ -136,7 +105,6 @@
     <h2>🛒 Shop</h2>
     <div class="shop-list" id="home-shop-list"></div>
   </section>
-
 </main>
 
 <footer style="background:#003049; color:#fff; text-align:center; padding:12px 20px;">
@@ -144,46 +112,42 @@
 </footer>
 
 <script>
-function toggleNav() {
-  document.getElementById('nav-menu').classList.toggle('active');
-}
+  function toggleNav() {
+    document.getElementById('nav-menu').classList.toggle('active');
+  }
 
-// BLOG
-const blogList = document.getElementById("home-blog-list");
-const blogs = [
-  { title: "How to Choose the Right Tile", image: "/blog/images/tile-selection.jpg", link: "/blog/post-1.html" },
-  { title: "Top 5 Grouting Mistakes", image: "/blog/images/grout-mistakes.jpg", link: "/blog/post-2.html" }
-];
-blogs.forEach(b => {
-  blogList.innerHTML += `<a href="${b.link}" class="blog-card"><img src="${b.image}" alt="${b.title}"><h4>${b.title}</h4></a>`;
-});
+  const blogList = document.getElementById("home-blog-list");
+  const blogs = [
+    { title: "How to Choose the Right Tile", image: "/blog/images/tile-selection.jpg", link: "/blog/post-1.html" },
+    { title: "Top 5 Grouting Mistakes", image: "/blog/images/grout-mistakes.jpg", link: "/blog/post-2.html" }
+  ];
+  blogs.forEach(b => {
+    blogList.innerHTML += `<a href="${b.link}" class="blog-card"><img src="${b.image}" alt="${b.title}"><h4>${b.title}</h4></a>`;
+  });
 
-// SHOP
-const shopList = document.getElementById("home-shop-list");
-const products = [
-  { name: "Tile Cutter Pro", image: "/shop/images/cutter.jpg", link: "/shop/product-1.html" },
-  { name: "Grouting Tool Set", image: "/shop/images/grout-kit.jpg", link: "/shop/product-2.html" }
-];
-products.forEach(p => {
-  shopList.innerHTML += `<a href="${p.link}" class="shop-card"><img src="${p.image}" alt="${p.name}"><h4>${p.name}</h4></a>`;
-});
+  const shopList = document.getElementById("home-shop-list");
+  const products = [
+    { name: "Tile Cutter Pro", image: "/shop/images/cutter.jpg", link: "/shop/product-1.html" },
+    { name: "Grouting Tool Set", image: "/shop/images/grout-kit.jpg", link: "/shop/product-2.html" }
+  ];
+  products.forEach(p => {
+    shopList.innerHTML += `<a href="${p.link}" class="shop-card"><img src="${p.image}" alt="${p.name}"><h4>${p.name}</h4></a>`;
+  });
 
-// TILERS
-fetch('/tilers/tilers.json')
-  .then(res => res.json())
-  .then(data => {
-    const top = data.slice(0, 2);
-    const container = document.getElementById("home-tiler-list");
-    top.forEach(tiler => {
-      container.innerHTML += `
-        <a href="/tilers/tilers.html" class="tiler-card">
-          <img src="${tiler.image}" alt="${tiler.name}">
-          <h4>${tiler.name}</h4>
-          <p>${tiler.city}</p>
-        </a>`;
+  fetch('/tilers/tilers.json')
+    .then(res => res.json())
+    .then(data => {
+      const top = data.slice(0, 2);
+      const container = document.getElementById("home-tiler-list");
+      top.forEach(tiler => {
+        container.innerHTML += `
+          <a href="/tilers/tilers.html" class="tiler-card">
+            <img src="${tiler.image}" alt="${tiler.name}">
+            <h4>${tiler.name}</h4>
+            <p>${tiler.city}</p>
+          </a>`;
+      });
     });
-  })
-  .catch(err => console.error("Tiler fetch error:", err));
 </script>
 
 </body>
