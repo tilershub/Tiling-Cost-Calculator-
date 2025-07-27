@@ -79,7 +79,7 @@
               <h4>${tiler.name}</h4>
               <p>${tiler.city}</p>
               <a href="${tiler.facebook}" target="_blank">Facebook</a>
-              <a href="https://wa.me/94${tiler.whatsapp.slice(1)}" target="_blank">WhatsApp</a>
+              <a href="https://wa.me/94${tiler.whatsapp.slice(1)}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank">WhatsApp</a>
             </div>
           `;
           container.innerHTML += card;
