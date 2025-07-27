@@ -163,7 +163,63 @@
         display: block;
       }
     }
-  </style>
+  
+    .tiler-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .tiler-card {
+      width: 250px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      text-align: center;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .tiler-card img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .tiler-card h4 {
+      margin: 10px 0 5px;
+      font-size: 18px;
+    }
+    .tiler-card p {
+      margin: 0 0 10px;
+      color: #666;
+    }
+    .tiler-card a {
+      display: inline-block;
+      margin: 4px;
+      padding: 8px 12px;
+      font-size: 14px;
+      color: #fff;
+      background: #0077cc;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+    .tiler-card a:hover {
+      background: #005fa3;
+    }
+    .view-more-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #0077cc;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .view-more-btn:hover {
+      background-color: #005fa3;
+    }
+
+</style>
 </head>
 <body>
 
@@ -204,10 +260,15 @@
       </ul>
     </section>
 
+    
     <section class="container">
       <h2>👷‍♂️ Top Tilers</h2>
-      <p><a href="/tilers/tilers.html">Find TILERSHUB GURANTEED Tilers</a></p>
+      <div class="tiler-list" id="home-tiler-list"></div>
+      <div style="text-align:center; margin-top: 20px;">
+        <a href="/tilers/tilers.html" class="view-more-btn">🔎 Find More Tilers</a>
+      </div>
     </section>
+
 
     <section class="container">
       <h2>🛒 Shop</h2>
@@ -374,5 +435,26 @@
       document.getElementById("report").style.display = "block";
     }
   </script>
+
+  <script>
+    fetch('/tilers/tilers.json')
+      .then(res => res.json())
+      .then(data => {
+        const top = data.slice(0, 2);
+        const container = document.getElementById('home-tiler-list');
+        top.forEach(tiler => {
+          container.innerHTML += `
+            <div class="tiler-card">
+              <img src="${tiler.image}" alt="${tiler.name}">
+              <h4>${tiler.name}</h4>
+              <p>${tiler.city}</p>
+              <a href="${tiler.facebook}" target="_blank">Facebook</a>
+              <a href="https://wa.me/94${tiler.whatsapp.slice(1)}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank">WhatsApp</a>
+            </div>
+          `;
+        });
+      });
+  </script>
+
 </body>
 </html>
