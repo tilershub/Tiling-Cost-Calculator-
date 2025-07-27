@@ -68,7 +68,7 @@
   </div>
 
   <script>
-    fetch('tilers.json')
+    fetch('/tilers/tilers.json')
       .then(response => response.json())
       .then(data => {
         const container = document.getElementById('tiler-list');
