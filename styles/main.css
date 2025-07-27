@@ -1,180 +1,145 @@
 
-/* === Global Styles === */
-body {
-  font-family: Arial, sans-serif;
+/* === Reset & Base === */
+* {
   margin: 0;
   padding: 0;
-  background: #f9f9f9;
-  color: #333;
+  box-sizing: border-box;
 }
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #333;
+  line-height: 1.6;
 }
 
 /* === Header === */
 header {
-  background: #004aad;
+  background-color: #004aad;
+  padding: 16px 20px;
   color: white;
-  padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
 }
-
 header h1 {
-  font-size: 20px;
-  margin: 0;
+  font-size: 18px;
 }
-
 nav a {
   color: white;
-  margin-left: 20px;
   text-decoration: none;
+  margin-left: 16px;
   font-weight: bold;
 }
 
-/* === Estimator Form === */
+/* === Estimator === */
 .estimator {
-  background: #fff;
-  border-radius: 8px;
+  background: white;
+  margin: 20px;
   padding: 20px;
-  margin-bottom: 30px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
-
 .estimator label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   font-weight: bold;
 }
-
 .estimator input,
 .estimator select {
   width: 100%;
   padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 4px;
+  margin-bottom: 16px;
   border: 1px solid #ccc;
-}
-
-.estimator button {
-  background: #004aad;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  font-size: 16px;
   border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
 }
-
+.estimator button {
+  background-color: #004aad;
+  color: white;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
 .estimator button:hover {
-  background: #003a8c;
+  background-color: #003a8c;
 }
 
 /* === Report === */
 .report {
-  background: #ffffff;
+  margin: 20px;
+  background: white;
+  padding: 16px;
   border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
-  margin-bottom: 30px;
   overflow-x: auto;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
-
-.report h3 {
-  margin-top: 0;
-}
-
 .report table {
   width: 100%;
   border-collapse: collapse;
 }
-
-.report table th,
-.report table td {
+.report th, .report td {
   border: 1px solid #ddd;
   padding: 8px;
-  text-align: left;
 }
-
-.report table th {
+.report th {
   background-color: #f4f4f4;
 }
 
 /* === Top Tilers Grid === */
 .top-tilers {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Default: 2 per row (mobile) */
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
   padding: 20px;
 }
-
 @media (min-width: 768px) {
   .top-tilers {
-    grid-template-columns: repeat(4, 1fr); /* Desktop: 4 per row */
+    grid-template-columns: repeat(4, 1fr);
   }
 }
-
 .tiler-card {
   background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   text-align: center;
-  padding: 12px;
-  font-size: 14px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease;
+  padding: 10px;
 }
-
-.tiler-card:hover {
-  transform: translateY(-3px);
-}
-
 .tiler-card img {
   width: 100%;
   height: auto;
   border-radius: 6px;
-  margin-bottom: 8px;
 }
-
 .tiler-card h4 {
-  margin: 8px 0 4px;
+  margin-top: 10px;
   font-size: 16px;
 }
-
 .tiler-card p {
-  font-size: 14px;
-  color: #666;
-  margin: 0;
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 10px;
 }
-
 .tiler-buttons {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 10px;
 }
-
 .tiler-buttons a {
-  background-color: #004aad;
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  background: #004aad;
   color: white;
   text-decoration: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 13px;
 }
 
 /* === Footer === */
 footer {
+  text-align: center;
+  padding: 16px;
   background: #004aad;
   color: white;
-  text-align: center;
-  padding: 12px;
   font-size: 14px;
 }
