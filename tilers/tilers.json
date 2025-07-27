@@ -1,24 +1,30 @@
-
 [
   {
     "name": "Chamara Tiling Works",
     "city": "Colombo",
-    "image": "images/tilers/chamara.jpg",
+    "image": "/tilers/images/tilers/chamara.jpg",
     "facebook": "https://facebook.com/chamara.tiler",
     "whatsapp": "0771234567"
   },
   {
     "name": "Ruwan Ceramic Works",
     "city": "Negombo",
-    "image": "images/tilers/ruwan.jpg",
+    "image": "/tilers/images/tilers/ruwan.jpg",
     "facebook": "https://facebook.com/ruwan.ceramic",
     "whatsapp": "0772345678"
   },
   {
     "name": "Sameera Floor & Wall",
     "city": "Matara",
-    "image": "images/tilers/sameera.jpg",
+    "image": "/tilers/images/tilers/sameera.jpg",
     "facebook": "https://facebook.com/sameera.floorwall",
     "whatsapp": "0773456789"
+  },
+  {
+    "name": "Sujith Anurada",
+    "city": "Unknown",
+    "image": "/tilers/images/tilers/sujith.png",
+    "facebook": "https://www.facebook.com/share/177fiEgKe7/?mibextid=wwXIfr",
+    "whatsapp": "0774503744"
   }
 ]
