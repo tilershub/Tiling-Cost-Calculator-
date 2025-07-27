@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <title>Find the Best Tilers in Sri Lanka - TILERSHUB</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Find the best verified tilers across Sri Lanka. Trusted by thousands. Browse profiles, contact via WhatsApp or Facebook.">
+  <link rel="canonical" href="https://tilershub.lk/tilers/tilers.html" />
+  <link rel="preconnect" href="https://wa.me">
+  <link rel="preconnect" href="https://facebook.com">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -35,6 +39,7 @@
       text-align: center;
       padding: 15px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
     }
     .tiler-card img {
       width: 100px;
@@ -63,6 +68,16 @@
     }
     .tiler-card a:hover {
       background: #005fa3;
+    }
+    .badge {
+      background: #ff9800;
+      color: #fff;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
     }
 
     /* Header styles */
@@ -152,9 +167,9 @@
     <div class="nav-toggle" onclick="toggleNav()">☰</div>
     <nav id="nav-menu" aria-label="Main Navigation">
       <a href="/index.html">Home</a>
-          <a href="/estimator/tiling-estimator.html">Estimator</a>
-          <a href="/tilers/tilers.html">Tilers</a>
-          <a href="/shop/shop.html">Shop</a>
+      <a href="/estimator/tiling-estimator.html">Estimator</a>
+      <a href="/tilers/tilers.html">Tilers</a>
+      <a href="/shop/shop.html">Shop</a>
     </nav>
   </header>
 
@@ -171,13 +186,28 @@
     <a href="/contact.html">Contact</a>
   </footer>
 
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "TILERSHUB",
+    "url": "https://tilershub.lk",
+    "logo": "https://tilershub.lk/icons/logo.png",
+    "sameAs": [
+      "https://facebook.com/tilershub"
+    ],
+    "description": "Sri Lanka's leading network of verified tilers."
+  }
+  </script>
+
   <script>
     // Nav toggle for small screens
     function toggleNav() {
       document.getElementById('nav-menu').classList.toggle('active');
     }
 
-    // Highlight current nav link dynamically (fallback)
+    // Highlight current nav link dynamically
     const currentPath = window.location.pathname;
     document.querySelectorAll('#nav-menu a').forEach(link => {
       if (link.getAttribute('href') === currentPath) {
@@ -190,22 +220,28 @@
       .then(response => response.json())
       .then(data => {
         const container = document.getElementById('tiler-list');
+
+        // Sort: Featured first
+        data.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+
         data.forEach(tiler => {
-          // Sanitize whatsapp number for link
           let whatsappNumber = tiler.whatsapp.trim();
           if (whatsappNumber.startsWith('0')) {
             whatsappNumber = whatsappNumber.substring(1);
           }
-          const card = `
-            <div class="tiler-card">
-              <img src="${tiler.image}" alt="${tiler.name}">
-              <h4>${tiler.name}</h4>
-              <p>${tiler.city}</p>
-              <a href="${tiler.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>
-              <a href="https://wa.me/94${whatsappNumber}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-            </div>
+
+          const card = document.createElement('div');
+          card.className = 'tiler-card';
+
+          card.innerHTML = `
+            ${tiler.featured ? '<div class="badge">⭐ Top</div>' : ''}
+            <img src="${tiler.image}" alt="${tiler.name}" loading="lazy" onerror="this.src='/icons/default-tiler.png'" />
+            <h4>${tiler.name}</h4>
+            <p>${tiler.city}</p>
+            <a href="${tiler.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a href="https://wa.me/94${whatsappNumber}?text=${encodeURIComponent(`Hi ${tiler.name}, I found you on TILERSHUB`)}&utm_source=tilershub" target="_blank" rel="noopener noreferrer">WhatsApp</a>
           `;
-          container.innerHTML += card;
+          container.appendChild(card);
         });
       })
       .catch(error => {
