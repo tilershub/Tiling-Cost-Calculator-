@@ -1,16 +1,18 @@
 [
   {
-  "name": "Saman Anurudda",
-  "city": "Galle",
-  "image": "/tilers/images/tilers/saman.png",
-  "facebook": "https://www.facebook.com/share/16HQZjRgUZ/?mibextid=wwXIfr",
-  "whatsapp": "0773494093"
-},
+    "name": "Saman Anurudda",
+    "city": "Galle",
+    "image": "/tilers/images/tilers/saman.png",
+    "facebook": "https://www.facebook.com/share/16HQZjRgUZ/?mibextid=wwXIfr",
+    "whatsapp": "0773494093",
+    "featured": true
+  },
   {
     "name": "Sujith Anurada",
     "city": "Seeduwa",
     "image": "/tilers/images/tilers/sujith.png",
     "facebook": "https://www.facebook.com/share/177fiEgKe7/?mibextid=wwXIfr",
-    "whatsapp": "0779509873"
+    "whatsapp": "0779509873",
+    "featured": true
   }
 ]
