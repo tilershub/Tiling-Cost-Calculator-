@@ -1,26 +1,31 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Find the Best Tilers in Sri Lanka - TILERSHUB</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f7f9fb;
       margin: 0;
       padding: 20px;
+      color: #222;
     }
     .container {
       max-width: 1000px;
       margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .tiler-list {
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
       justify-content: center;
+      margin-top: 20px;
     }
     .tiler-card {
       width: 250px;
@@ -59,32 +64,154 @@
     .tiler-card a:hover {
       background: #005fa3;
     }
+
+    /* Header styles */
+    .header {
+      background: #003049;
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+    .logo-container img {
+      height: 36px;
+      margin-right: 10px;
+    }
+    .site-name {
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .nav-toggle {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #fff;
+    }
+    nav {
+      display: flex;
+      gap: 12px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+    }
+    nav a.active {
+      text-decoration: underline;
+      font-weight: bold;
+    }
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+      }
+      nav.active {
+        display: flex;
+      }
+      .nav-toggle {
+        display: block;
+      }
+    }
+
+    /* Footer styles */
+    footer {
+      background: #003049;
+      color: #fff;
+      text-align: center;
+      padding: 12px 20px;
+      margin-top: 40px;
+    }
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="/icons/logo.png" alt="TILERSHUB Logo" />
+      <div class="site-name">TILERSHUB</div>
+    </div>
+    <div class="nav-toggle" onclick="toggleNav()">☰</div>
+    <nav id="nav-menu" aria-label="Main Navigation">
+      <a href="/index.html">Home</a>
+      <a href="/floor-tiling-estimator/index.html">Floor Estimator</a>
+      <a href="/tilers/tilers.html" class="active">Tilers</a>
+      <a href="/shop.html">Shop</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
   <div class="container">
     <h2 style="text-align:center; margin-bottom: 30px;">👷 Tilers in Sri Lanka - Verified by TILERSHUB</h2>
     <div class="tiler-list" id="tiler-list"></div>
   </div>
 
+  <!-- Footer -->
+  <footer>
+    © 2025 TILERSHUB. All rights reserved. |
+    <a href="/about.html">About</a> |
+    <a href="/contact.html">Contact</a>
+  </footer>
+
   <script>
+    // Nav toggle for small screens
+    function toggleNav() {
+      document.getElementById('nav-menu').classList.toggle('active');
+    }
+
+    // Highlight current nav link dynamically (fallback)
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('#nav-menu a').forEach(link => {
+      if (link.getAttribute('href') === currentPath) {
+        link.classList.add('active');
+      }
+    });
+
+    // Fetch tilers data and render cards
     fetch('tilers.json')
       .then(response => response.json())
       .then(data => {
         const container = document.getElementById('tiler-list');
         data.forEach(tiler => {
+          // Sanitize whatsapp number for link
+          let whatsappNumber = tiler.whatsapp.trim();
+          if (whatsappNumber.startsWith('0')) {
+            whatsappNumber = whatsappNumber.substring(1);
+          }
           const card = `
             <div class="tiler-card">
               <img src="${tiler.image}" alt="${tiler.name}">
               <h4>${tiler.name}</h4>
               <p>${tiler.city}</p>
-              <a href="${tiler.facebook}" target="_blank">Facebook</a>
-              <a href="https://wa.me/94${tiler.whatsapp.slice(1)}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank">WhatsApp</a>
+              <a href="${tiler.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>
+              <a href="https://wa.me/94${whatsappNumber}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank" rel="noopener noreferrer">WhatsApp</a>
             </div>
           `;
           container.innerHTML += card;
         });
+      })
+      .catch(error => {
+        console.error('Failed to load tilers data:', error);
       });
   </script>
+
 </body>
 </html>
