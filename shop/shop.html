@@ -3,31 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Buy Tiling Tools Online in Sri Lanka | TILERSHUB Shop</title>
-
-  <meta name="description" content="Shop the best tile tools, tile adhesives, leveling clips and cutters online at TILERSHUB. Island-wide delivery." />
-  <meta name="keywords" content="tiling tools, tile adhesive, tile vibrator, tile clips, Sri Lanka, buy tiles, TILERSHUB shop" />
-  <meta name="author" content="TILERSHUB" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="TILERSHUB Shop - Buy Tiling Tools Online in Sri Lanka" />
-  <meta property="og:description" content="Shop the best tools and materials for tilers. Delivery across Sri Lanka." />
-  <meta property="og:image" content="https://tilershub.lk/assets/shop-cover.jpg" />
-  <meta property="og:url" content="https://tilershub.lk/shop.html" />
-  <meta property="og:type" content="website" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="TILERSHUB Shop - Tiling Tools Online" />
-  <meta name="twitter:description" content="Tools and materials for professional tilers in Sri Lanka." />
-  <meta name="twitter:image" content="https://tilershub.lk/assets/shop-cover.jpg" />
-
-  <link rel="canonical" href="https://tilershub.lk/shop.html" />
-
+  <title>TILERSHUB Shop</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
   <style>
-    /* CSS styles remain unchanged from before */
     * {
       box-sizing: border-box;
     }
@@ -39,15 +17,40 @@
       color: #222;
     }
 
-    header {
+    /* Header */
+    .main-header {
       background-color: #003366;
-      color: white;
-      padding: 15px 20px;
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: 600;
+      padding: 10px 20px;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
+    .main-header .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .main-header nav {
+      display: flex;
+      gap: 15px;
+    }
+
+    .main-header nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 4px;
+    }
+
+    .main-header nav a:hover {
+      background: #005f8a;
+    }
+
+    /* Shop styles */
     .container {
       max-width: 1200px;
       margin: auto;
@@ -118,6 +121,7 @@
       background: #005f8a;
     }
 
+    /* Footer */
     footer {
       background: #003366;
       color: white;
@@ -127,75 +131,71 @@
     }
 
     @media (max-width: 600px) {
-      header {
-        font-size: 1.5rem;
+      .main-header {
+        flex-direction: column;
+        align-items: flex-start;
       }
+
+      .main-header nav {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .main-header nav a {
+        padding: 10px 0;
+      }
+
       .product-title {
         font-size: 0.95rem;
       }
     }
   </style>
-
-  <!-- JSON-LD structured data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org/",
-    "@type": "Store",
-    "name": "TILERSHUB Shop",
-    "image": "https://tilershub.lk/assets/shop-cover.jpg",
-    "url": "https://tilershub.lk/shop.html",
-    "description": "Shop for tiling tools and materials online. Island-wide delivery in Sri Lanka.",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "LK"
-    }
-  }
-  </script>
 </head>
 <body>
 
-  <header>TILERSHUB Shop</header>
+  <!-- Header (copied from homepage) -->
+  <header class="main-header">
+    <div class="logo">TILERSHUB</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tilers.html">Tilers</a>
+      <a href="/estimator/tiling-estimator.html">Estimator</a>
+      <a href="/shop/shop.html">Shop</a>
+    </nav>
+  </header>
 
+  <!-- Shop container -->
   <div class="container">
     <h2>Buy Tiling Tools & Materials</h2>
-
-    <div class="grid" id="product-list">
-      <!-- Products will be dynamically inserted here -->
+    <div class="grid" id="product-grid">
+      <!-- JS will load products here -->
     </div>
   </div>
 
-  <noscript>
-    <div style="padding: 20px; color: #003366;">
-      <h3>Shop Our Tiling Products</h3>
-      <p>21V Tile Vibrator, Tile Leveling Clips, Reemas Tile Cutter and more are available. Contact us via WhatsApp for orders.</p>
-    </div>
-  </noscript>
-
+  <!-- Footer -->
   <footer>
     © 2025 TILERSHUB | All Rights Reserved
   </footer>
 
   <script>
+    // Load products from shop-products.json
     fetch('shop-products.json')
       .then(response => response.json())
       .then(products => {
-        const container = document.getElementById('product-list');
-        products.forEach(product => {
-          const card = `
-            <div class="product-card">
-              <img src="${product.image}" alt="${product.title}">
-              <div class="product-info">
-                <div class="product-title">${product.title}</div>
-                <div class="product-price">${product.price}</div>
-              </div>
-              <a class="order-btn" href="https://wa.me/94774503744?text=${encodeURIComponent(product.whatsapp)}" target="_blank" rel="noopener noreferrer">Order Now</a>
+        const grid = document.getElementById('product-grid');
+        products.forEach(p => {
+          const card = document.createElement('div');
+          card.className = 'product-card';
+          card.innerHTML = `
+            <img src="${p.image}" alt="${p.title}">
+            <div class="product-info">
+              <div class="product-title">${p.title}</div>
+              <div class="product-price">${p.price}</div>
             </div>
+            <a class="order-btn" href="https://wa.me/94774503744?text=${encodeURIComponent(p.whatsapp)}">Order Now</a>
           `;
-          container.innerHTML += card;
+          grid.appendChild(card);
         });
-      })
-      .catch(() => {
-        document.getElementById('product-list').innerHTML = '<p>Failed to load products. Please try again later.</p>';
       });
   </script>
 
