@@ -1,1 +1,75 @@
 
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f4f4;
+}
+.header {
+  background: #002c3e;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header img {
+  height: 40px;
+  margin-right: 10px;
+}
+nav a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+.container {
+  padding: 20px;
+  background: white;
+  margin: 20px auto;
+  max-width: 800px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+}
+input, select, button {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+button {
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+footer {
+  text-align: center;
+  padding: 15px;
+  background: #002c3e;
+  color: white;
+}
+.tiler-card {
+  display: inline-block;
+  width: 45%;
+  margin: 2.5%;
+  background: #fefefe;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+}
+.tiler-card img {
+  width: 100%;
+  border-radius: 4px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
