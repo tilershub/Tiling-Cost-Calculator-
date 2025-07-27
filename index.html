@@ -16,7 +16,7 @@
   <meta property="og:title" content="TILERSHUB | Home" />
   <meta property="og:description" content="Explore floor tiling calculators, bathroom tiling tips, professional tilers, and tools at TILERSHUB." />
   <meta property="og:image" content="/icons/og-image.png" />
-  <link rel="icon" href="/icons/favicon.png" type="image/png">
+  <link rel="icon" href="/icons/favicon.png" type="image/png" />
   <style>
     body {
       font-family: sans-serif;
@@ -57,10 +57,13 @@
       font-weight: bold;
       border: none;
       cursor: pointer;
+      transition: background 0.3s ease;
     }
 
-    button:hover {
+    button:hover,
+    button:focus {
       background: #005f88;
+      outline: none;
     }
 
     table {
@@ -91,10 +94,14 @@
     a {
       color: #0077cc;
       text-decoration: none;
+      transition: color 0.3s ease;
     }
 
-    a:hover {
+    a:hover,
+    a:focus {
       text-decoration: underline;
+      outline: none;
+      color: #005fa3;
     }
 
     nav a.active {
@@ -179,6 +186,10 @@
       text-align: center;
       padding: 15px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: box-shadow 0.3s ease;
+    }
+    .tiler-card:hover {
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
     .tiler-card img {
       width: 100px;
@@ -203,9 +214,12 @@
       background: #0077cc;
       border-radius: 4px;
       text-decoration: none;
+      transition: background 0.3s ease;
     }
-    .tiler-card a:hover {
+    .tiler-card a:hover,
+    .tiler-card a:focus {
       background: #005fa3;
+      outline: none;
     }
     .view-more-btn {
       display: inline-block;
@@ -214,12 +228,14 @@
       color: white;
       border-radius: 5px;
       text-decoration: none;
+      transition: background-color 0.3s ease;
     }
-    .view-more-btn:hover {
+    .view-more-btn:hover,
+    .view-more-btn:focus {
       background-color: #005fa3;
+      outline: none;
     }
-
-</style>
+  </style>
 </head>
 <body>
 
@@ -291,8 +307,8 @@
         <nav id="nav-menu" aria-label="Main Navigation">
           <a href="/index.html">Home</a>
           <a href="/floor-tiling-estimator/index.html">Floor Estimator</a>
-          <a href="/tiler-list/index.html">Tilers</a>
-          <a href="/shop/index.html">Shop</a>
+          <a href="/tilers/tilers.html">Tilers</a>
+          <a href="/shop.html">Shop</a>
         </nav>
       </header>
     `;
@@ -312,9 +328,11 @@
     document.getElementById('header').innerHTML = headerHTML;
     document.getElementById('footer').innerHTML = footerHTML;
 
-    const currentPath = window.location.pathname;
+    // Handle nav active link (handle trailing slash)
+    const currentPath = window.location.pathname.replace(/\/$/, '');
     document.querySelectorAll('#nav-menu a').forEach(link => {
-      if (link.getAttribute('href') === currentPath) {
+      const href = link.getAttribute('href').replace(/\/$/, '');
+      if (href === currentPath) {
         link.classList.add('active');
       }
     });
@@ -423,7 +441,7 @@
           <tr><th>Type</th><th>Min</th><th>Max</th></tr>
           <tr><td>Floor Labor</td><td>LKR ${floorLaborMin.toFixed(0)}</td><td>LKR ${floorLaborMax.toFixed(0)}</td></tr>
           <tr><td>Skirting Labor</td><td>LKR ${skirtingLaborMin.toFixed(0)}</td><td>LKR ${skirtingLaborMax.toFixed(0)}</td></tr>
-          <tr style="font-weight:bold;"><td>Total Labor</td><td>LKR ${laborMin.toFixed(0)}</td><td>LKR ${laborMax.toFixed(0)}</td></tr>
+                    <tr style="font-weight:bold;"><td>Total Labor</td><td>LKR ${laborMin.toFixed(0)}</td><td>LKR ${laborMax.toFixed(0)}</td></tr>
         </table>
         <h3>💰 Total Cost Estimate</h3>
         <table>
@@ -433,26 +451,37 @@
         </table>`;
 
       document.getElementById("report").style.display = "block";
+      // Scroll to report smoothly
+      document.getElementById("report").scrollIntoView({ behavior: "smooth" });
     }
   </script>
 
   <script>
+    // Load top tilers and display
     fetch('/tilers/tilers.json')
       .then(res => res.json())
       .then(data => {
         const top = data.slice(0, 2);
         const container = document.getElementById('home-tiler-list');
         top.forEach(tiler => {
+          // Sanitize whatsapp number (remove leading zero)
+          let whatsappNumber = tiler.whatsapp.trim();
+          if (whatsappNumber.startsWith('0')) {
+            whatsappNumber = whatsappNumber.substring(1);
+          }
           container.innerHTML += `
             <div class="tiler-card">
               <img src="${tiler.image}" alt="${tiler.name}">
               <h4>${tiler.name}</h4>
               <p>${tiler.city}</p>
-              <a href="${tiler.facebook}" target="_blank">Facebook</a>
-              <a href="https://wa.me/94${tiler.whatsapp.slice(1)}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank">WhatsApp</a>
+              <a href="${tiler.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>
+              <a href="https://wa.me/94${whatsappNumber}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank" rel="noopener noreferrer">WhatsApp</a>
             </div>
           `;
         });
+      })
+      .catch(error => {
+        console.error("Failed to load tilers data:", error);
       });
   </script>
 
