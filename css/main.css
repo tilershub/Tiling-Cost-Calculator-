@@ -25,6 +25,19 @@ body {
   gap: 10px;
 }
 
+/* Header logo styling */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-logo img {
+  height: 40px;      /* Resize logo */
+  width: auto;       /* Maintain aspect ratio */
+  object-fit: contain;
+}
+
 .site-name {
   font-size: 1.4rem;
   font-weight: bold;
