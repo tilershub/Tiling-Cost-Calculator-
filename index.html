@@ -170,7 +170,8 @@
         display: block;
       }
     }
-  
+
+    /* Tiler Cards */
     .tiler-list {
       display: flex;
       flex-wrap: wrap;
@@ -221,6 +222,8 @@
       background: #005fa3;
       outline: none;
     }
+
+    /* View More Button */
     .view-more-btn {
       display: inline-block;
       padding: 10px 20px;
@@ -234,6 +237,72 @@
     .view-more-btn:focus {
       background-color: #005fa3;
       outline: none;
+    }
+
+    /* Shop Cards (Rectangular) */
+    .shop-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .shop-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      width: 250px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: box-shadow 0.3s ease;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .shop-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .shop-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+      background: #fafafa;
+    }
+
+    .shop-card .shop-info {
+      padding: 15px;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .shop-card .shop-info h4 {
+      margin: 10px 0 6px;
+      font-size: 16px;
+    }
+
+    .shop-card .shop-info p {
+      margin: 0;
+      font-weight: bold;
+      color: #388e3c;
+      font-size: 15px;
+    }
+
+    .shop-card a {
+      margin: 12px auto 16px;
+      background: #0077cc;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      font-size: 14px;
+      width: fit-content;
+    }
+
+    .shop-card a:hover {
+      background: #005fa3;
     }
   </style>
 </head>
@@ -268,16 +337,16 @@
       <div id="report" class="report"></div>
     </section>
 
-<section class="container" style="text-align:center;">
-  <a href="/tilers/tilers.html">
-    <img src="/icons/find-certified-tiler.png"
-         alt="Find Certified Tilers in Sri Lanka - TILERSHUB"
-         style="width:100%; max-width:800px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease;"
-         onmouseover="this.style.transform='scale(1.02)'"
-         onmouseout="this.style.transform='scale(1)'"
-    />
-  </a>
-</section>
+    <section class="container" style="text-align:center;">
+      <a href="/tilers/tilers.html">
+        <img src="/icons/find-certified-tiler.png"
+             alt="Find Certified Tilers in Sri Lanka - TILERSHUB"
+             style="width:100%; max-width:800px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.02)'"
+             onmouseout="this.style.transform='scale(1)'"
+        />
+      </a>
+    </section>
 
     <section class="container">
       <h2>👷‍♂️ Top Tilers</h2>
@@ -287,14 +356,13 @@
       </div>
     </section>
 
-
     <section class="container">
-  <h2>🛒 Shop</h2>
-  <div id="home-shop-list" class="shop-list"></div>
-  <div class="text-center mt-20">
-    <a href="/shop/shop.html" class="view-more-btn">🛍️ Browse All Products</a>
-  </div>
-</section>
+      <h2>🛒 Shop</h2>
+      <div id="home-shop-list" class="shop-list"></div>
+      <div class="text-center mt-20">
+        <a href="/shop/shop.html" class="view-more-btn">🛍️ Browse All Products</a>
+      </div>
+    </section>
 
   </main>
 
@@ -361,7 +429,7 @@
     function startCalculation() {
       const area = parseFloat(document.getElementById("area").value);
       const tileSize = document.getElementById("tileSize").value;
-      const tilePrice = parseFloat(document.getElementById("tilePrice").value);
+            const tilePrice = parseFloat(document.getElementById("tilePrice").value);
 
       if (!area || area <= 0 || !tileSize || !tilePrice || tilePrice <= 0) {
         alert("❗ Please enter valid area, tile size, and tile price.");
@@ -447,7 +515,7 @@
           <tr><th>Type</th><th>Min</th><th>Max</th></tr>
           <tr><td>Floor Labor</td><td>LKR ${floorLaborMin.toFixed(0)}</td><td>LKR ${floorLaborMax.toFixed(0)}</td></tr>
           <tr><td>Skirting Labor</td><td>LKR ${skirtingLaborMin.toFixed(0)}</td><td>LKR ${skirtingLaborMax.toFixed(0)}</td></tr>
-                    <tr style="font-weight:bold;"><td>Total Labor</td><td>LKR ${laborMin.toFixed(0)}</td><td>LKR ${laborMax.toFixed(0)}</td></tr>
+          <tr style="font-weight:bold;"><td>Total Labor</td><td>LKR ${laborMin.toFixed(0)}</td><td>LKR ${laborMax.toFixed(0)}</td></tr>
         </table>
         <h3>💰 Total Cost Estimate</h3>
         <table>
@@ -457,7 +525,6 @@
         </table>`;
 
       document.getElementById("report").style.display = "block";
-      // Scroll to report smoothly
       document.getElementById("report").scrollIntoView({ behavior: "smooth" });
     }
   </script>
@@ -470,7 +537,6 @@
         const top = data.slice(0, 2);
         const container = document.getElementById('home-tiler-list');
         top.forEach(tiler => {
-          // Sanitize whatsapp number (remove leading zero)
           let whatsappNumber = tiler.whatsapp.trim();
           if (whatsappNumber.startsWith('0')) {
             whatsappNumber = whatsappNumber.substring(1);
@@ -491,28 +557,30 @@
       });
   </script>
 
-<script>
-  // Load top shop products and display
-  fetch('/shop/shop-products.json')
-    .then(res => res.json())
-    .then(data => {
-      const topProducts = data.slice(0, 2);
-      const container = document.getElementById('home-shop-list');
-      topProducts.forEach(product => {
-        container.innerHTML += `
-          <div class="tiler-card">
-            <img src="${product.image}" alt="${product.name}">
-            <h4>${product.name}</h4>
-            <p style="color:#388e3c; font-weight:bold;">${product.price}</p>
-            <a href="${product.link}" target="_blank">View Product</a>
-          </div>
-        `;
+  <script>
+    // Load top shop products and display with rectangular cards
+    fetch('/shop/shop-products.json')
+      .then(res => res.json())
+      .then(data => {
+        const topProducts = data.slice(0, 2);
+        const container = document.getElementById('home-shop-list');
+        topProducts.forEach(product => {
+          container.innerHTML += `
+            <div class="shop-card">
+              <img src="${product.image}" alt="${product.name}">
+              <div class="shop-info">
+                <h4>${product.name}</h4>
+                <p>${product.price}</p>
+              </div>
+              <a href="${product.link}" target="_blank" rel="noopener noreferrer">View Product</a>
+            </div>
+          `;
+        });
+      })
+      .catch(error => {
+        console.error("Failed to load shop products:", error);
       });
-    })
-    .catch(error => {
-      console.error("Failed to load shop products:", error);
-    });
-</script>
+  </script>
 
 </body>
 </html>
