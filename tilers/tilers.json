@@ -5,7 +5,8 @@
     "image": "/tilers/images/tilers/saman.png",
     "facebook": "https://www.facebook.com/share/16HQZjRgUZ/?mibextid=wwXIfr",
     "whatsapp": "0773494093",
-    "featured": true
+    "featured": true,
+    "rating": 5.0
   },
   {
     "name": "Sujith Anurada",
@@ -13,7 +14,8 @@
     "image": "/tilers/images/tilers/sujith.png",
     "facebook": "https://www.facebook.com/share/177fiEgKe7/?mibextid=wwXIfr",
     "whatsapp": "0779509873",
-    "featured": true
+    "featured": true,
+    "rating": 5.0
   },
   {
   "name": "Gallage Construction",
@@ -21,7 +23,8 @@
   "image": "/tilers/images/tilers/tile-work.png",
   "facebook": "https://www.facebook.com/share/1CMLfbTQPV/?mibextid=wwXIfr",
   "whatsapp": "0743551271",
-  "featured": true
+  "featured": true,
+  "rating": 5.0
 },
   {
     "name": "Rajarata Tile Art",
@@ -29,7 +32,8 @@
     "image": "/tilers/images/tilers/rajarata-tile-art.png",
     "facebook": "https://www.facebook.com/share/1APAbumfje/?mibextid=wwXIfr",
     "whatsapp": "0717160649",
-    "featured": true
+    "featured": true,
+    "rating": 5.0
     },
   {
     "name": "Tile Thushara",
@@ -37,6 +41,7 @@
     "image": "/tilers/images/tilers/thushara.png",
     "facebook": "https://www.facebook.com/share/1CcS9ZfzdK/?mibextid=wwXIfr",
     "whatsapp": "0755167599",
-    "featured": true
+    "featured": true,
+    "rating": 5.0
   }
 ]
