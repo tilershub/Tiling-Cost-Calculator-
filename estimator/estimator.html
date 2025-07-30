@@ -2,36 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tiling Estimator | TILERSHUB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TILERSHUB | Tiling Estimator</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="estimator-card">
-    <h1><img src="https://i.imgur.com/jX6Z9UY.png" alt="Logo" class="logo"> Tiling Estimator</h1>
 
-    <form id="tilingForm">
-      <input type="number" id="area" placeholder="Total Area (sqft)" required />
+  <section class="container">
+    <h2>🧮 Tiling Estimator</h2>
 
-      <select id="tileSize" required>
-        <option value="">Select Tile Size</option>
-      </select>
+    <input id="area" type="number" placeholder="Total Area (sqft)" />
 
-      <input type="number" id="tilePrice" placeholder="Tile Price (LKR per tile)" required />
+    <select id="tileSize">
+      <option value="">Select Tile Size</option>
+      <!-- Options will be inserted from tile-sizes.json -->
+    </select>
 
-      <fieldset>
-        <legend>Optional Manual Inputs</legend>
-        <input type="number" id="skirtingLength" placeholder="Skirting (ft) – optional" />
-        <input type="number" id="laborRate" placeholder="Labor rate (LKR/sqft) – optional" />
-      </fieldset>
+    <input id="tilePrice" type="number" placeholder="Tile Price (LKR per tile)" />
 
-      <button type="submit">
-        <img src="https://img.icons8.com/ios-filled/24/ffffff/combo-chart--v1.png" /> Calculate
-      </button>
-    </form>
+    <fieldset>
+      <legend>Optional Manual Inputs</legend>
+      <input id="skirting" type="number" placeholder="Skirting (ft) – optional" />
+      <input id="laborRate" type="number" placeholder="Labor rate (LKR/sqft) – optional" />
+    </fieldset>
 
-    <div id="result"></div>
-  </div>
+    <button onclick="startCalculation()">Calculate</button>
+
+    <div id="report" class="report"></div>
+  </section>
+
+  <section class="container" style="text-align:center;">
+    <a href="/tilers/tilers.html">
+      <img
+        src="/icons/find-certified-tiler.png"
+        alt="Find Certified Tilers in Sri Lanka - TILERSHUB"
+        style="width:100%; max-width:800px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease;"
+        onmouseover="this.style.transform='scale(1.02)'"
+        onmouseout="this.style.transform='scale(1)'"
+      />
+    </a>
+  </section>
 
   <script src="Estimator.js"></script>
 </body>
