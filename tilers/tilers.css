@@ -29,21 +29,21 @@ body {
 /* --- Tiler Card Styles (ALWAYS HORIZONTAL) --- */
 .tiler-card {
   display: flex;
-  flex-direction: row; /* Always horizontal: profile section next to details section */
-  align-items: center; /* Vertically align items in the card */
+  flex-direction: row;
+  align-items: center; /* Improve vertical alignment of profile and details */
   background: white;
   border: 1px solid #eee;
   border-radius: 12px;
-  padding: 20px; /* Default padding for horizontal layout */
+  padding: 15px; /* Default padding for horizontal layout */
   box-shadow: 0 4px 15px rgba(0,0,0,0.08);
   position: relative;
-  flex-shrink: 0; /* Prevent cards from shrinking smaller than their content allows */
-  width: 100%; /* Default to full width of available column space */
-  max-width: 600px; /* Max width for a single horizontal card on desktop */
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 600px;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   box-sizing: border-box;
   overflow: hidden; /* Ensure content doesn't spill out */
-  gap: 20px; /* Space between profile and details sections */
+  gap: 15px; /* Reduce gap */
 }
 
 .tiler-card:hover {
@@ -56,15 +56,15 @@ body {
     flex-direction: column; /* Profile pic and rating stack vertically */
     align-items: center;
     flex-shrink: 0; /* Prevents this section from shrinking too much */
-    margin-right: 15px; /* Space to the right of profile section */
+    margin-right: 10px; /* Reduce right margin */
 }
 
 .tiler-card .profile-pic {
-  width: 90px;
-  height: 90px;
+  width: 70px; /* Slightly smaller */
+  height: 70px;
   border-radius: 50%;
   overflow: hidden;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   border: 3px solid #007bff;
   box-shadow: 0 1px 5px rgba(0,0,0,0.1);
 }
@@ -78,7 +78,7 @@ body {
 
 .tiler-card .rating {
   color: #ffc107;
-  font-size: 1em;
+  font-size: 0.9em;
   display: flex;
   gap: 1px;
 }
@@ -89,57 +89,53 @@ body {
     flex-direction: column;
     justify-content: center;
     text-align: left; /* Align text left within details */
+    min-width: 0; /* Allow details to shrink if needed */
 }
 
 .tiler-card h4 {
-  margin: 0 0 5px;
-  font-size: 1.3em;
+  margin: 0 0 3px;
+  font-size: 1.1em;
   color: #333;
   line-height: 1.2;
 }
 
 .tiler-card p.city {
-  margin: 0 0 12px;
+  margin: 0 0 8px;
   color: #666;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
 .tiler-card .social-links {
     display: flex;
-    flex-direction: row; /* Social buttons side-by-side */
-    flex-wrap: wrap; /* Allow wrapping if card width gets too small for buttons */
-    gap: 8px;
-    margin-top: 5px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 3px;
 }
 
 .tiler-card .social-links a {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  font-size: 0.9em;
+  gap: 4px;
+  padding: 6px 10px;
+  font-size: 0.8em;
   color: #fff;
   border-radius: 6px;
   text-decoration: none;
   transition: background-color 0.2s ease-in-out;
-  white-space: nowrap; /* Keep button text on one line if possible */
+  white-space: nowrap;
 }
-
-.tiler-card .social-links a.facebook-btn { background: #3b5998; }
-.tiler-card .social-links a.facebook-btn:hover { background: #2d4373; }
-.tiler-card .social-links a.whatsapp-btn { background: #25d366; }
-.tiler-card .social-links a.whatsapp-btn:hover { background: #1da851; }
 
 .tiler-card .social-links a i {
-    font-size: 1.1em;
+    font-size: 1em;
 }
 
-/* TilersHUB Certified Badge (position relative to card) */
+/* TilersHUB Certified Badge */
 .certified-badge-image {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 60px;
+  top: 10px;
+  right: 10px;
+  width: 40px; /* MADE SMALLER */
   height: auto;
   z-index: 10;
   pointer-events: none;
@@ -151,12 +147,12 @@ body {
   display: block;
 }
 
-/* Share Icon (position relative to card) */
+/* Share Icon */
 .tiler-card .share-icon {
   position: absolute;
-  bottom: 15px;
-  right: 15px;
-  font-size: 1.6em;
+  bottom: 10px;
+  right: 10px;
+  font-size: 1.4em;
   color: #6c757d;
   cursor: pointer;
   transition: color 0.2s, transform 0.2s;
@@ -237,7 +233,6 @@ footer a:hover {
 
 /* --- Responsive Media Queries --- */
 
-/* For screens smaller than 768px (Mobile & Tablet Portrait) */
 @media (max-width: 768px) {
     /* Header & Nav */
     .header {
@@ -273,51 +268,33 @@ footer a:hover {
 
     /* Tiler Card Adjustments for Mobile (keeping it horizontal but compact) */
     .tiler-card {
-        padding: 15px 12px; /* Reduce padding to save space */
-        min-width: 290px; /* A minimum width to ensure content fits horizontally */
-        max-width: calc(100% - 20px); /* Allow cards to take full available width minus gap */
-        gap: 15px; /* Reduce gap between profile and details */
-        align-items: flex-start; /* Align contents to start of row */
+        padding: 15px; /* Slightly more padding on mobile */
+        min-width: 320px; /* Increased minimum width */
+        gap: 10px; /* Further reduced gap */
+        align-items: center; /* Re-center items vertically on mobile for better balance */
     }
 
-    .tiler-card .profile-pic {
-        width: 70px; /* Smaller profile pic */
-        height: 70px;
-        margin-bottom: 5px; /* Reduce margin */
-    }
-    .tiler-card .rating {
-        font-size: 0.9em; /* Smaller stars */
+    .tiler-card .profile-section {
+        margin-right: 10px; /* Keep some right margin */
     }
 
-    .tiler-card h4 {
-        font-size: 1.1em; /* Smaller font for name */
-    }
-    .tiler-card p.city {
-        font-size: 0.8em; /* Smaller font for city */
-        margin-bottom: 8px;
+    .tiler-card .details-section {
+        text-align: left; /* Keep left alignment */
     }
 
     .tiler-card .social-links {
-        gap: 6px; /* Smaller gap for buttons */
-        /* Flex wrap will handle if buttons need to stack */
-    }
-    .tiler-card .social-links a {
-        padding: 6px 10px; /* Smaller button padding */
-        font-size: 0.8em; /* Smaller button font */
-        flex-shrink: 1; /* Allow buttons to shrink if needed */
-        justify-content: flex-start; /* Align content left within button */
+        margin-top: 5px; /* Adjust spacing */
     }
 
-    /* Badge & Share Icon - adjust position for smaller cards */
     .certified-badge-image {
-        width: 50px;
-        top: 10px;
-        right: 10px;
+        width: 35px; /* MADE SMALLER FOR MOBILE */
+        top: 8px;
+        right: 8px;
     }
     .tiler-card .share-icon {
-        font-size: 1.4em;
-        bottom: 10px;
-        right: 10px;
+        font-size: 1.3em; /* Slightly smaller share icon */
+        bottom: 8px;
+        right: 8px;
     }
 
     footer {
@@ -326,12 +303,30 @@ footer a:hover {
     }
 }
 
-/* Optional: For very small mobile screens (e.g., iPhone SE) */
+@media (min-width: 769px) {
+    .tiler-card {
+        padding: 20px; /* More padding on larger screens */
+        gap: 20px; /* More gap on larger screens */
+        align-items: center; /* Center alignment on desktop too */
+    }
+    .tiler-card .profile-section {
+        margin-right: 15px;
+    }
+    .certified-badge-image {
+        width: 45px; /* MADE SMALLER FOR DESKTOP */
+        top: 15px;
+        right: 15px;
+    }
+    .tiler-card .share-icon {
+        font-size: 1.6em;
+        bottom: 15px;
+        right: 15px;
+    }
+}
+
 @media (max-width: 360px) {
     .tiler-card {
-        padding: 10px;
-        gap: 10px;
-        min-width: 270px; /* Very tight fit */
+        min-width: 280px; /* Further adjustment for very small screens */
     }
     .tiler-card .profile-pic {
         width: 60px;
@@ -351,13 +346,13 @@ footer a:hover {
         font-size: 0.75em;
     }
     .certified-badge-image {
-        width: 45px;
-        top: 8px;
-        right: 8px;
+        width: 30px; /* MADE SMALLER FOR VERY SMALL MOBILE */
+        top: 6px;
+        right: 6px;
     }
     .tiler-card .share-icon {
-        font-size: 1.2em;
-        bottom: 8px;
-        right: 8px;
+        font-size: 1.1em;
+        bottom: 6px;
+        right: 6px;
     }
 }
