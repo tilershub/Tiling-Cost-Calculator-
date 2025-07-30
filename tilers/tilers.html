@@ -6,164 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Find the best verified tilers across Sri Lanka. Trusted by thousands. Browse profiles, contact via WhatsApp or Facebook.">
   <link rel="canonical" href="https://tilershub.lk/tilers/tilers.html" />
-  <link rel="preconnect" href="https://wa.me">
-  <link rel="preconnect" href="https://facebook.com">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f7f9fb;
-      margin: 0;
-      padding: 20px;
-      color: #222;
-    }
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .tiler-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    .tiler-card {
-      width: 250px;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      text-align: center;
-      padding: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      position: relative;
-    }
-    .tiler-card img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin-bottom: 10px;
-    }
-    .tiler-card h4 {
-      margin: 10px 0 5px;
-      font-size: 18px;
-    }
-    .tiler-card p {
-      margin: 0 0 10px;
-      color: #666;
-    }
-    .tiler-card a {
-      display: inline-block;
-      margin: 4px;
-      padding: 8px 12px;
-      font-size: 14px;
-      color: #fff;
-      background: #0077cc;
-      border-radius: 4px;
-      text-decoration: none;
-    }
-    .tiler-card a:hover {
-      background: #005fa3;
-    }
-    .badge {
-      background: #ff9800;
-      color: #fff;
-      font-size: 12px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-    }
-
-    /* Header styles */
-    .header {
-      background: #003049;
-      color: #fff;
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .logo-container {
-      display: flex;
-      align-items: center;
-    }
-    .logo-container img {
-      height: 36px;
-      margin-right: 10px;
-    }
-    .site-name {
-      font-size: 22px;
-      font-weight: 600;
-    }
-    .nav-toggle {
-      display: none;
-      font-size: 28px;
-      cursor: pointer;
-      color: #fff;
-    }
-    nav {
-      display: flex;
-      gap: 12px;
-    }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-    }
-    nav a.active {
-      text-decoration: underline;
-      font-weight: bold;
-    }
-    @media (max-width: 768px) {
-      nav {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        margin-top: 10px;
-      }
-      nav.active {
-        display: flex;
-      }
-      .nav-toggle {
-        display: block;
-      }
-    }
-
-    /* Footer styles */
-    footer {
-      background: #003049;
-      color: #fff;
-      text-align: center;
-      padding: 12px 20px;
-      margin-top: 40px;
-    }
-    footer a {
-      color: #fff;
-      text-decoration: none;
-      margin: 0 8px;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="tilers.css" />
 </head>
 <body>
 
   <!-- Header -->
   <header class="header">
     <div class="logo-container">
-  <a href="/"><img src="/icons/logo.png" alt="TILERSHUB Logo" /></a>
-  <span class="site-name">TILERSHUB</span> <!-- Changed from <a> to <span> -->
-</div>
+      <a href="/"><img src="/icons/logo.png" alt="TILERSHUB Logo" /></a>
+      <span class="site-name">TILERSHUB</span>
+    </div>
     <div class="nav-toggle" onclick="toggleNav()">☰</div>
     <nav id="nav-menu" aria-label="Main Navigation">
       <a href="/index.html">Home</a>
@@ -186,7 +38,7 @@
     <a href="/contact.html">Contact</a>
   </footer>
 
-  <!-- JSON-LD Structured Data -->
+  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -194,60 +46,11 @@
     "name": "TILERSHUB",
     "url": "https://tilershub.lk",
     "logo": "https://tilershub.lk/icons/logo.png",
-    "sameAs": [
-      "https://facebook.com/tilershub"
-    ],
+    "sameAs": ["https://facebook.com/tilershub"],
     "description": "Sri Lanka's leading network of verified tilers."
   }
   </script>
 
-  <script>
-    // Nav toggle for small screens
-    function toggleNav() {
-      document.getElementById('nav-menu').classList.toggle('active');
-    }
-
-    // Highlight current nav link dynamically
-    const currentPath = window.location.pathname;
-    document.querySelectorAll('#nav-menu a').forEach(link => {
-      if (link.getAttribute('href') === currentPath) {
-        link.classList.add('active');
-      }
-    });
-
-    // Fetch tilers data and render cards
-    fetch('tilers.json')
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById('tiler-list');
-
-        // Sort: Featured first
-        data.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
-
-        data.forEach(tiler => {
-          let whatsappNumber = tiler.whatsapp.trim();
-          if (whatsappNumber.startsWith('0')) {
-            whatsappNumber = whatsappNumber.substring(1);
-          }
-
-          const card = document.createElement('div');
-          card.className = 'tiler-card';
-
-          card.innerHTML = `
-            ${tiler.featured ? '<div class="badge">⭐ Top</div>' : ''}
-            <img src="${tiler.image}" alt="${tiler.name}" loading="lazy" onerror="this.src='/icons/default-tiler.png'" />
-            <h4>${tiler.name}</h4>
-            <p>${tiler.city}</p>
-            <a href="${tiler.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>
-            <a href="https://wa.me/94${whatsappNumber}?text=${encodeURIComponent(`Hi ${tiler.name}, I found you on TILERSHUB`)}&utm_source=tilershub" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          `;
-          container.appendChild(card);
-        });
-      })
-      .catch(error => {
-        console.error('Failed to load tilers data:', error);
-      });
-  </script>
-
+  <script src="tilers.js"></script>
 </body>
 </html>
