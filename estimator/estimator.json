@@ -1,11 +1,65 @@
 [
-  { "label": "12x12 inch", "width": 12, "height": 12 },
-  { "label": "16x16 inch", "width": 16, "height": 16 },
-  { "label": "18x18 inch", "width": 18, "height": 18 },
-  { "label": "24x24 inch", "width": 24, "height": 24 },
-  { "label": "12x24 inch", "width": 12, "height": 24 },
-  { "label": "8x12 inch", "width": 8, "height": 12 },
-  { "label": "300x300 mm", "width": 11.81, "height": 11.81 },
-  { "label": "600x600 mm", "width": 23.62, "height": 23.62 },
-  { "label": "600x1200 mm", "width": 23.62, "height": 47.24 }
+  {
+    "label": "300x300 mm",
+    "width": 11.81,
+    "height": 11.81,
+    "sqft": 0.96,
+    "laborMin": 80,
+    "laborMax": 120,
+    "skirtingCoverage": 3
+  },
+  {
+    "label": "300x600 mm",
+    "width": 11.81,
+    "height": 23.62,
+    "sqft": 1.94,
+    "laborMin": 80,
+    "laborMax": 120,
+    "skirtingCoverage": 6
+  },
+  {
+    "label": "600x600 mm",
+    "width": 23.62,
+    "height": 23.62,
+    "sqft": 3.87,
+    "laborMin": 80,
+    "laborMax": 120,
+    "skirtingCoverage": 12
+  },
+  {
+    "label": "600x1200 mm",
+    "width": 23.62,
+    "height": 47.24,
+    "sqft": 7.75,
+    "laborMin": 110,
+    "laborMax": 150,
+    "skirtingCoverage": 24
+  },
+  {
+    "label": "800x800 mm",
+    "width": 31.5,
+    "height": 31.5,
+    "sqft": 6.89,
+    "laborMin": 110,
+    "laborMax": 150,
+    "skirtingCoverage": 20
+  },
+  {
+    "label": "1200x1200 mm",
+    "width": 47.24,
+    "height": 47.24,
+    "sqft": 12.9,
+    "laborMin": 150,
+    "laborMax": 250,
+    "skirtingCoverage": 48
+  },
+  {
+    "label": "800x1800 mm",
+    "width": 31.5,
+    "height": 70.87,
+    "sqft": 15.3,
+    "laborMin": 150,
+    "laborMax": 250,
+    "skirtingCoverage": 48
+  }
 ]
