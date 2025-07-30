@@ -25,7 +25,7 @@ body {
   margin-top: 30px;
 }
 
-/* --- Tiler Card Styles (ALWAYS HORIZONTAL) --- */
+/* --- Tiler Card --- */
 .tiler-card {
   display: flex;
   flex-direction: row;
@@ -50,16 +50,15 @@ body {
   box-shadow: 0 8px 25px rgba(0,0,0,0.12);
 }
 
-.tiler-card .profile-section {
+.profile-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
   margin-right: 15px;
-  z-index: 1;
 }
 
-.tiler-card .profile-pic {
+.profile-pic {
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -69,21 +68,20 @@ body {
   box-shadow: 0 1px 5px rgba(0,0,0,0.1);
 }
 
-.tiler-card .profile-pic img {
+.profile-pic img {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   object-fit: cover;
 }
 
-.tiler-card .rating {
+.rating {
   color: #ffc107;
   font-size: 1em;
   display: flex;
-  gap: 1px;
+  gap: 2px;
 }
 
-.tiler-card .details-section {
+.details-section {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -91,7 +89,6 @@ body {
   text-align: left;
   min-width: 0;
   padding-right: 60px;
-  z-index: 1;
 }
 
 .tiler-card h4 {
@@ -104,59 +101,127 @@ body {
 .tiler-card p.city {
   margin: 0 0 8px;
   color: #666;
-  font-size: 0.85em;
+  font-size: 0.9em;
 }
 
-.tiler-card .social-links {
+.social-links {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
-.tiler-card .social-links a {
+.social-links a {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
-  width: 36px;
-  height: 36px;
-  font-size: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  font-size: 1.4em;
   color: #fff;
-  border-radius: 6px;
   text-decoration: none;
-  transition: background-color 0.2s ease-in-out;
-  white-space: nowrap;
+  transition: background-color 0.3s;
 }
 
-.tiler-card .social-links a.facebook-btn { background: #3b5998; }
-.tiler-card .social-links a.facebook-btn:hover { background: #2d4373; }
-.tiler-card .social-links a.whatsapp-btn { background: #25d366; }
-.tiler-card .social-links a.whatsapp-btn:hover { background: #1da851; }
-
-.tiler-card .social-links a i {
-  font-size: 1.5em;
+.social-links a.facebook-btn {
+  background: #3b5998;
+}
+.social-links a.facebook-btn:hover {
+  background: #2d4373;
 }
 
-/* TilersHUB Certified Badge */
+.social-links a.whatsapp-btn {
+  background: #25d366;
+}
+.social-links a.whatsapp-btn:hover {
+  background: #1da851;
+}
+
+/* Badge */
 .certified-badge-image {
   position: absolute;
   top: 15px;
   right: 15px;
   width: 45px;
-  height: auto;
-  z-index: 100;
-  pointer-events: none;
+  z-index: 10;
 }
 .certified-badge-image img {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: contain;
   display: block;
 }
 
-/* --- Responsive Media Queries --- */
+/* --- Header Fix (Logo Size Control) --- */
+.header {
+  background: #003049;
+  color: #fff;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-container img {
+  height: 36px;
+  max-width: 120px;
+  object-fit: contain;
+}
+
+.site-name {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+nav {
+  display: flex;
+  gap: 12px;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 8px;
+  border-radius: 4px;
+}
+nav a.active {
+  text-decoration: underline;
+  font-weight: bold;
+  background-color: rgba(255,255,255,0.1);
+}
+nav a:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+
+/* --- Footer --- */
+footer {
+  background: #003049;
+  color: #fff;
+  text-align: center;
+  padding: 12px 20px;
+  margin-top: 40px;
+  font-size: 0.9em;
+}
+footer a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 8px;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* --- Responsive Fixes --- */
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
@@ -164,72 +229,21 @@ body {
     padding-bottom: 10px;
   }
 
-  .nav-toggle {
-    display: block;
-    position: absolute;
-    right: 20px;
-    top: 14px;
-  }
-
-  nav {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 10px;
-    background-color: #00283a;
-    border-radius: 8px;
-    padding: 10px 0;
-  }
-
-  nav.active {
-    display: flex;
-  }
-
   .tiler-card {
-    padding: 15px;
-    min-width: 340px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
     gap: 15px;
+  }
+
+  .profile-section {
+    flex-direction: row;
+    gap: 16px;
     align-items: center;
   }
 
-  .tiler-card .profile-section {
-    margin-right: 10px;
-  }
-
-  .tiler-card .details-section {
-    padding-right: 50px;
-  }
-
-  .tiler-card .profile-pic {
-    width: 70px;
-    height: 70px;
-  }
-
-  .tiler-card .rating {
-    font-size: 0.9em;
-  }
-
-  .tiler-card h4 {
-    font-size: 1.1em;
-  }
-
-  .tiler-card p.city {
-    font-size: 0.8em;
-  }
-
-  .tiler-card .social-links {
-    gap: 8px;
-    margin-top: 5px;
-  }
-
-  .tiler-card .social-links a {
-    padding: 6px;
-    width: 30px;
-    height: 30px;
-  }
-
-  .tiler-card .social-links a i {
-    font-size: 1.4em;
+  .details-section {
+    padding-right: 0;
   }
 
   .certified-badge-image {
@@ -237,58 +251,41 @@ body {
     top: 10px;
     right: 10px;
   }
+
+  .logo-container img {
+    height: 30px;
+    max-width: 100px;
+  }
+
+  .social-links a {
+    width: 34px;
+    height: 34px;
+    font-size: 1.2em;
+  }
 }
 
 @media (max-width: 360px) {
   .tiler-card {
-    min-width: 290px;
-    padding: 12px;
-    gap: 10px;
+    padding: 14px;
   }
 
-  .tiler-card .profile-section {
-    margin-right: 8px;
+  .profile-pic {
+    width: 65px;
+    height: 65px;
   }
 
-  .tiler-card .profile-pic {
-    width: 60px;
-    height: 60px;
-  }
-
-  .tiler-card .rating {
-    font-size: 0.8em;
-  }
-
-  .tiler-card h4 {
-    font-size: 1em;
-  }
-
-  .tiler-card p.city {
-    font-size: 0.75em;
-  }
-
-  .tiler-card .social-links {
-    gap: 6px;
-    margin-top: 3px;
-  }
-
-  .tiler-card .social-links a {
-    padding: 5px;
-    width: 28px;
-    height: 28px;
-  }
-
-  .tiler-card .social-links a i {
-    font-size: 1.3em;
-  }
-
-  .tiler-card .details-section {
-    padding-right: 45px;
+  .social-links a {
+    width: 30px;
+    height: 30px;
+    font-size: 1.1em;
   }
 
   .certified-badge-image {
     width: 30px;
-    top: 8px;
-    right: 8px;
+  }
+
+  .logo-container img {
+    height: 26px;
+    max-width: 90px;
   }
 }
