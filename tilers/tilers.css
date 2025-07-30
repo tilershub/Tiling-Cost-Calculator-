@@ -19,9 +19,9 @@ body {
 
 .tiler-list {
   display: flex;
-  flex-wrap: wrap; /* Cards will wrap to the next line */
-  gap: 20px; /* Space between cards */
-  justify-content: center; /* Center cards in the list */
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
   margin-top: 30px;
 }
 
@@ -29,19 +29,19 @@ body {
 .tiler-card {
   display: flex;
   flex-direction: row;
-  align-items: center; /* Vertically align profile and details sections */
+  align-items: center;
   background: white;
   border: 1px solid #eee;
   border-radius: 12px;
-  padding: 20px; /* Increased padding for a slightly larger card */
+  padding: 20px; /* Slightly larger card padding */
   box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  position: relative; /* Essential for absolute positioning of child elements */
+  position: relative; /* Essential for absolute positioning of children */
   flex-shrink: 0;
   width: 100%;
   max-width: 650px; /* Increased max width for desktop */
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   box-sizing: border-box;
-  overflow: hidden; /* Ensure content doesn't spill out */
+  overflow: hidden;
   gap: 20px; /* Space between profile and details sections */
 }
 
@@ -52,16 +52,15 @@ body {
 
 .tiler-card .profile-section {
     display: flex;
-    flex-direction: column; /* Profile pic and rating stack vertically */
+    flex-direction: column;
     align-items: center;
-    flex-shrink: 0; /* Prevents this section from shrinking too much */
-    margin-right: 15px; /* Space to the right of profile section */
-    position: relative;
-    z-index: 1;
+    flex-shrink: 0;
+    margin-right: 15px;
+    z-index: 1; /* Ensure this is below badge/share if overlapping */
 }
 
 .tiler-card .profile-pic {
-  width: 80px; /* Slightly larger profile pic */
+  width: 80px; /* Larger profile pic */
   height: 80px;
   border-radius: 50%;
   overflow: hidden;
@@ -79,26 +78,25 @@ body {
 
 .tiler-card .rating {
   color: #ffc107;
-  font-size: 1em; /* Default font size for stars */
+  font-size: 1em;
   display: flex;
   gap: 1px;
 }
 
 .tiler-card .details-section {
-    flex-grow: 1; /* Allows this section to take remaining space */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: left; /* Align text left within details */
-    min-width: 0; /* Allows text to shrink within its flex container */
-    padding-right: 70px; /* Increased space for the new right-icons group */
-    position: relative;
-    z-index: 1;
+    text-align: left;
+    min-width: 0;
+    padding-right: 60px; /* Increased space for the badge */
+    z-index: 1; /* Ensure this is below badge/share if overlapping */
 }
 
 .tiler-card h4 {
   margin: 0 0 3px;
-  font-size: 1.2em; /* Slightly larger font for name */
+  font-size: 1.2em;
   color: #333;
   line-height: 1.2;
 }
@@ -106,25 +104,25 @@ body {
 .tiler-card p.city {
   margin: 0 0 8px;
   color: #666;
-  font-size: 0.85em; /* Slightly larger font for city */
+  font-size: 0.85em;
 }
 
 .tiler-card .social-links {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap; /* Allow buttons to wrap if card becomes too narrow */
-    gap: 10px; /* Space between buttons */
-    margin-top: 8px; /* Space from city text */
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
 }
 
 .tiler-card .social-links a {
   display: flex;
   align-items: center;
-  justify-content: center; /* Center icon within the button */
+  justify-content: center;
   padding: 8px; /* Square padding for icon-only button */
   width: 36px; /* Fixed width for icon button */
   height: 36px; /* Fixed height for icon button */
-  font-size: 0; /* Hide text by setting font-size to 0 */
+  font-size: 0; /* Hides text (like 'Facebook' or 'WhatsApp') */
   color: #fff;
   border-radius: 6px;
   text-decoration: none;
@@ -141,25 +139,15 @@ body {
     font-size: 1.5em; /* Make icons larger and more prominent */
 }
 
-/* New: Container for Certified Badge and Share Icon */
-.right-icons {
-  position: absolute;
-  top: 50%; /* Position at 50% from top */
-  transform: translateY(-50%); /* Pull back by half of its height to truly center */
-  right: 15px; /* Distance from the right edge of the card */
-  display: flex;
-  flex-direction: column; /* Stack icons vertically */
-  align-items: center; /* Center icons horizontally within their column */
-  gap: 10px; /* Space between the badge and the share icon */
-  z-index: 100; /* Ensure this group is on top */
-}
-
-/* Certified Badge (now relative to .right-icons) */
+/* TilersHUB Certified Badge (Back to top-right corner) */
 .certified-badge-image {
-  /* Removed absolute positioning, it's now handled by .right-icons */
+  position: absolute; /* Re-apply absolute positioning */
+  top: 15px; /* Position from top */
+  right: 15px; /* Position from right */
   width: 45px; /* Badge size for larger screens */
   height: auto;
-  pointer-events: none;
+  z-index: 100; /* Ensure it's on top */
+  pointer-events: none; /* Allows clicks to pass through */
 }
 .certified-badge-image img {
   width: 100%;
@@ -168,13 +156,16 @@ body {
   display: block;
 }
 
-/* Share Icon (now relative to .right-icons) */
+/* Share Icon (Back to bottom-right corner) */
 .tiler-card .share-icon {
-  /* Removed absolute positioning, it's now handled by .right-icons */
+  position: absolute; /* Re-apply absolute positioning */
+  bottom: 15px; /* Position from bottom */
+  right: 15px; /* Position from right */
   font-size: 1.6em;
   color: #6c757d;
   cursor: pointer;
   transition: color 0.2s, transform 0.2s;
+  z-index: 100; /* Ensure it's on top */
 }
 .tiler-card .share-icon:hover {
   color: #343a40;
@@ -286,10 +277,10 @@ footer a:hover {
 
     /* Tiler Card Adjustments for Mobile */
     .tiler-card {
-        padding: 15px; /* Adjust padding for mobile */
-        min-width: 340px; /* Ensuring sufficient width */
-        gap: 15px; /* Adjust gap for mobile */
-        align-items: center; /* Center align items */
+        padding: 15px;
+        min-width: 340px;
+        gap: 15px;
+        align-items: center;
     }
 
     .tiler-card .profile-section {
@@ -297,7 +288,7 @@ footer a:hover {
     }
 
     .tiler-card .details-section {
-        padding-right: 60px; /* Space for mobile right-icons group */
+        padding-right: 50px; /* Space for mobile badge */
     }
 
     .tiler-card .profile-pic {
@@ -315,28 +306,28 @@ footer a:hover {
     }
 
     .tiler-card .social-links {
-        gap: 8px; /* Adjust social link gap */
+        gap: 8px;
         margin-top: 5px;
     }
     .tiler-card .social-links a {
-        padding: 6px; /* Square padding for icon-only button on mobile */
-        width: 30px; /* Fixed width for icon button on mobile */
-        height: 30px; /* Fixed height for icon button on mobile */
+        padding: 6px;
+        width: 30px;
+        height: 30px;
     }
     .tiler-card .social-links a i {
-        font-size: 1.4em; /* Adjust icon size for mobile */
+        font-size: 1.4em;
     }
 
-    /* Right Icons Group on Mobile */
-    .right-icons {
-        right: 10px; /* Distance from right edge on mobile */
-        gap: 8px; /* Space between icons on mobile */
-    }
+    /* Badge & Share Icon on Mobile (Back to corners) */
     .certified-badge-image {
         width: 35px; /* Badge size for mobile */
+        top: 10px;
+        right: 10px;
     }
     .tiler-card .share-icon {
         font-size: 1.4em;
+        bottom: 10px;
+        right: 10px;
     }
 
     footer {
@@ -347,9 +338,9 @@ footer a:hover {
 
 @media (max-width: 360px) {
     .tiler-card {
-        min-width: 290px; /* Minimum width for very small screens */
-        padding: 12px; /* Even less padding for very small screens */
-        gap: 10px; /* Even smaller gap */
+        min-width: 290px;
+        padding: 12px;
+        gap: 10px;
     }
     .tiler-card .profile-section {
         margin-right: 8px;
@@ -372,24 +363,25 @@ footer a:hover {
         margin-top: 3px;
     }
     .tiler-card .social-links a {
-        padding: 5px; /* Smallest square padding */
-        width: 28px; /* Smallest fixed width */
-        height: 28px; /* Smallest fixed height */
+        padding: 5px;
+        width: 28px;
+        height: 28px;
     }
     .tiler-card .social-links a i {
-        font-size: 1.3em; /* Smallest icon size */
+        font-size: 1.3em;
     }
     .tiler-card .details-section {
-        padding-right: 50px; /* Adjusted padding for very small screens */
+        padding-right: 45px; /* Adjusted padding for very small screens */
     }
-    .right-icons {
-        right: 8px; /* Distance from right edge on very small mobile */
-        gap: 6px; /* Space between icons on very small mobile */
-    }
+    /* Badge & Share Icon on Very Small Mobile (Back to corners) */
     .certified-badge-image {
         width: 30px; /* Badge size for very small mobile */
+        top: 8px;
+        right: 8px;
     }
     .tiler-card .share-icon {
         font-size: 1.2em;
+        bottom: 8px;
+        right: 8px;
     }
 }
