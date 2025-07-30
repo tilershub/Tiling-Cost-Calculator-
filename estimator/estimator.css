@@ -1,3 +1,4 @@
+/* Base styles */
 body {
   font-family: sans-serif;
   margin: 0;
@@ -15,12 +16,18 @@ main {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .container h2 {
   margin-top: 0;
+  font-size: 24px;
+  color: #003049;
 }
 
+/* Form inputs */
 input,
 select,
 button {
@@ -33,6 +40,12 @@ button {
   box-sizing: border-box;
 }
 
+input::placeholder,
+select {
+  color: #666;
+}
+
+/* Button styling */
 button {
   background: #003049;
   color: #fff;
@@ -48,6 +61,7 @@ button:focus {
   outline: none;
 }
 
+/* Fieldset styling */
 fieldset {
   margin-top: 20px;
   padding: 10px;
@@ -61,6 +75,7 @@ legend {
   color: #003049;
 }
 
+/* Table styles */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -85,4 +100,36 @@ th {
   padding: 20px;
   border-radius: 8px;
   display: none;
+  margin-top: 20px;
+}
+
+/* Optional: highlight totals */
+.report tfoot td {
+  font-weight: bold;
+  background: #f1faff;
+}
+
+/* Responsive */
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 16px;
+  }
+
+  input,
+  select,
+  button {
+    font-size: 15px;
+    padding: 10px 12px;
+  }
+
+  table,
+  th,
+  td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .container h2 {
+    font-size: 20px;
+  }
 }
