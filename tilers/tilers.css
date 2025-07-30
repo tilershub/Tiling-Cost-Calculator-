@@ -9,7 +9,7 @@ body {
 }
 
 .container {
-  max-width: 1200px; /* Wider container for horizontal cards */
+  max-width: 1200px;
   margin: auto;
   background: white;
   padding: 20px;
@@ -18,29 +18,58 @@ body {
 }
 
 .tiler-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center; /* Center cards in the list */
+  display: flex; /* Make it a flex container */
+  flex-wrap: nowrap; /* IMPORTANT: Prevent cards from wrapping to the next line */
+  gap: 20px; /* Space between cards */
+  justify-content: flex-start; /* Align cards to the start, allowing scroll */
   margin-top: 30px;
+  padding-bottom: 20px; /* Add some padding for scrollbar visibility */
+
+  /* --- Horizontal Scrolling for Mobile --- */
+  overflow-x: auto; /* Enable horizontal scrolling when content overflows */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  scrollbar-width: thin; /* Firefox scrollbar */
+  scrollbar-color: #888 #f1f1f1; /* Firefox scrollbar color */
 }
 
-/* --- Tiler Card Styles (HEAVILY MODIFIED for Horizontal Layout) --- */
+/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+.tiler-list::-webkit-scrollbar {
+  height: 8px; /* Height of the horizontal scrollbar */
+}
+
+.tiler-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.tiler-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.tiler-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+/* --- Tiler Card Styles (ALWAYS HORIZONTAL) --- */
 .tiler-card {
-  display: flex; /* Flex container for horizontal layout */
-  flex-direction: row; /* Default to horizontal */
+  display: flex;
+  flex-direction: row; /* Always horizontal */
   align-items: center; /* Vertically align items in the card */
   background: white;
   border: 1px solid #eee;
   border-radius: 12px;
-  padding: 20px; /* Adjusted padding for horizontal layout */
+  padding: 20px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.08);
   position: relative;
-  width: 100%; /* Default to full width for overall container */
-  max-width: 600px; /* Max width for a single horizontal card */
+  flex-shrink: 0; /* IMPORTANT: Prevents cards from shrinking */
+  width: auto; /* Allow width to be determined by content or min-width */
+  min-width: 300px; /* Minimum width for the card, ensuring content fits on mobile */
+  max-width: 600px; /* Max width for desktop presentation */
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   box-sizing: border-box;
-  overflow: hidden; /* Ensure content doesn't spill out */
+  overflow: hidden;
   gap: 20px; /* Space between profile and details sections */
 }
 
@@ -51,14 +80,14 @@ body {
 
 .tiler-card .profile-section {
     display: flex;
-    flex-direction: column; /* Profile pic and rating stack vertically */
+    flex-direction: column;
     align-items: center;
-    flex-shrink: 0; /* Prevents this section from shrinking too much */
-    margin-right: 15px; /* Space to the right of profile section */
+    flex-shrink: 0;
+    margin-right: 15px;
 }
 
 .tiler-card .profile-pic {
-  width: 90px; /* Smaller for horizontal layout */
+  width: 90px;
   height: 90px;
   border-radius: 50%;
   overflow: hidden;
@@ -76,13 +105,13 @@ body {
 
 .tiler-card .rating {
   color: #ffc107;
-  font-size: 1em; /* Adjusted size */
+  font-size: 1em;
   display: flex;
   gap: 1px;
 }
 
 .tiler-card .details-section {
-    flex-grow: 1; /* Allows this section to take remaining space */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -90,7 +119,7 @@ body {
 }
 
 .tiler-card h4 {
-  margin: 0 0 5px; /* Adjusted margins */
+  margin: 0 0 5px;
   font-size: 1.3em;
   color: #333;
   line-height: 1.2;
@@ -104,18 +133,18 @@ body {
 
 .tiler-card .social-links {
     display: flex;
-    flex-direction: row; /* Social buttons side-by-side by default */
-    flex-wrap: wrap; /* Allow wrapping if many buttons or narrow card */
+    flex-direction: row; /* Social buttons side-by-side */
+    flex-wrap: wrap; /* Allow wrapping if card width gets too small for buttons */
     gap: 8px;
-    margin-top: 5px; /* Space from city */
+    margin-top: 5px;
 }
 
 .tiler-card .social-links a {
   display: flex;
   align-items: center;
-  gap: 6px; /* Smaller gap for horizontal buttons */
-  padding: 8px 12px; /* Smaller padding for horizontal buttons */
-  font-size: 0.9em; /* Smaller font for horizontal buttons */
+  gap: 6px;
+  padding: 8px 12px;
+  font-size: 0.9em;
   color: #fff;
   border-radius: 6px;
   text-decoration: none;
@@ -132,12 +161,12 @@ body {
     font-size: 1.1em;
 }
 
-/* TilersHUB Certified Badge (position relative to card) */
+/* TilersHUB Certified Badge */
 .certified-badge-image {
   position: absolute;
   top: 15px;
   right: 15px;
-  width: 60px; /* Adjusted size for horizontal card */
+  width: 60px;
   height: auto;
   z-index: 10;
   pointer-events: none;
@@ -149,12 +178,12 @@ body {
   display: block;
 }
 
-/* Share Icon (position relative to card) */
+/* Share Icon */
 .tiler-card .share-icon {
   position: absolute;
   bottom: 15px;
   right: 15px;
-  font-size: 1.6em; /* Adjusted size */
+  font-size: 1.6em;
   color: #6c757d;
   cursor: pointer;
   transition: color 0.2s, transform 0.2s;
@@ -165,7 +194,7 @@ body {
   transform: scale(1.1);
 }
 
-/* --- General Header & Footer Styles (Kept existing, with minor mobile improvements) --- */
+/* --- General Header & Footer Styles (No changes from previous mobile-optimized version) --- */
 .header {
   background: #003049;
   color: #fff;
@@ -233,9 +262,9 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* --- Responsive Media Queries --- */
+/* --- Responsive Media Queries (Only for header/footer and minor mobile card adjustments) --- */
 
-/* For screens smaller than 768px (Mobile & Tablet Portrait) */
+/* For screens smaller than 768px (Mobile Navigation) */
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
@@ -268,52 +297,11 @@ footer a:hover {
         background-color: rgba(255,255,255,0.1);
     }
 
-    /* Tiler Card switches to Vertical Stack on Mobile */
+    /* Adjustments for horizontal cards on small screens */
     .tiler-card {
-        flex-direction: column; /* Stack profile and details vertically */
-        align-items: center; /* Center content */
-        padding: 20px 15px;
-        max-width: 320px; /* Constrain width for mobile cards */
-        width: 95%; /* Make it fill most of the screen width */
-        gap: 15px; /* Gap between stacked sections */
-    }
-
-    .tiler-card .profile-section {
-        margin-right: 0; /* Remove horizontal margin */
-        margin-bottom: 0; /* Handled by parent gap */
-    }
-
-    .tiler-card .details-section {
-        text-align: center; /* Center text for stacked layout */
-        align-items: center; /* Center sub-items if they are flex */
-    }
-
-    /* Badge position for smaller screens (above details section, centered) */
-    .certified-badge-image {
-        position: static; /* Remove absolute positioning */
-        margin: -10px auto 10px auto; /* Adjust margin to place it nicely, negative top to bring it closer */
-        display: block;
-        width: 60px;
-    }
-
-    /* Share icon position for smaller screens (below everything, centered) */
-    .tiler-card .share-icon {
-        position: static; /* Remove absolute positioning */
-        margin-top: 15px; /* Space from content above */
-        text-align: center;
-        font-size: 1.6em;
-    }
-
-    .tiler-card .social-links {
-        flex-direction: column; /* Stack buttons vertically */
-        gap: 8px;
-        width: 100%; /* Make buttons take full width of their container */
-    }
-    .tiler-card .social-links a {
-        width: 90%; /* Adjust button width for mobile */
-        max-width: 200px; /* Max width for consistency */
-        margin: 0 auto; /* Center individual buttons */
-        justify-content: flex-start; /* Align icon/text to start within button */
+        padding: 15px;
+        min-width: 280px; /* Ensure cards are not too narrow on small phones */
+        max-width: 90%; /* Allow some flexibility for larger mobile screens */
     }
 
     footer {
@@ -322,22 +310,19 @@ footer a:hover {
     }
 }
 
-/* For larger desktops/laptops (multiple columns of horizontal cards) */
-@media (min-width: 769px) {
-    .tiler-list {
-        justify-content: center; /* Center rows of cards */
-    }
-
-    /* The .tiler-card default of flex-direction: row and max-width: 600px handles this */
-    /* If you wanted cards to flow side-by-side more freely, you'd adjust max-width */
-}
-
-/* Even larger screens if needed, for broader container and more cards per row */
-@media (min-width: 1200px) {
-    .container {
-        max-width: 1400px; /* Wider container for more spacing or more columns */
-    }
+/* Optional: For very small mobile screens */
+@media (max-width: 400px) {
     .tiler-card {
-        max-width: 650px; /* Slightly wider cards on large screens */
+        min-width: 250px; /* Adjust if cards are too large for smallest phones */
+    }
+    .tiler-card .profile-pic {
+        width: 80px;
+        height: 80px;
+    }
+    .tiler-card h4 {
+        font-size: 1.2em;
+    }
+    .tiler-card p.city {
+        font-size: 0.85em;
     }
 }
