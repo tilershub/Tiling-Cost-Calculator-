@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tiling Estimator | TILERSHUB</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="estimator-card">
+    <h1><img src="https://i.imgur.com/jX6Z9UY.png" alt="Logo" class="logo"> Tiling Estimator</h1>
+
+    <form id="tilingForm">
+      <input type="number" id="area" placeholder="Total Area (sqft)" required />
+
+      <select id="tileSize" required>
+        <option value="">Select Tile Size</option>
+      </select>
+
+      <input type="number" id="tilePrice" placeholder="Tile Price (LKR per tile)" required />
+
+      <fieldset>
+        <legend>Optional Manual Inputs</legend>
+        <input type="number" id="skirtingLength" placeholder="Skirting (ft) – optional" />
+        <input type="number" id="laborRate" placeholder="Labor rate (LKR/sqft) – optional" />
+      </fieldset>
+
+      <button type="submit">
+        <img src="https://img.icons8.com/ios-filled/24/ffffff/combo-chart--v1.png" /> Calculate
+      </button>
+    </form>
+
+    <div id="result"></div>
+  </div>
+
+  <script src="Estimator.js"></script>
+</body>
+</html>
