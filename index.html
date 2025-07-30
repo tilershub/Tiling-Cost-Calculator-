@@ -526,7 +526,7 @@
     fetch('/tilers/tilers.json')
       .then(res => res.json())
       .then(data => {
-        const top = data.slice(0, 3);
+        const top = data.slice(0, 5);
         const container = document.getElementById('home-tiler-list');
         top.forEach(tiler => {
           let whatsappNumber = tiler.whatsapp.trim();
