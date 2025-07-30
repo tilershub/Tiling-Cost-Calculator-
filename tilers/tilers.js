@@ -5,7 +5,6 @@ function toggleNav() {
 // Highlight active nav link
 const currentPath = window.location.pathname;
 document.querySelectorAll('#nav-menu a').forEach(link => {
-  // Use .includes for more robust path matching, especially if there are trailing slashes
   if (currentPath.includes(link.getAttribute('href'))) {
     link.classList.add('active');
   }
@@ -64,25 +63,25 @@ fetch('tilers.json')
 
     // Sort featured first, then by name
     data.sort((a, b) => {
-      if (a.featured && !b.featured) return -1; // a is featured, b is not -> a comes first
-      if (!a.featured && b.featured) return 1;  // b is featured, a is not -> b comes first
-      return a.name.localeCompare(b.name); // Then sort alphabetically by name
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      return a.name.localeCompare(b.name);
     });
 
     data.forEach(tiler => {
-      // --- Fetching data from tilers.json for each tiler ---
       let whatsapp = tiler.whatsapp ? tiler.whatsapp.trim() : '';
       if (whatsapp.startsWith('0')) whatsapp = whatsapp.substring(1);
 
       // Get rating, default to 4.5 if not provided or invalid
+      // (As per your JSON, 'rating' is not present, so it will default to 4.5 stars)
       const tilerRating = (tiler.rating && typeof tiler.rating === 'number' && tiler.rating >= 0 && tiler.rating <= 5) ? tiler.rating : 4.5;
-      const stars = getStarRating(tilerRating); // Generate star HTML from 'rating'
+      const stars = getStarRating(tilerRating);
 
-      const tilerImage = tiler.image || '/icons/default-tiler.png'; // Use 'image' from JSON, fallback to default
-      const tilerName = tiler.name; // Use 'name' from JSON
-      const tilerCity = tiler.city; // Use 'city' from JSON
-      const facebookLink = tiler.facebook || '#'; // Use 'facebook' from JSON, fallback if missing
-      const isFeatured = tiler.featured; // Use 'featured' from JSON
+      const tilerImage = tiler.image || '/icons/default-tiler.png';
+      const tilerName = tiler.name;
+      const tilerCity = tiler.city;
+      const facebookLink = tiler.facebook || '#';
+      const isFeatured = tiler.featured;
 
       // Construct WhatsApp link
       const whatsappLink = `https://wa.me/94${whatsapp}?text=${encodeURIComponent(`Hi ${tilerName}, I found you on TILERSHUB and would like to inquire about your tiling services.`)}`;
