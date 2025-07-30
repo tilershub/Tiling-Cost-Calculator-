@@ -356,14 +356,6 @@
       </div>
     </section>
 
-    <section class="container">
-      <h2>🛒 Shop</h2>
-      <div id="home-shop-list" class="shop-list"></div>
-      <div class="text-center mt-20">
-        <a href="/shop/shop.html" class="view-more-btn">🛍️ Browse All Products</a>
-      </div>
-    </section>
-
   </main>
 
   <!-- Dynamic Footer -->
@@ -421,8 +413,8 @@
         "600x600": { sqft: 3.87, laborMin: 80, laborMax: 120, skirtingCoverage: 12 },
         "600x1200": { sqft: 7.75, laborMin: 110, laborMax: 150, skirtingCoverage: 24 },
         "800x800": { sqft: 6.89, laborMin: 110, laborMax: 150, skirtingCoverage: 20 },
-        "1200x1200": { sqft: 12.9, laborMin: 200, laborMax: 300, skirtingCoverage: 48 },
-        "800x1800": { sqft: 15.3, laborMin: 200, laborMax: 300, skirtingCoverage: 48 }
+        "1200x1200": { sqft: 12.9, laborMin: 150, laborMax: 250, skirtingCoverage: 48 },
+        "800x1800": { sqft: 15.3, laborMin: 150, laborMax: 250, skirtingCoverage: 48 }
       }[size];
     }
 
@@ -554,31 +546,6 @@
       })
       .catch(error => {
         console.error("Failed to load tilers data:", error);
-      });
-  </script>
-
-  <script>
-    // Load top shop products and display with rectangular cards
-    fetch('/shop/shop-products.json')
-      .then(res => res.json())
-      .then(data => {
-        const topProducts = data.slice(0, 2);
-        const container = document.getElementById('home-shop-list');
-        topProducts.forEach(product => {
-          container.innerHTML += `
-            <div class="shop-card">
-              <img src="${product.image}" alt="${product.name}">
-              <div class="shop-info">
-                <h4>${product.name}</h4>
-                <p>${product.price}</p>
-              </div>
-              <a href="${product.link}" target="_blank" rel="noopener noreferrer">View Product</a>
-            </div>
-          `;
-        });
-      })
-      .catch(error => {
-        console.error("Failed to load shop products:", error);
       });
   </script>
 
