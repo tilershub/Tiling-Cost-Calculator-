@@ -1,71 +1,33 @@
-/* Base Body & Container Styles */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f7f9fb;
-  margin: 0;
-  padding: 15px;
-  color: #222;
-  box-sizing: border-box;
-}
-
-.container {
-  max-width: 1200px;
-  margin: auto;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.tiler-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 30px;
-}
-
-/* --- Tiler Card --- */
 .tiler-card {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  background: white;
-  border: 1px solid #eee;
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid #e0e0e0;
   border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
   padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  position: relative;
-  flex-shrink: 0;
-  width: 100%;
   max-width: 650px;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  box-sizing: border-box;
-  overflow: hidden;
-  gap: 20px;
+  width: 100%;
+  transition: box-shadow 0.3s;
+  cursor: pointer;
 }
 
 .tiler-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
 }
 
 .profile-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   flex-shrink: 0;
-  margin-right: 15px;
+  margin-right: 20px;
+  text-align: center;
 }
 
 .profile-pic {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   overflow: hidden;
-  margin-bottom: 5px;
   border: 3px solid #007bff;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
 }
 
 .profile-pic img {
@@ -74,218 +36,34 @@ body {
   object-fit: cover;
 }
 
-.rating {
-  color: #ffc107;
-  font-size: 1em;
-  display: flex;
-  gap: 2px;
-}
-
 .details-section {
   flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left;
-  min-width: 0;
-  padding-right: 60px;
 }
 
-.tiler-card h4 {
-  margin: 0 0 3px;
+.details-section h4 {
+  margin: 0;
   font-size: 1.2em;
   color: #333;
-  line-height: 1.2;
 }
 
-.tiler-card p.city {
-  margin: 0 0 8px;
-  color: #666;
-  font-size: 0.9em;
+.details-section .city {
+  color: #777;
+  font-size: 0.95em;
+  margin-bottom: 5px;
 }
 
-.social-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
+.details-section .bio {
+  margin: 8px 0;
+  font-size: 0.95em;
+  color: #555;
 }
 
-.social-links a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
+.details-section .highlights {
+  font-size: 0.85em;
+  background: #f0f0f0;
+  padding: 6px 10px;
   border-radius: 8px;
-  font-size: 1.4em;
-  color: #fff;
-  text-decoration: none;
-  transition: background-color 0.3s;
-}
-
-.social-links a.facebook-btn {
-  background: #3b5998;
-}
-.social-links a.facebook-btn:hover {
-  background: #2d4373;
-}
-
-.social-links a.whatsapp-btn {
-  background: #25d366;
-}
-.social-links a.whatsapp-btn:hover {
-  background: #1da851;
-}
-
-/* Badge */
-.certified-badge-image {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 45px;
-  z-index: 10;
-}
-.certified-badge-image img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  display: block;
-}
-
-/* --- Header Fix (Logo Size Control) --- */
-.header {
-  background: #003049;
-  color: #fff;
-  padding: 14px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-}
-
-.logo-container img {
-  height: 36px;
-  max-width: 120px;
-  object-fit: contain;
-}
-
-.site-name {
-  font-size: 22px;
-  font-weight: 600;
-}
-
-nav {
-  display: flex;
-  gap: 12px;
-}
-
-nav a {
-  color: #fff;
-  text-decoration: none;
-  padding: 5px 8px;
-  border-radius: 4px;
-}
-nav a.active {
-  text-decoration: underline;
-  font-weight: bold;
-  background-color: rgba(255,255,255,0.1);
-}
-nav a:hover {
-  background-color: rgba(255,255,255,0.2);
-}
-
-/* --- Footer --- */
-footer {
-  background: #003049;
-  color: #fff;
-  text-align: center;
-  padding: 12px 20px;
-  margin-top: 40px;
-  font-size: 0.9em;
-}
-footer a {
-  color: #fff;
-  text-decoration: none;
-  margin: 0 8px;
-}
-footer a:hover {
-  text-decoration: underline;
-}
-
-/* --- Responsive Fixes --- */
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding-bottom: 10px;
-  }
-
-  .tiler-card {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 16px;
-    gap: 15px;
-  }
-
-  .profile-section {
-    flex-direction: row;
-    gap: 16px;
-    align-items: center;
-  }
-
-  .details-section {
-    padding-right: 0;
-  }
-
-  .certified-badge-image {
-    width: 35px;
-    top: 10px;
-    right: 10px;
-  }
-
-  .logo-container img {
-    height: 30px;
-    max-width: 100px;
-  }
-
-  .social-links a {
-    width: 34px;
-    height: 34px;
-    font-size: 1.2em;
-  }
-}
-
-@media (max-width: 360px) {
-  .tiler-card {
-    padding: 14px;
-  }
-
-  .profile-pic {
-    width: 65px;
-    height: 65px;
-  }
-
-  .social-links a {
-    width: 30px;
-    height: 30px;
-    font-size: 1.1em;
-  }
-
-  .certified-badge-image {
-    width: 30px;
-  }
-
-  .logo-container img {
-    height: 26px;
-    max-width: 90px;
-  }
+  display: inline-block;
+  margin-top: 5px;
+  color: #333;
 }
