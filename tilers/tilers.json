@@ -18,14 +18,14 @@
     "rating": 5.0
   },
   {
-  "name": "Gallage Construction",
-  "city": "Bandaragama",
-  "image": "/tilers/images/tilers/tile-work.png",
-  "facebook": "https://www.facebook.com/share/1CMLfbTQPV/?mibextid=wwXIfr",
-  "whatsapp": "0743551271",
-  "featured": true,
-  "rating": 5.0
-},
+    "name": "Gallage Construction",
+    "city": "Bandaragama",
+    "image": "/tilers/images/tilers/tile-work.png",
+    "facebook": "https://www.facebook.com/share/1CMLfbTQPV/?mibextid=wwXIfr",
+    "whatsapp": "0743551271",
+    "featured": true,
+    "rating": 5.0
+  },
   {
     "name": "Rajarata Tile Art",
     "city": "Anuradhapura",
@@ -34,13 +34,22 @@
     "whatsapp": "0717160649",
     "featured": true,
     "rating": 5.0
-    },
+  },
   {
     "name": "Tile Thushara",
     "city": "Kandy",
     "image": "/tilers/images/tilers/thushara.png",
     "facebook": "https://www.facebook.com/share/1AoZmGNput/",
     "whatsapp": "0755167599",
+    "featured": true,
+    "rating": 5.0
+  },
+  {
+    "name": "Matara Tile Malli",
+    "city": "Matara",
+    "image": "/tilers/images/tilers/matara-tile-malli.png",
+    "facebook": "https://www.facebook.com/share/1BuDqAZVet/?mibextid=wwXIfr",
+    "whatsapp": "0777200541",
     "featured": true,
     "rating": 5.0
   }
