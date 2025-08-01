@@ -1,5 +1,6 @@
 [
   {
+    "id": "saman-anurudda",
     "name": "Saman Anurudda",
     "city": "Galle",
     "image": "/tilers/images/tilers/saman.png",
@@ -9,6 +10,7 @@
     "rating": 5.0
   },
   {
+    "id": "sujith-anurada",
     "name": "Sujith Anurada",
     "city": "Seeduwa",
     "image": "/tilers/images/tilers/sujith.png",
@@ -18,6 +20,7 @@
     "rating": 5.0
   },
   {
+    "id": "gallage-construction",
     "name": "Gallage Construction",
     "city": "Bandaragama",
     "image": "/tilers/images/tilers/tile-work.png",
@@ -27,6 +30,7 @@
     "rating": 5.0
   },
   {
+    "id": "rajarata-tile-art",
     "name": "Rajarata Tile Art",
     "city": "Anuradhapura",
     "image": "/tilers/images/tilers/rajarata-tile-art.png",
@@ -36,6 +40,7 @@
     "rating": 5.0
   },
   {
+    "id": "tile-thushara",
     "name": "Tile Thushara",
     "city": "Kandy",
     "image": "/tilers/images/tilers/thushara.png",
@@ -45,6 +50,7 @@
     "rating": 5.0
   },
   {
+    "id": "matara-tile-malli",
     "name": "Matara Tile Malli",
     "city": "Matara",
     "image": "/tilers/images/tilers/matara-tile-malli.png",
@@ -54,6 +60,7 @@
     "rating": 5.0
   },
   {
+    "id": "keshara-tile-art",
     "name": "Keshara Tile Art",
     "city": "Mathugama",
     "image": "/tilers/images/tilers/keshara.png",
