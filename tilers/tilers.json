@@ -52,5 +52,14 @@
     "whatsapp": "0777200541",
     "featured": true,
     "rating": 5.0
+  },
+  {
+    "name": "Keshara Tile Art",
+    "city": "Mathugama",
+    "image": "/tilers/images/tilers/keshara.png",
+    "facebook": "https://www.facebook.com/share/1CEyMpAMq1/?mibextid=wwXIfr",
+    "whatsapp": "0772576373",
+    "featured": true,
+    "rating": 5.0
   }
 ]
