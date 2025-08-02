@@ -69,4 +69,15 @@
     "featured": true,
     "rating": 5.0
   }
+  {
+    "id": "kelum-srimal"
+    "name": "Kelum Srimal",
+    "city": "Embilipitiya",
+    "image": "/tilers/images/tilers/kelum.png",
+    "facebook": "https://www.facebook.com/share/1JaMix9rTZ/?mibextid=wwXIfr",
+    "whatsapp": "0715560423",
+    "featured": true,
+    "rating": 5.0
+  }
+]
 ]
