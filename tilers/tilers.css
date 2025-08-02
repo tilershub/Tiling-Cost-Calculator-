@@ -104,6 +104,7 @@ body {
   font-size: 0.9em;
 }
 
+/* --- Social Icons Only --- */
 .social-links {
   display: flex;
   flex-wrap: wrap;
@@ -123,6 +124,12 @@ body {
   color: white;
   text-decoration: none;
   transition: background-color 0.3s;
+  padding: 0;
+}
+
+.social-links a i {
+  margin: 0;
+  font-size: 18px;
 }
 
 .social-links a.facebook-btn {
@@ -139,12 +146,7 @@ body {
   background-color: #1da851;
 }
 
-/* Hide text label from buttons */
-.social-links a i {
-  margin: 0;
-}
-
-/* Badge */
+/* --- Certified Badge --- */
 .certified-badge-image {
   position: absolute;
   top: 15px;
