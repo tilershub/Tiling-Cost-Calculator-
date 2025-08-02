@@ -104,11 +104,11 @@ fetch('tilers.json')
           ${tiler.highlights ? `<p class="highlights">${tiler.highlights}</p>` : ''}
 
           <div class="social-links">
-            <a href="${facebookLink}" target="_blank" rel="noopener noreferrer" class="facebook-btn" onclick="event.stopPropagation()">
-              <i class="fab fa-facebook"></i> Facebook
+            <a href="${facebookLink}" target="_blank" rel="noopener noreferrer" class="facebook-btn social-icon" onclick="event.stopPropagation()">
+              <i class="fab fa-facebook-f"></i>
             </a>
-            <a href="${whatsappLink}" target="_blank" rel="noopener noreferrer" class="whatsapp-btn" onclick="event.stopPropagation()">
-              <i class="fab fa-whatsapp"></i> WhatsApp
+            <a href="${whatsappLink}" target="_blank" rel="noopener noreferrer" class="whatsapp-btn social-icon" onclick="event.stopPropagation()">
+              <i class="fab fa-whatsapp"></i>
             </a>
           </div>
         </div>
