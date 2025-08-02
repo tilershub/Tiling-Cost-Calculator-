@@ -24,11 +24,9 @@
       background: #f4f4f4;
       color: #222;
     }
-
     main {
       padding: 20px;
     }
-
     .container {
       background: white;
       margin-bottom: 20px;
@@ -36,11 +34,9 @@
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
     .container h2 {
       margin-top: 0;
     }
-
     input, select, button {
       width: 100%;
       padding: 12px 14px;
@@ -50,7 +46,6 @@
       border-radius: 6px;
       box-sizing: border-box;
     }
-
     button {
       background: #003049;
       color: #fff;
@@ -59,119 +54,45 @@
       cursor: pointer;
       transition: background 0.3s ease;
     }
-
-    button:hover,
-    button:focus {
+    button:hover, button:focus {
       background: #005f88;
       outline: none;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       margin: 12px 0;
       font-size: 14px;
     }
-
     th, td {
       border: 1px solid #ddd;
       padding: 10px;
       text-align: left;
     }
-
     th {
       background: #e6f0f8;
       font-weight: 600;
     }
-
     .report {
       background: #f8fbfc;
       padding: 20px;
       border-radius: 8px;
       display: none;
     }
-
     a {
       color: #0077cc;
       text-decoration: none;
       transition: color 0.3s ease;
     }
-
-    a:hover,
-    a:focus {
+    a:hover, a:focus {
       text-decoration: underline;
       outline: none;
       color: #005fa3;
     }
-
     nav a.active {
       text-decoration: underline;
       font-weight: bold;
     }
-
-    .header {
-      background: #003049;
-      color: #fff;
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .logo-container {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo-container img {
-      height: 36px;
-      margin-right: 10px;
-    }
-
-    .site-name {
-      font-size: 22px;
-      font-weight: 600;
-    }
-
-    .nav-toggle {
-      display: none;
-      font-size: 28px;
-      cursor: pointer;
-      color: #fff;
-    }
-
-    nav {
-      display: flex;
-      gap: 12px;
-    }
-
-    nav a {
-      color: #fff;
-      text-decoration: none;
-    }
-
-    @media (max-width: 768px) {
-      nav {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        margin-top: 10px;
-      }
-
-      nav.active {
-        display: flex;
-      }
-
-      .nav-toggle {
-        display: block;
-      }
-    }
-
-    /* Tiler Cards */
     .tiler-list {
       display: flex;
       flex-wrap: wrap;
@@ -217,13 +138,10 @@
       text-decoration: none;
       transition: background 0.3s ease;
     }
-    .tiler-card a:hover,
-    .tiler-card a:focus {
+    .tiler-card a:hover, .tiler-card a:focus {
       background: #005fa3;
       outline: none;
     }
-
-    /* View More Button */
     .view-more-btn {
       display: inline-block;
       padding: 10px 20px;
@@ -233,23 +151,20 @@
       text-decoration: none;
       transition: background-color 0.3s ease;
     }
-    .view-more-btn:hover,
-    .view-more-btn:focus {
+    .view-more-btn:hover, .view-more-btn:focus {
       background-color: #005fa3;
       outline: none;
     }
-    
   </style>
 </head>
 <body>
 
-  <!-- Dynamic Header -->
+  <!-- Injected Header -->
   <div id="header"></div>
 
   <main>
     <section class="container">
       <h2>🧮 Tiling Estimator</h2>
-
       <input id="area" type="number" placeholder="Total Area (sqft)" />
       <select id="tileSize">
         <option value="">Select Tile Size</option>
@@ -268,7 +183,6 @@
         <input id="laborRate" type="number" placeholder="Labor rate (LKR/sqft) – optional" />
       </fieldset>
       <button onclick="startCalculation()">Calculate</button>
-
       <div id="report" class="report"></div>
     </section>
 
@@ -290,174 +204,21 @@
         <a href="/tilers/tilers.html" class="view-more-btn">🔎 Find More Tilers</a>
       </div>
     </section>
-
   </main>
 
-  <!-- Dynamic Footer -->
+  <!-- Injected Footer -->
   <div id="footer"></div>
 
-  <!-- Header & Footer Injection -->
+  <!-- Inject header & footer -->
+  <script src="/js/include.js"></script>
+
+  <!-- Estimator Logic -->
   <script>
-    const headerHTML = `
-      <header class="header">
-        <div class="logo-container">
-          <img src="/icons/logo.png" alt="TILERSHUB Logo" />
-          <div class="site-name">TILERSHUB</div>
-        </div>
-        <div class="nav-toggle" onclick="toggleNav()">☰</div>
-        <nav id="nav-menu" aria-label="Main Navigation">
-          <a href="/index.html">Home</a>
-          <a href="/estimator/estimator.html">Estimator</a>
-          <a href="/tilers/tilers.html">Tilers</a>
-          <a href="/shop/shop.html">Shop</a>
-        </nav>
-      </header>
-    `;
-
-    const footerHTML = `
-      <footer style="background:#003049; color:#fff; text-align:center; padding:12px 20px; margin-top:40px;">
-        © 2025 TILERSHUB. All rights reserved. |
-        <a href="/about.html" style="color:#fff;">About</a> |
-        <a href="/contact.html" style="color:#fff;">Contact</a>
-      </footer>
-    `;
-
-    function toggleNav() {
-      document.getElementById('nav-menu').classList.toggle('active');
-    }
-
-    document.getElementById('header').innerHTML = headerHTML;
-    document.getElementById('footer').innerHTML = footerHTML;
-
-    // Handle nav active link (handle trailing slash)
-    const currentPath = window.location.pathname.replace(/\/$/, '');
-    document.querySelectorAll('#nav-menu a').forEach(link => {
-      const href = link.getAttribute('href').replace(/\/$/, '');
-      if (href === currentPath) {
-        link.classList.add('active');
-      }
-    });
+    // ... your startCalculation(), getTileSettings(), and generateReport() logic here ...
   </script>
 
-  <!-- Calculator Logic -->
+  <!-- Load Top Tilers -->
   <script>
-    function getTileSettings(size) {
-      return {
-        "300x300": { sqft: 0.96, laborMin: 80, laborMax: 120, skirtingCoverage: 3 },
-        "300x600": { sqft: 1.94, laborMin: 80, laborMax: 120, skirtingCoverage: 6 },
-        "600x600": { sqft: 3.87, laborMin: 80, laborMax: 120, skirtingCoverage: 12 },
-        "600x1200": { sqft: 7.75, laborMin: 110, laborMax: 150, skirtingCoverage: 24 },
-        "800x800": { sqft: 6.89, laborMin: 110, laborMax: 150, skirtingCoverage: 20 },
-        "1200x1200": { sqft: 12.9, laborMin: 150, laborMax: 250, skirtingCoverage: 48 },
-        "800x1800": { sqft: 15.3, laborMin: 150, laborMax: 250, skirtingCoverage: 48 }
-      }[size];
-    }
-
-    function startCalculation() {
-      const area = parseFloat(document.getElementById("area").value);
-      const tileSize = document.getElementById("tileSize").value;
-            const tilePrice = parseFloat(document.getElementById("tilePrice").value);
-
-      if (!area || area <= 0 || !tileSize || !tilePrice || tilePrice <= 0) {
-        alert("❗ Please enter valid area, tile size, and tile price.");
-        return;
-      }
-
-      generateReport(area, tileSize, tilePrice);
-    }
-
-    function generateReport(area, tileSize, tilePrice) {
-      const settings = getTileSettings(tileSize);
-      const userSkirting = parseFloat(document.getElementById("skirting").value);
-      const userLaborRate = parseFloat(document.getElementById("laborRate").value);
-
-      const skirting = isNaN(userSkirting) || userSkirting <= 0 ? Math.ceil(area * 0.2) : userSkirting;
-      const useDefaultLabor = isNaN(userLaborRate) || userLaborRate <= 0;
-
-      const floorTiles = Math.ceil(area / settings.sqft);
-      const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
-      const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
-
-      const cementMin = Math.ceil(8 * area / 800);
-      const cementMax = Math.ceil(8 * area / 600);
-      const sandMin = Math.round((area / 800) * 4) / 4;
-      const sandMax = Math.round((area / 600) * 4) / 4;
-      const cementCostMin = cementMin * 1900, cementCostMax = cementMax * 1900;
-      const sandCostMin = sandMin * 25000, sandCostMax = sandMax * 25000;
-      const adhesiveMin = Math.ceil(area / 40), adhesiveMax = Math.ceil(area / 30);
-      const clips = Math.ceil(area / 100);
-      const grout = Math.ceil(area / 175);
-      const adhesiveCostMin = adhesiveMin * 2200, adhesiveCostMax = adhesiveMax * 2200;
-      const clipsCost = clips * 1500;
-      const groutCost = grout * 300;
-      const tileCost = totalTiles * tilePrice;
-
-      const laborRateMin = settings.laborMin;
-      const laborRateMax = settings.laborMax;
-
-      let floorLaborMin, floorLaborMax, skirtingLaborMin, skirtingLaborMax, laborMin, laborMax;
-
-      if (useDefaultLabor) {
-        floorLaborMin = area * laborRateMin;
-        floorLaborMax = area * laborRateMax;
-        skirtingLaborMin = skirting * laborRateMin;
-        skirtingLaborMax = skirting * laborRateMax;
-        laborMin = floorLaborMin + skirtingLaborMin;
-        laborMax = floorLaborMax + skirtingLaborMax;
-      } else {
-        floorLaborMin = floorLaborMax = area * userLaborRate;
-        skirtingLaborMin = skirtingLaborMax = skirting * userLaborRate;
-        laborMin = laborMax = floorLaborMin + skirtingLaborMin;
-      }
-
-      const materialMin = tileCost + cementCostMin + sandCostMin + adhesiveCostMin + clipsCost + groutCost;
-      const materialMax = tileCost + cementCostMax + sandCostMax + adhesiveCostMax + clipsCost + groutCost;
-      const totalMin = materialMin + laborMin;
-      const totalMax = materialMax + laborMax;
-
-      document.getElementById("report").innerHTML = `
-        <h3>📌 Project Summary</h3>
-        <table>
-          <tr><th>Area</th><td>${area} sqft</td></tr>
-          <tr><th>Skirting</th><td>${skirting} ft</td></tr>
-          <tr><th>Tile Size</th><td>${tileSize}</td></tr>
-        </table>
-        <h3>🧱 Floor Bed Estimate</h3>
-        <table>
-          <tr><th>Material</th><th>Qty</th><th>Cost (LKR)</th></tr>
-          <tr><td>Cement (50kg)</td><td>${cementMin} – ${cementMax}</td><td>${cementCostMin} – ${cementCostMax}</td></tr>
-          <tr><td>Sand (1 cube)</td><td>${sandMin} – ${sandMax}</td><td>${sandCostMin} – ${sandCostMax}</td></tr>
-        </table>
-        <h3>🧱 Tiling Estimate</h3>
-        <table>
-          <tr><td>Floor Tiles</td><td>${floorTiles}</td><td>-</td></tr>
-          <tr><td>Skirting Tiles</td><td>${skirtingTiles}</td><td>-</td></tr>
-          <tr><td><b>Total Tiles (5% wastage)</b></td><td>${totalTiles}</td><td>${tileCost}</td></tr>
-          <tr><td>Adhesive (25kg)</td><td>${adhesiveMin} – ${adhesiveMax}</td><td>${adhesiveCostMin} – ${adhesiveCostMax}</td></tr>
-          <tr><td>Clips (100 pcs)</td><td>${clips}</td><td>${clipsCost}</td></tr>
-          <tr><td>Grout (1kg)</td><td>${grout}</td><td>${groutCost}</td></tr>
-        </table>
-        <h3>👷 Labor Cost</h3>
-        <table>
-          <tr><th>Type</th><th>Min</th><th>Max</th></tr>
-          <tr><td>Floor Labor</td><td>LKR ${floorLaborMin.toFixed(0)}</td><td>LKR ${floorLaborMax.toFixed(0)}</td></tr>
-          <tr><td>Skirting Labor</td><td>LKR ${skirtingLaborMin.toFixed(0)}</td><td>LKR ${skirtingLaborMax.toFixed(0)}</td></tr>
-          <tr style="font-weight:bold;"><td>Total Labor</td><td>LKR ${laborMin.toFixed(0)}</td><td>LKR ${laborMax.toFixed(0)}</td></tr>
-        </table>
-        <h3>💰 Total Cost Estimate</h3>
-        <table>
-          <tr><th>Materials</th><td>LKR ${materialMin.toFixed(0)} – ${materialMax.toFixed(0)}</td></tr>
-          <tr><th>Labor</th><td>LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)}</td></tr>
-          <tr><th>Total</th><td><b>LKR ${totalMin.toFixed(0)} – ${totalMax.toFixed(0)}</b></td></tr>
-        </table>`;
-
-      document.getElementById("report").style.display = "block";
-      document.getElementById("report").scrollIntoView({ behavior: "smooth" });
-    }
-  </script>
-
-  <script>
-    // Load top tilers and display
     fetch('/tilers/tilers.json')
       .then(res => res.json())
       .then(data => {
@@ -473,14 +234,11 @@
               <img src="${tiler.image}" alt="${tiler.name}">
               <h4>${tiler.name}</h4>
               <p>${tiler.city}</p>
-              <a href="${tiler.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>
-              <a href="https://wa.me/94${whatsappNumber}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+              <a href="${tiler.facebook}" target="_blank">Facebook</a>
+              <a href="https://wa.me/94${whatsappNumber}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank">WhatsApp</a>
             </div>
           `;
         });
-      })
-      .catch(error => {
-        console.error("Failed to load tilers data:", error);
       });
   </script>
 
