@@ -1,20 +1,20 @@
-/* Header Wrapper */
+/* HEADER */
+
 .header {
-  background: #003049;
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--text-color);
   position: sticky;
   top: 0;
   z-index: 999;
+  width: 100%;
 }
 
-/* Container inside header */
 .header .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 10px 16px;
 }
 
-/* Flex wrap for logo + name + toggle */
 .header-inner {
   display: flex;
   justify-content: space-between;
@@ -22,7 +22,6 @@
   flex-wrap: wrap;
 }
 
-/* Logo + site name */
 .logo-wrap {
   display: flex;
   align-items: center;
@@ -38,19 +37,20 @@
 .site-name {
   font-size: 20px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   white-space: nowrap;
 }
 
-/* Hamburger icon */
+/* Hamburger */
 .nav-toggle {
   display: none;
   font-size: 28px;
   cursor: pointer;
-  color: #fff;
+  color: var(--text-color);
 }
 
-/* Nav menu */
+/* Nav Menu */
 .nav-menu {
   display: flex;
   gap: 16px;
@@ -58,9 +58,10 @@
 }
 
 .nav-menu a {
-  color: #fff;
+  color: var(--text-color);
   text-decoration: none;
   font-size: 16px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
 .nav-menu a.active {
@@ -68,7 +69,7 @@
   text-decoration: underline;
 }
 
-/* Responsive Styles */
+/* Responsive */
 @media (max-width: 768px) {
   .nav-toggle {
     display: block;
