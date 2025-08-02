@@ -4,32 +4,47 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TILERSHUB | Tiling Estimator</title>
+  <link rel="stylesheet" href="/css/layout.css" />
   <link rel="stylesheet" href="estimator.css" />
 </head>
 <body>
-  <section class="container">
-    <h2>🧮 Tiling Estimator</h2>
 
-    <input id="area" type="number" placeholder="Total Area (sqft)" />
+  <!-- Dynamic Header -->
+  <div id="header"></div>
 
-    <select id="tileSize">
-      <option value="">Select Tile Size</option>
-      <!-- Options from tile-sizes.json -->
-    </select>
+  <main>
+    <section class="container">
+      <h2>🧮 Tiling Estimator</h2>
 
-    <input id="tilePrice" type="number" placeholder="Tile Price (LKR per tile)" />
+      <input id="area" type="number" placeholder="Total Area (sqft)" />
 
-    <fieldset>
-      <legend>Optional Manual Inputs</legend>
-      <input id="skirting" type="number" placeholder="Skirting (ft) – optional" />
-      <input id="laborRate" type="number" placeholder="Labor rate (LKR/sqft) – optional" />
-    </fieldset>
+      <select id="tileSize">
+        <option value="">Select Tile Size</option>
+        <!-- Options will be loaded from tile-sizes.json -->
+      </select>
 
-    <button onclick="startCalculation()">Calculate</button>
+      <input id="tilePrice" type="number" placeholder="Tile Price (LKR per tile)" />
 
-    <div id="report" class="report"></div>
-  </section>
+      <fieldset>
+        <legend>Optional Manual Inputs</legend>
+        <input id="skirting" type="number" placeholder="Skirting (ft) – optional" />
+        <input id="laborRate" type="number" placeholder="Labor rate (LKR/sqft) – optional" />
+      </fieldset>
 
+      <button onclick="startCalculation()">Calculate</button>
+
+      <div id="report" class="report"></div>
+    </section>
+  </main>
+
+  <!-- Dynamic Footer -->
+  <div id="footer"></div>
+
+  <!-- Inject header & footer -->
+  <script src="/js/include.js"></script>
+
+  <!-- Estimator logic -->
   <script src="Estimator.js"></script>
+
 </body>
 </html>
