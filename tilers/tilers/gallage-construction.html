@@ -40,7 +40,7 @@
     }
 
     .cover {
-      background-image: url('https://i.imgur.com/Y0SxYj3.jpg');
+      background-image: url('/tilers/images/tilers/gallage-banner.jpg');
       background-size: cover;
       background-position: center;
       height: 180px;
@@ -60,7 +60,7 @@
       height: 120px;
       border-radius: 50%;
       border: 4px solid white;
-      background: url('https://i.imgur.com/BgYjylb.png') no-repeat center center/cover;
+      background: url('/tilers/images/tilers/tile-work.png') no-repeat center center/cover;
       margin-bottom: 15px;
     }
 
@@ -190,63 +190,58 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div><a href="/">TILERSHUB</a></div>
   <div>Verified Tiler Profile</div>
 </header>
 
-<!-- COVER IMAGE -->
 <div class="cover"></div>
 
-<!-- PROFILE SECTION -->
 <div class="profile-wrapper">
   <div class="profile-pic"></div>
   <div class="profile-info">
     <h1>Gallage Construction</h1>
     <p>Verified Tiler – Bandaragama</p>
-    <div class="stars">★★★★☆ 4.6 (15 reviews)</div>
+    <div class="stars">★★★★☆ 4.6 (18 reviews)</div>
     <div class="bio">
-      We are specialists in floor and wall tiling with over 12 years of experience in residential and commercial projects. Our team delivers neat finishes and on-time completion with a focus on quality and satisfaction.
+      Gallage Construction is a trusted name in residential tiling work, known for reliability, precision, and long-lasting finishes. Serving Bandaragama and surrounding areas.
     </div>
     <div class="highlights">
-      <div class="highlight-tag">Bathroom Renovation</div>
       <div class="highlight-tag">Floor Tiling</div>
       <div class="highlight-tag">Wall Tiling</div>
-      <div class="highlight-tag">Large Format Tiles</div>
+      <div class="highlight-tag">Bathroom Renovations</div>
+      <div class="highlight-tag">Fast Turnaround</div>
     </div>
   </div>
 </div>
 
-<!-- MAIN CONTENT -->
 <div class="container">
-  <!-- RATINGS -->
   <div class="card">
     <h2>Customer Ratings</h2>
     <div class="rating-grid">
-      <div>Quality of Work: 4.8</div>
-      <div>Customer Service: 4.5</div>
-      <div>Timeline: 4.6</div>
+      <div>Quality of Work: 4.7</div>
+      <div>Customer Service: 4.6</div>
+      <div>Timeline: 4.5</div>
       <div>Pricing Fairness: 4.3</div>
-      <div>Cleanliness: 4.7</div>
-      <div>93% would recommend</div>
+      <div>Cleanliness: 4.8</div>
+      <div>95% would recommend</div>
     </div>
   </div>
 
-  <!-- REVIEWS -->
   <div class="card" id="reviewList">
     <h2>Customer Reviews</h2>
     <div class="review-card">
-      <strong>Sanduni</strong> <small>– July 31, 2025</small>
-      <div class="stars">★★★★★</div>
-      <p>Excellent job. Tiles perfectly aligned and they cleaned up after.</p>
+      <strong>Ruwan</strong> <small>– July 29, 2025</small>
+      <div class="stars">★★★★☆</div>
+      <p>Quick work and clean finish. Highly recommend.</p>
     </div>
   </div>
 
-  <!-- REVIEW FORM -->
   <div class="card review-form">
     <h2>Leave a Review</h2>
     <input type="text" id="name" placeholder="Your name" />
+    <input type="tel" id="phone" placeholder="Your phone number (optional)" />
+    <input type="email" id="email" placeholder="Your email address (optional)" />
     <label>Quality of Work</label>
     <select id="quality">
       <option value="5">5 - Excellent</option>
@@ -276,17 +271,17 @@
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <p>&copy; 2025 TILERSHUB. All rights reserved. |
      <a href="/privacy">Privacy Policy</a> |
-     <a href="https://wa.me/94774503744">WhatsApp 0774503744</a></p>
+     <a href="https://wa.me/94743551271">WhatsApp 0743551271</a></p>
 </footer>
 
-<!-- JS -->
 <script>
   function submitReview() {
     const name = document.getElementById('name').value || 'Anonymous';
+    const phone = document.getElementById('phone').value;
+    const email = document.getElementById('email').value;
     const quality = +document.getElementById('quality').value;
     const service = +document.getElementById('service').value;
     const timeline = +document.getElementById('timeline').value;
@@ -302,6 +297,7 @@
         <strong>${name}</strong> <small>– ${date}</small>
         <div class="stars">${stars}</div>
         <p>${comment}</p>
+        <p><small>Phone: ${phone || 'N/A'} | Email: ${email || 'N/A'}</small></p>
       </div>
     `;
     document.getElementById('reviewList').insertAdjacentHTML('beforeend', reviewHTML);
