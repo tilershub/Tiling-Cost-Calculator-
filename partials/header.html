@@ -1,14 +1,17 @@
-<!-- /partials/header.html -->
 <header class="header">
-  <div class="logo-container">
-    <img src="/icons/logo.png" alt="TILERSHUB Logo" />
-    <div class="site-name">TILERSHUB</div>
+  <div class="container">
+    <div class="header-inner">
+      <div class="logo-wrap">
+        <img src="/icons/logo.png" alt="TILERSHUB Logo" />
+        <span class="site-name">TILERSHUB</span>
+      </div>
+      <div class="nav-toggle" onclick="toggleNav()">☰</div>
+    </div>
+    <nav id="nav-menu" class="nav-menu" aria-label="Main Navigation">
+      <a href="/index.html">Home</a>
+      <a href="/estimator/estimator.html">Estimator</a>
+      <a href="/tilers/tilers.html">Tilers</a>
+      <a href="/shop/shop.html">Shop</a>
+    </nav>
   </div>
-  <div class="nav-toggle" onclick="toggleNav()">☰</div>
-  <nav id="nav-menu" aria-label="Main Navigation">
-    <a href="/index.html">Home</a>
-    <a href="/estimator/estimator.html">Estimator</a>
-    <a href="/tilers/tilers.html">Tilers</a>
-    <a href="/shop/shop.html">Shop</a>
-  </nav>
 </header>
