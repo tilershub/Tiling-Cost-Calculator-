@@ -15,20 +15,18 @@
   <!-- Dynamic Header -->
   <div id="header"></div>
 
-  <main>
-    <div class="container">
-      <h2 style="text-align:center; margin-bottom: 30px;">👷 Tilers in Sri Lanka - Verified by TILERSHUB</h2>
-      <div class="tiler-list" id="tiler-list"></div>
-    </div>
+  <main class="container">
+    <h2 style="text-align:center; margin-bottom: 30px;">👷 Tilers in Sri Lanka - Verified by TILERSHUB</h2>
+    <div class="tiler-list" id="tiler-list"></div>
   </main>
 
   <!-- Dynamic Footer -->
   <div id="footer"></div>
 
-  <!-- Header & Footer Injection -->
+  <!-- Inject Header/Footer -->
   <script src="/js/include.js"></script>
 
-  <!-- Structured Data -->
+  <!-- JSON-LD Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -41,7 +39,7 @@
   }
   </script>
 
-  <!-- Tiler Card Loader -->
+  <!-- JS to Load Tilers -->
   <script src="tilers.js"></script>
 </body>
 </html>
