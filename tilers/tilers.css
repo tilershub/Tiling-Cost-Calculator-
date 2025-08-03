@@ -1,3 +1,4 @@
+
 /* Base Body & Container Styles */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -12,15 +13,15 @@ body {
   max-width: 1200px;
   margin: auto;
   background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
 }
 
 .tiler-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 24px;
   justify-content: center;
   margin-top: 30px;
 }
@@ -28,44 +29,41 @@ body {
 /* --- Tiler Card --- */
 .tiler-card {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  gap: 20px;
   background: white;
-  border: 1px solid #eee;
-  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 14px;
   padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  position: relative;
-  flex-shrink: 0;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
   max-width: 650px;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  position: relative;
   box-sizing: border-box;
-  overflow: hidden;
-  gap: 20px;
 }
 
 .tiler-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.08);
 }
 
+/* --- Profile Section --- */
 .profile-section {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 8px;
   flex-shrink: 0;
-  margin-right: 15px;
 }
 
 .profile-pic {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   overflow: hidden;
-  margin-bottom: 5px;
-  border: 3px solid #007bff;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  border: 3px solid #f8b400;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .profile-pic img {
@@ -75,74 +73,71 @@ body {
 }
 
 .rating {
-  color: #ffc107 !important;
-  font-size: 1em;
   display: flex;
   gap: 2px;
+  color: #ffc107;
+  font-size: 1.1em;
 }
 
+/* --- Tiler Details --- */
 .details-section {
-  flex-grow: 1;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: left;
   min-width: 0;
-  padding-right: 60px;
+  gap: 5px;
+  padding-right: 50px;
 }
 
 .tiler-card h4 {
-  margin: 0 0 3px;
-  font-size: 1.2em;
-  color: #333;
-  line-height: 1.2;
+  margin: 0;
+  font-size: 1.25em;
+  color: #222;
 }
 
 .tiler-card p.city {
-  margin: 0 0 8px;
+  margin: 0;
+  font-size: 0.95em;
   color: #666;
-  font-size: 0.9em;
 }
 
-/* --- Social Icons Only --- */
+/* --- Social Icons --- */
 .social-links {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   margin-top: 10px;
 }
 
 .social-links a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  font-size: 18px;
-  border-radius: 50%;
-  background-color: #ddd;
-  color: white;
+  transition: transform 0.2s, background-color 0.3s;
   text-decoration: none;
-  transition: background-color 0.3s;
-  padding: 0;
 }
 
-.social-links a i {
-  margin: 0;
-  font-size: 18px;
+.social-links a:hover {
+  transform: scale(1.1);
 }
 
-.social-links a.facebook-btn {
+.facebook-btn {
   background-color: #3b5998;
 }
-.social-links a.facebook-btn:hover {
+.facebook-btn:hover {
   background-color: #2d4373;
 }
 
-.social-links a.whatsapp-btn {
+.whatsapp-btn {
   background-color: #25d366;
 }
-.social-links a.whatsapp-btn:hover {
+.whatsapp-btn:hover {
   background-color: #1da851;
 }
 
@@ -151,30 +146,28 @@ body {
   position: absolute;
   top: 15px;
   right: 15px;
-  width: 40px;
-  height: auto;
+  width: 42px;
   z-index: 10;
+  animation: pulseBadge 2.5s infinite;
 }
+
 .certified-badge-image img {
   width: 100%;
   height: auto;
   object-fit: contain;
-  display: block;
 }
 
-/* --- Responsive Fixes --- */
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding-bottom: 10px;
-  }
+@keyframes pulseBadge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
 
+/* --- Responsive --- */
+@media (max-width: 768px) {
   .tiler-card {
     flex-direction: column;
     align-items: flex-start;
-    padding: 16px;
-    gap: 15px;
+    padding: 18px;
   }
 
   .profile-section {
@@ -185,23 +178,19 @@ body {
 
   .details-section {
     padding-right: 0;
+    width: 100%;
   }
 
   .certified-badge-image {
-    width: 35px;
+    width: 34px;
     top: 10px;
     right: 10px;
   }
 
-  .logo-container img {
-    height: 30px;
-    max-width: 100px;
-  }
-
   .social-links a {
-    width: 34px;
-    height: 34px;
-    font-size: 1.2em;
+    width: 36px;
+    height: 36px;
+    font-size: 1.1em;
   }
 }
 
@@ -211,22 +200,17 @@ body {
   }
 
   .profile-pic {
-    width: 65px;
-    height: 65px;
-  }
-
-  .social-links a {
-    width: 30px;
-    height: 30px;
-    font-size: 1.1em;
+    width: 70px;
+    height: 70px;
   }
 
   .certified-badge-image {
     width: 30px;
   }
 
-  .logo-container img {
-    height: 26px;
-    max-width: 90px;
+  .social-links a {
+    width: 32px;
+    height: 32px;
+    font-size: 1em;
   }
 }
