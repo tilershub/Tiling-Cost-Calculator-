@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TILERSHUB | Home</title>
-  <!-- Google tag (gtag.js) -->
+
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-DLJDBQZ8N2"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -12,11 +13,15 @@
     gtag('js', new Date());
     gtag('config', 'G-DLJDBQZ8N2');
   </script>
+
+  <!-- Meta SEO -->
   <meta name="description" content="TILERSHUB - Your Ultimate Tiling Community in Sri Lanka. Find tilers, calculate costs, read tips, and shop tools.">
   <meta property="og:title" content="TILERSHUB | Home" />
   <meta property="og:description" content="Explore floor tiling calculators, bathroom tiling tips, professional tilers, and tools at TILERSHUB." />
   <meta property="og:image" content="/icons/og-image.png" />
   <link rel="icon" href="/icons/favicon.png" type="image/png" />
+
+  <!-- Styles -->
   <link rel="stylesheet" href="/css/layout.css" />
   <style>
     body {
@@ -34,9 +39,6 @@
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .container h2 {
-      margin-top: 0;
     }
     input, select, button {
       width: 100%;
@@ -210,12 +212,73 @@
   <!-- Injected Footer -->
   <div id="footer"></div>
 
-  <!-- Inject header & footer -->
+  <!-- Header/Footer Injection -->
   <script src="/js/include.js"></script>
 
-  <!-- Estimator Logic -->
+  <!-- Estimator Script -->
   <script>
-    // ... your startCalculation(), getTileSettings(), and generateReport() logic here ...
+    function getTileSettings(size) {
+      const sizes = {
+        "300x300": 0.96,
+        "300x600": 1.92,
+        "600x600": 3.87,
+        "600x1200": 7.75,
+        "800x800": 6.45,
+        "1200x1200": 12.91,
+        "800x1800": 15.49
+      };
+      return sizes[size] || 0;
+    }
+
+    function startCalculation() {
+      const area = parseFloat(document.getElementById("area").value);
+      const tileSize = document.getElementById("tileSize").value;
+      const tilePrice = parseFloat(document.getElementById("tilePrice").value);
+      const skirting = parseFloat(document.getElementById("skirting").value) || 0;
+      const laborRate = parseFloat(document.getElementById("laborRate").value) || 150;
+
+      if (!area || !tileSize || !tilePrice) {
+        alert("Please fill all required fields.");
+        return;
+      }
+
+      const tileCoverage = getTileSettings(tileSize);
+      const tileCount = Math.ceil(area / tileCoverage);
+      const wastage = Math.ceil(tileCount * 0.1);
+      const totalTiles = tileCount + wastage;
+
+      const materialCost = totalTiles * tilePrice;
+      const skirtingCost = skirting * 50;
+      const laborCost = area * laborRate;
+      const totalCost = materialCost + skirtingCost + laborCost;
+
+      generateReport({
+        area, tileSize, tilePrice, tileCount, wastage, totalTiles,
+        materialCost, skirting, skirtingCost, laborRate, laborCost, totalCost
+      });
+    }
+
+    function generateReport(data) {
+      const report = document.getElementById("report");
+      report.style.display = "block";
+      report.innerHTML = `
+        <h3>📊 Cost Estimation Report</h3>
+        <table>
+          <tr><th>Area</th><td>${data.area} sqft</td></tr>
+          <tr><th>Tile Size</th><td>${data.tileSize}</td></tr>
+          <tr><th>Tile Price</th><td>LKR ${data.tilePrice.toLocaleString()}</td></tr>
+          <tr><th>Tiles Needed</th><td>${data.tileCount}</td></tr>
+          <tr><th>Wastage</th><td>${data.wastage}</td></tr>
+          <tr><th>Total Tiles</th><td>${data.totalTiles}</td></tr>
+          <tr><th>Material Cost</th><td>LKR ${data.materialCost.toLocaleString()}</td></tr>
+          <tr><th>Skirting Length</th><td>${data.skirting} ft</td></tr>
+          <tr><th>Skirting Cost</th><td>LKR ${data.skirtingCost.toLocaleString()}</td></tr>
+          <tr><th>Labor Rate</th><td>LKR ${data.laborRate}/sqft</td></tr>
+          <tr><th>Labor Cost</th><td>LKR ${data.laborCost.toLocaleString()}</td></tr>
+          <tr><th><strong>Total Cost</strong></th><td><strong>LKR ${data.totalCost.toLocaleString()}</strong></td></tr>
+        </table>
+      `;
+    }
   </script>
 
   <!-- Load Top Tilers -->
@@ -226,17 +289,14 @@
         const top = data.slice(0, 10);
         const container = document.getElementById('home-tiler-list');
         top.forEach(tiler => {
-          let whatsappNumber = tiler.whatsapp.trim();
-          if (whatsappNumber.startsWith('0')) {
-            whatsappNumber = whatsappNumber.substring(1);
-          }
+          let whatsapp = tiler.whatsapp.trim().replace(/^0/, '94');
           container.innerHTML += `
             <div class="tiler-card">
               <img src="${tiler.image}" alt="${tiler.name}">
               <h4>${tiler.name}</h4>
               <p>${tiler.city}</p>
               <a href="${tiler.facebook}" target="_blank">Facebook</a>
-              <a href="https://wa.me/94${whatsappNumber}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank">WhatsApp</a>
+              <a href="https://wa.me/${whatsapp}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank">WhatsApp</a>
             </div>
           `;
         });
