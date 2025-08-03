@@ -1,1 +1,164 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tiler Profile | TILERSHUB</title>
+  <style>
+    :root {
+      --primary: #0052cc;
+      --accent: #f8b400;
+      --light-bg: #f9f9f9;
+      --card-bg: #ffffff;
+      --border: #e0e0e0;
+      --text: #333;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: var(--light-bg);
+      color: var(--text);
+    }
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 15px 25px;
+      font-size: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .cover {
+      background-size: cover;
+      background-position: center;
+      height: 180px;
+    }
+    .profile-wrapper {
+      max-width: 800px;
+      margin: -60px auto 0 auto;
+      padding: 0 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid white;
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 15px;
+    }
+    .profile-info {
+      text-align: center;
+    }
+    .profile-info h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .profile-info p {
+      margin: 5px 0;
+      font-size: 16px;
+      color: #555;
+    }
+    .stars {
+      color: var(--accent);
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    .bio {
+      font-size: 15px;
+      line-height: 1.5;
+      margin: 10px 0;
+      color: #444;
+    }
+    .highlights {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .highlight-tag {
+      background: var(--accent);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+    footer {
+      background: #222;
+      color: #ccc;
+      padding: 30px 20px;
+      font-size: 14px;
+      text-align: center;
+    }
+    footer a {
+      color: #f8b400;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div><a href="/">TILERSHUB</a></div>
+  <div>Verified Tiler Profile</div>
+</header>
+
+<div class="cover" id="coverImage"></div>
+
+<div class="profile-wrapper">
+  <div class="profile-pic" id="profilePic"></div>
+  <div class="profile-info">
+    <h1 id="tilerName">Loading...</h1>
+    <p id="tilerCity">Loading city...</p>
+    <div class="stars" id="ratingStars"></div>
+    <div class="bio" id="bioText"></div>
+    <div class="highlights" id="highlightTags"></div>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 TILERSHUB. All rights reserved. |
+     <a href="/privacy">Privacy Policy</a> |
+     <a id="whatsappLink" href="#">WhatsApp</a></p>
+</footer>
+
+<script>
+  async function loadTilerProfile() {
+    const params = new URLSearchParams(window.location.search);
+    const tilerId = params.get('id');
+    if (!tilerId) return;
+
+    const res = await fetch('/tilers/tilers.json');
+    const data = await res.json();
+    const tiler = data.find(t => t.id === tilerId);
+    if (!tiler) return;
+
+    document.title = tiler.name + ' | TILERSHUB';
+    document.getElementById('coverImage').style.backgroundImage = `url('${tiler.cover || ''}')`;
+    document.getElementById('profilePic').style.backgroundImage = `url('${tiler.image}')`;
+    document.getElementById('tilerName').textContent = tiler.name;
+    document.getElementById('tilerCity').textContent = `Verified Tiler – ${tiler.city}`;
+    document.getElementById('ratingStars').innerHTML = '★★★★★'.slice(0, Math.round(tiler.rating)) + '☆☆☆☆☆'.slice(Math.round(tiler.rating)) + ` ${tiler.rating.toFixed(1)} (${tiler.reviewCount || 0} reviews)`;
+    document.getElementById('bioText').textContent = tiler.bio;
+    document.getElementById('highlightTags').innerHTML = (tiler.highlights || []).map(h => `<div class="highlight-tag">${h}</div>`).join('');
+    document.getElementById('whatsappLink').href = `https://wa.me/94${tiler.whatsapp.replace(/^0/, '')}`;
+    document.getElementById('whatsappLink').textContent = `WhatsApp ${tiler.name}`;
+  }
+
+  loadTilerProfile();
+</script>
+
+</body>
+</html>
