@@ -4,79 +4,111 @@
     "name": "Saman Anurudda",
     "city": "Galle",
     "image": "/tilers/images/tilers/saman.png",
+    "cover": "/tilers/images/tilers/saman-banner.jpg",
     "facebook": "https://www.facebook.com/share/16HQZjRgUZ/?mibextid=wwXIfr",
     "whatsapp": "0773494093",
     "featured": true,
-    "rating": 5.0
+    "rating": 5.0,
+    "reviewCount": 8,
+    "bio": "Skilled tiler based in Galle with a reputation for neat bathroom and kitchen tiling work.",
+    "highlights": ["Floor Tiling", "Wall Tiling", "Bathroom Renovation"]
   },
   {
     "id": "sujith-anurada",
     "name": "Sujith Anurada",
     "city": "Seeduwa",
     "image": "/tilers/images/tilers/sujith.png",
+    "cover": "/tilers/images/tilers/sujith-banner.jpg",
     "facebook": "https://www.facebook.com/share/177fiEgKe7/?mibextid=wwXIfr",
     "whatsapp": "0779509873",
     "featured": true,
-    "rating": 5.0
+    "rating": 5.0,
+    "reviewCount": 9,
+    "bio": "Reliable tiling services for homes and commercial projects in Seeduwa.",
+    "highlights": ["Bathroom Renovation", "Waterproofing", "On-time Completion"]
   },
   {
     "id": "gallage-construction",
     "name": "Gallage Construction",
     "city": "Bandaragama",
     "image": "/tilers/images/tilers/tile-work.png",
+    "cover": "/tilers/images/tilers/gallage-banner.jpg",
     "facebook": "https://www.facebook.com/share/1CMLfbTQPV/?mibextid=wwXIfr",
     "whatsapp": "0743551271",
     "featured": true,
-    "rating": 5.0
+    "rating": 5.0,
+    "reviewCount": 11,
+    "bio": "Experienced tilers for floor and wall installations with guaranteed customer satisfaction.",
+    "highlights": ["Large Format Tiles", "Clean Finishing", "Floor Tiling"]
   },
   {
     "id": "rajarata-tile-art",
     "name": "Rajarata Tile Art",
     "city": "Anuradhapura",
     "image": "/tilers/images/tilers/rajarata-tile-art.png",
+    "cover": "/tilers/images/tilers/rajarata-banner.jpg",
     "facebook": "https://www.facebook.com/share/1APAbumfje/?mibextid=wwXIfr",
     "whatsapp": "0717160649",
     "featured": true,
-    "rating": 5.0
+    "rating": 5.0,
+    "reviewCount": 6,
+    "bio": "Trusted tile experts in Anuradhapura for wall, floor, and decorative tiling.",
+    "highlights": ["Floor Tiling", "Bathroom Renovation", "Decorative Wall Work"]
   },
   {
     "id": "tile-thushara",
     "name": "Tile Thushara",
     "city": "Kandy",
     "image": "/tilers/images/tilers/thushara.png",
+    "cover": "/tilers/images/tilers/thushara-banner.jpg",
     "facebook": "https://www.facebook.com/share/1AoZmGNput/",
     "whatsapp": "0755167599",
     "featured": true,
-    "rating": 5.0
+    "rating": 5.0,
+    "reviewCount": 7,
+    "bio": "Professional and clean tile installations throughout Kandy and nearby areas.",
+    "highlights": ["Tile Leveling", "Waterproofing", "Neat Work"]
   },
   {
     "id": "matara-tile-malli",
     "name": "Matara Tile Malli",
     "city": "Matara",
     "image": "/tilers/images/tilers/matara-tile-malli.png",
+    "cover": "/tilers/images/tilers/matara-banner.jpg",
     "facebook": "https://www.facebook.com/share/1BuDqAZVet/?mibextid=wwXIfr",
     "whatsapp": "0777200541",
     "featured": true,
-    "rating": 5.0
+    "rating": 5.0,
+    "reviewCount": 10,
+    "bio": "Matara's young and energetic tiler delivering flawless finishes.",
+    "highlights": ["Floor Tiling", "Wall Tiling", "Affordable Rates"]
   },
   {
     "id": "keshara-tile-art",
     "name": "Keshara Tile Art",
     "city": "Mathugama",
     "image": "/tilers/images/tilers/keshara.png",
+    "cover": "/tilers/images/tilers/keshara-banner.jpg",
     "facebook": "https://www.facebook.com/share/1CEyMpAMq1/?mibextid=wwXIfr",
     "whatsapp": "0772576373",
     "featured": true,
-    "rating": 5.0
+    "rating": 5.0,
+    "reviewCount": 15,
+    "bio": "Known for premium quality tile work in bathrooms and kitchens across Mathugama.",
+    "highlights": ["Bathroom Tiling", "Mosaic Installation", "Waterproofing"]
   },
   {
     "id": "kelum-srimal",
     "name": "Kelum Srimal",
     "city": "Embilipitiya",
     "image": "/tilers/images/tilers/kelum.png",
+    "cover": "/tilers/images/tilers/kelum-cover.jpg",
     "facebook": "https://www.facebook.com/share/1JaMix9rTZ/?mibextid=wwXIfr",
     "whatsapp": "0715560423",
     "featured": true,
-    "rating": 5.0
+    "rating": 5.0,
+    "reviewCount": 13,
+    "bio": "Experienced floor and bathroom tiler with attention to detail.",
+    "highlights": ["Neat Finishing", "Large Tile Installation", "Skirting"]
   }
 ]
