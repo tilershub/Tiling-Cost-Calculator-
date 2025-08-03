@@ -1,3 +1,4 @@
+
 // Toggle hamburger menu
 function toggleNav() {
   document.getElementById('nav-menu').classList.toggle('active');
@@ -77,10 +78,10 @@ fetch('tilers.json')
       const facebookLink = tiler.facebook || '#';
       const whatsappLink = `https://wa.me/94${whatsapp}?text=${encodeURIComponent(`Hi ${tiler.name}, I found you on TILERSHUB and would like to inquire about your tiling services.`)}`;
 
-      // Build card as clickable link
+      // Build card as clickable link to dynamic profile
       const card = document.createElement('a');
       card.className = 'tiler-card';
-      card.href = `/tilers/tilers/${id}.html`;
+      card.href = `/tilers/tiler.html?id=${id}`;
       card.style.textDecoration = 'none';
       card.style.color = 'inherit';
 
