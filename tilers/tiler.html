@@ -1,245 +1,233 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Tiler Profile | TILERSHUB</title>
-<style>
-:root {
---primary: #0052cc;
---accent: #f8b400;
---light-bg: #f9f9f9;
---card-bg: #ffffff;
---border: #e0e0e0;
---text: #333;
-}
-* { box-sizing: border-box; }
-body {
-margin: 0;
-font-family: 'Segoe UI', Tahoma, sans-serif;
-background: var(--light-bg);
-color: var(--text);
-}
-header {
-background: var(--primary);
-color: white;
-padding: 15px 25px;
-font-size: 18px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-header a {
-color: white;
-text-decoration: none;
-font-weight: bold;
-}
-.cover {
-background-size: cover;
-background-position: center;
-height: 180px;
-}
-.profile-wrapper {
-max-width: 800px;
-margin: -60px auto 0 auto;
-padding: 0 15px;
-display: flex;
-flex-direction: column;
-align-items: center;
-}
-.profile-pic {
-width: 120px;
-height: 120px;
-border-radius: 50%;
-border: 4px solid white;
-background-size: cover;
-background-position: center;
-margin-bottom: 15px;
-}
-.profile-info {
-text-align: center;
-}
-.profile-info h1 {
-margin: 0;
-font-size: 24px;
-}
-.profile-info p {
-margin: 5px 0;
-font-size: 16px;
-color: #555;
-}
-.stars {
-color: var(--accent);
-font-size: 1.2rem;
-margin-bottom: 10px;
-}
-.bio {
-font-size: 15px;
-line-height: 1.5;
-margin: 10px 0;
-color: #444;
-}
-.highlights {
-display: flex;
-justify-content: center;
-flex-wrap: wrap;
-gap: 8px;
-margin-top: 10px;
-}
-.highlight-tag {
-background: var(--accent);
-color: white;
-padding: 6px 12px;
-border-radius: 20px;
-font-size: 13px;
-}
-footer {
-background: #222;
-color: #ccc;
-padding: 30px 20px;
-font-size: 14px;
-text-align: center;
-}
-footer a {
-color: #f8b400;
-text-decoration: none;
-margin: 0 8px;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tiler Profile | TILERSHUB</title>
+  <style>
+    :root {
+      --primary: #0052cc;
+      --accent: #f8b400;
+      --light-bg: #f9f9f9;
+      --text: #222;
+      --border: #ddd;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--light-bg);
+      color: var(--text);
+      padding-bottom: 80px;
+    }
+    header, footer {
+      background: var(--primary);
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+    }
+    header a, footer a { color: white; text-decoration: none; font-weight: bold; }
 
-
-@media screen and (max-width: 600px) {
-  .profile-wrapper {
-    padding: 0 10px;
-  }
-  .profile-info h1 {
-    font-size: 20px;
-  }
-  .profile-info p {
-    font-size: 14px;
-  }
-  .bio {
-    font-size: 14px;
-  }
-  .highlight-tag {
-    font-size: 12px;
-    padding: 4px 10px;
-  }
-  header {
-    font-size: 16px;
-    padding: 10px 15px;
-  }
-  .profile-pic {
-    width: 100px;
-    height: 100px;
-  }
-  footer {
-    padding: 20px 10px;
-    font-size: 13px;
-  }
-}
-
-/* Improved responsive spacing and layout */
-@media screen and (max-width: 600px) {
-  .profile-wrapper {
-    padding: 0 10px;
-    margin-top: -50px;
-  }
-  .cover {
-    height: 140px;
-  }
-  .profile-pic {
-    width: 90px;
-    height: 90px;
-    margin-top: -45px;
-  }
-  .profile-info h1 {
-    font-size: 20px;
-    margin-top: 5px;
-  }
-  .profile-info p {
-    font-size: 14px;
-  }
-  .stars, .bio {
-    font-size: 14px;
-  }
-  .highlight-tag {
-    font-size: 12px;
-    padding: 5px 10px;
-  }
-  header {
-    font-size: 15px;
-    padding: 10px 15px;
-  }
-  footer {
-    font-size: 13px;
-    padding: 20px 10px;
-  }
-}
-</style>
-<script>
-</script>
+    .cover {
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .profile-pic {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 4px solid white;
+      background-size: cover;
+      background-position: center;
+      position: absolute;
+      bottom: -55px;
+      left: 20px;
+    }
+    .profile-info {
+      padding: 70px 20px 20px 20px;
+      background: white;
+      margin-top: 60px;
+    }
+    .profile-info h1 {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+    .profile-info p {
+      font-size: 15px;
+      color: #666;
+      margin-bottom: 6px;
+    }
+    .stars {
+      color: var(--accent);
+      margin: 8px 0;
+    }
+    .bio {
+      font-size: 15px;
+      margin-top: 10px;
+    }
+    .highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .highlight-tag {
+      background: var(--accent);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+    .review-form, .review-section {
+      background: white;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .review-form input, .review-form select, .review-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .review-form button {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .review {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #eee;
+    }
+    .review strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+    footer {
+      background: #111;
+      color: #ccc;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+    }
+    footer a { color: var(--accent); }
+  </style>
 </head>
 <body>
+
 <header>
-<div><a href="/">TILERSHUB</a></div>
-<div>Verified Tiler Profile</div>
+  <a href="/">TILERSHUB</a>
+  <span>Verified Tiler Profile</span>
 </header>
-<div id="tiler-profile-container">
-<div class="cover" id="coverImage"></div>
-<div class="profile-wrapper">
-<div class="profile-pic" id="profilePic"></div>
+
+<div class="cover" id="coverImage">
+  <div class="profile-pic" id="profilePic"></div>
+</div>
+
 <div class="profile-info">
-<h1 id="tilerName">Loading...</h1>
-<p id="tilerCity"></p>
-<div class="stars" id="tilerStars"></div>
-<div class="bio" id="tilerBio"></div>
-<div class="highlights" id="tilerHighlights"></div>
+  <h1 id="tilerName">Loading...</h1>
+  <p id="tilerCity"></p>
+  <div class="stars" id="ratingStars"></div>
+  <div class="bio" id="bioText"></div>
+  <div class="highlights" id="highlightTags"></div>
 </div>
+
+<div class="review-section" id="reviewList">
+  <h2>Customer Reviews</h2>
 </div>
-<div class="container">
-<div class="card" id="ratingSection"></div>
-<div class="card" id="reviewList">
-<h2>Customer Reviews</h2>
+
+<div class="review-form">
+  <h2>Leave a Review</h2>
+  <input type="text" id="name" placeholder="Your name">
+  <input type="tel" id="phone" placeholder="Your phone number (optional)">
+  <input type="email" id="email" placeholder="Your email (optional)">
+  <label>Quality of Work</label>
+  <select id="quality">
+    <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
+    <option value="3">3 - Average</option><option value="2">2 - Poor</option><option value="1">1 - Bad</option>
+  </select>
+  <label>Customer Service</label>
+  <select id="service">
+    <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+  </select>
+  <label>Timeline</label>
+  <select id="timeline">
+    <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+  </select>
+  <label>Pricing Fairness</label>
+  <select id="pricing">
+    <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+  </select>
+  <label>Cleanliness</label>
+  <select id="cleanliness">
+    <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+  </select>
+  <textarea id="comment" rows="3" placeholder="Write your feedback (optional)..."></textarea>
+  <button onclick="submitReview()">Submit Review</button>
 </div>
-<div class="card review-form">
-<h2>Leave a Review</h2>
-<input id="name" placeholder="Your name" type="text"/>
-<input id="phone" placeholder="Your phone number (optional)" type="tel"/>
-<input id="email" placeholder="Your email address (optional)" type="email"/>
-<label>Quality of Work</label>
-<select id="quality">
-<option value="5">5 - Excellent</option>
-<option value="4">4 - Good</option>
-<option value="3">3 - Average</option>
-<option value="2">2 - Poor</option>
-<option value="1">1 - Bad</option>
-</select>
-<label>Customer Service</label>
-<select id="service">
-<option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
-</select>
-<label>Timeline</label>
-<select id="timeline">
-<option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
-</select>
-<label>Pricing Fairness</label>
-<select id="pricing">
-<option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
-</select>
-<label>Cleanliness</label>
-<select id="cleanliness">
-<option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
-</select>
-<textarea id="comment" placeholder="Write your feedback (optional)..." rows="3"></textarea>
-<button onclick="submitReview()">Submit Review</button>
-</div>
-</div>
-</div>
+
 <footer>
-<p>© 2025 TILERSHUB. All rights reserved. |
-<a href="/privacy">Privacy Policy</a> |
-<a href="https://wa.me/94774503744">WhatsApp 0774503744</a></p>
+  <p>&copy; 2025 TILERSHUB. All rights reserved. | <a href="/privacy">Privacy Policy</a> | <a href="https://wa.me/94774503744">WhatsApp 0774503744</a></p>
 </footer>
+
+<script>
+  async function loadTilerProfile() {
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    if (!id) return alert("Tiler ID not provided");
+
+    const res = await fetch("/tilers/tilers.json");
+    const tilers = await res.json();
+    const tiler = tilers.find(t => t.id === id);
+    if (!tiler) return alert("Tiler not found");
+
+    document.title = tiler.name + " | TILERSHUB";
+    document.getElementById("coverImage").style.backgroundImage = `url('${tiler.cover || '/tilers/images/cover-default.jpg'}')`;
+    document.getElementById("profilePic").style.backgroundImage = `url('${tiler.image}')`;
+    document.getElementById("tilerName").textContent = tiler.name;
+    document.getElementById("tilerCity").textContent = "Verified Tiler – " + tiler.city;
+    document.getElementById("bioText").textContent = tiler.bio || "";
+    document.getElementById("highlightTags").innerHTML = (tiler.highlights || []).map(h => `<div class="highlight-tag">${h}</div>`).join("");
+    document.getElementById("ratingStars").innerHTML = '★'.repeat(Math.round(tiler.rating)) + '☆'.repeat(5 - Math.round(tiler.rating)) + ` ${tiler.rating?.toFixed(1) || ''}`;
+  }
+
+  function submitReview() {
+    const name = document.getElementById("name").value || "Anonymous";
+    const comment = document.getElementById("comment").value;
+    const phone = document.getElementById("phone").value;
+    const email = document.getElementById("email").value;
+    const ratings = ["quality", "service", "timeline", "pricing", "cleanliness"].map(id => +document.getElementById(id).value);
+    const avg = (ratings.reduce((a, b) => a + b) / ratings.length).toFixed(1);
+    const stars = '★'.repeat(Math.round(avg)) + '☆'.repeat(5 - Math.round(avg));
+    const today = new Date().toISOString().split("T")[0];
+
+    const review = `
+      <div class="review">
+        <strong>${name}</strong> <small>– ${today}</small>
+        <div class="stars">${stars}</div>
+        <p>${comment}</p>
+        <p><small>Phone: ${phone || 'N/A'}, Email: ${email || 'N/A'}</small></p>
+      </div>
+    `;
+    document.getElementById("reviewList").insertAdjacentHTML("beforeend", review);
+    alert("Thank you for your review! (Not saved permanently)");
+  }
+
+  loadTilerProfile();
+</script>
+
 </body>
 </html>
