@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tiler Profile | TILERSHUB</title>
   <style>
@@ -11,7 +11,7 @@
     header{ background:var(--primary); color:#fff; }
     footer{ background:#222; color:#ccc; font-size:14px; }
     .cover{ height:150px; background-size:cover; background-position:center; }
-    .profile-pic{ width:100px; height:100px; border-radius:50%; border:4px solid #fff; margin-top:-50px; background-size:cover; background-position:center; margin-left:auto; margin-right:auto;}
+    .profile-pic{ width:100px; height:100px; border-radius:50%; border:4px solid #fff; margin-top:-50px; background-size:cover; background-position:center; margin-left:auto; margin-right:auto; }
     .profile-info{ text-align:center; padding:10px 20px; }
     .stars{ color:var(--accent); font-size:1.2em; margin:5px 0; }
     .bio{ font-size:14px; color:#555; margin-top:8px; }
@@ -26,33 +26,45 @@
     small{ color:#888; }
     .muted{ color:#888; font-size:14px; }
     a.link{ color:var(--accent); text-decoration:none; }
-    .hidden { display:none !important; }
+    .hidden{ display:none !important; }
   </style>
+
+  <!-- Supabase client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // TODO: Replace with your Supabase project credentials
+    // ---- CONFIG (replace with your project) ----
     const SUPABASE_URL = "https://lkrpuxshoxtmgiameane.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrcnB1eHNob3h0bWdpYW1lYW5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUxMDAwMzcsImV4cCI6MjA3MDY3NjAzN30.GfzGPHSp6wzKQ8qX0sxwH7IAeg2SdkQQeoN1VEMKOxY";
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // Moderation mode: if true, new reviews insert with approved=false (update policy in DB accordingly)
-    const MODERATED = false; // set to true if you want manual approval
+    const MODERATED = false; // true = insert with approved=false and show after manual approval
 
     const urlParams = new URLSearchParams(window.location.search);
     const tilerId = urlParams.get("id");
+
+    // ---- PARTIALS LOADER (header/footer) ----
+    async function loadPartials() {
+      try {
+        const [headerRes, footerRes] = await Promise.all([
+          fetch("/partials/header.html", { cache: "no-cache" }),
+          fetch("/partials/footer.html", { cache: "no-cache" })
+        ]);
+        document.getElementById("site-header").innerHTML = await headerRes.text();
+        document.getElementById("site-footer").innerHTML = await footerRes.text();
+      } catch (e) {
+        console.error("Error loading partials", e);
+      }
+    }
 
     // ---- UTIL ----
     function escapeHtml(str){ return String(str||"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s])); }
     function percentFrom5(avg){ return Math.round((avg/5)*100) + "%"; }
     function starsFromAvg(avg){ const r = Math.round(avg||0); return "★".repeat(r) + "☆".repeat(5-r); }
-    function avgOfRow(r){
-      return ( (r.quality||0)+(r.service||0)+(r.timeline||0)+(r.pricing||0)+(r.cleanliness||0) )/5;
-    }
+    function avgOfRow(r){ return ((r.quality||0)+(r.service||0)+(r.timeline||0)+(r.pricing||0)+(r.cleanliness||0))/5; }
 
     // ---- PROFILE ----
     async function loadTilerProfile(){
       try{
-        const res = await fetch("/tilers/tilers.json");
+        const res = await fetch("/tilers/tilers.json", { cache: "no-cache" });
         const data = await res.json();
         const tiler = data.find(t => String(t.id) === String(tilerId));
         if(!tiler){
@@ -69,12 +81,18 @@
           .map(h=>`<span class="highlight-tag">${escapeHtml(h)}</span>`).join("");
         document.getElementById("coverImage").style.backgroundImage = `url('${tiler.cover || "/default-cover.jpg"}')`;
         document.getElementById("profilePic").style.backgroundImage = `url('${tiler.image}')`;
-        document.getElementById("whatsappLink").href = "https://wa.me/94" + String(tiler.whatsapp||"").replace(/\D/g,"").replace(/^0/,"");
-        document.getElementById("whatsappLink").textContent = "WhatsApp " + tiler.name;
+
+        // Footer has been injected now; set WhatsApp link if present
+        const wa = document.getElementById("whatsappLink");
+        if (wa) {
+          wa.href = "https://wa.me/94" + String(tiler.whatsapp||"").replace(/\D/g,"").replace(/^0/,"");
+          wa.textContent = "WhatsApp " + tiler.name;
+          wa.classList.add("link");
+        }
       }catch(e){ console.error(e); }
     }
 
-    // ---- REVIEWS LOAD ----
+    // ---- REVIEWS: LOAD & RENDER ----
     async function loadReviews(){
       if(!tilerId){ renderEmptySummary(); return; }
       const { data, error } = await supabase
@@ -103,11 +121,8 @@
       if(!rows.length){ renderEmptySummary(); return; }
       const n = rows.length;
       const sum = rows.reduce((a,r)=>({
-        q:a.q+(r.quality||0),
-        s:a.s+(r.service||0),
-        t:a.t+(r.timeline||0),
-        p:a.p+(r.pricing||0),
-        c:a.c+(r.cleanliness||0)
+        q:a.q+(r.quality||0), s:a.s+(r.service||0), t:a.t+(r.timeline||0),
+        p:a.p+(r.pricing||0), c:a.c+(r.cleanliness||0)
       }),{q:0,s:0,t:0,p:0,c:0});
       const avgQ=sum.q/n, avgS=sum.s/n, avgT=sum.t/n, avgP=sum.p/n, avgC=sum.c/n;
       const avgStars=(avgQ+avgS+avgT+avgP+avgC)/5;
@@ -143,16 +158,15 @@
       });
     }
 
-    // ---- REVIEW SUBMIT ----
+    // ---- SUBMIT REVIEW ----
     async function submitReview(){
       if(!tilerId){ return alert("Missing tiler id."); }
       const btn = document.getElementById("submitBtn");
       btn.disabled = true;
 
-      // honeypot (simple anti-spam)
+      // Honeypot
       if(document.getElementById("website").value.trim()){
-        btn.disabled = false;
-        return; // silently drop bots
+        btn.disabled = false; return;
       }
 
       const name = document.getElementById("name").value.trim() || "Anonymous";
@@ -165,8 +179,7 @@
       const cleanliness = parseInt(document.getElementById("cleanliness").value,10)||5;
       const comment = document.getElementById("comment").value.trim() || null;
 
-      const ratings = [quality,service,timeline,pricing,cleanliness];
-      if(!ratings.every(v=>v>=1 && v<=5)){
+      if(![quality,service,timeline,pricing,cleanliness].every(v=>v>=1 && v<=5)){
         btn.disabled=false; return alert("Please select valid ratings (1–5).");
       }
 
@@ -176,22 +189,19 @@
       const { error } = await supabase.from("reviews").insert([payload]);
       if(error){ console.error(error); btn.disabled=false; return alert("Could not submit review. Please try again."); }
 
-      // reset form
       ["name","phone","email","comment"].forEach(id=>document.getElementById(id).value="");
       ["quality","service","timeline","pricing","cleanliness"].forEach(id=>document.getElementById(id).value="5");
 
-      if(MODERATED){
-        alert("Thanks! Your review will be visible after approval.");
-      }else{
-        await loadReviews();
-        alert("Review submitted.");
-      }
+      if(MODERATED){ alert("Thanks! Your review will be visible after approval."); }
+      else { await loadReviews(); alert("Review submitted."); }
+
       btn.disabled=false;
     }
     window.submitReview = submitReview;
 
-    // ---- BOOT ----
+    // ---- BOOT: load partials first (so footer elements exist), then profile/reviews ----
     document.addEventListener("DOMContentLoaded", async ()=>{
+      await loadPartials();
       await loadTilerProfile();
       await loadReviews();
     });
@@ -199,9 +209,8 @@
 </head>
 <body>
 
-<header>
-  <strong>TILERSHUB</strong><br/>Verified Tiler Profile
-</header>
+<!-- Injected from /partials/header.html -->
+<div id="site-header"></div>
 
 <div class="cover" id="coverImage"></div>
 
@@ -229,18 +238,18 @@
 
   <div class="card" id="reviewList">
     <h3>Customer Reviews</h3>
-    <!-- reviews injected here -->
+    <!-- reviews inject here -->
   </div>
 
   <div class="card">
     <h3>Leave a Review</h3>
 
-    <!-- Honeypot field (hidden from users) -->
+    <!-- Honeypot (anti-bot) -->
     <input id="website" class="hidden" type="text" autocomplete="off" tabindex="-1" aria-hidden="true"/>
 
-    <input type="text" id="name" placeholder="Your name" />
-    <input type="tel" id="phone" placeholder="Your phone number (optional)" />
-    <input type="email" id="email" placeholder="Your email address (optional)" />
+    <input type="text" id="name" placeholder="Your name"/>
+    <input type="tel" id="phone" placeholder="Your phone number (optional)"/>
+    <input type="email" id="email" placeholder="Your email address (optional)"/>
 
     <label>Quality of Work</label>
     <select id="quality">
@@ -294,11 +303,8 @@
   </div>
 </div>
 
-<footer>
-  &copy; 2025 TILERSHUB |
-  <a href="/privacy" class="link">Privacy Policy</a> |
-  <a id="whatsappLink" href="#" class="link">WhatsApp</a>
-</footer>
+<!-- Injected from /partials/footer.html -->
+<div id="site-footer"></div>
 
 </body>
 </html>
