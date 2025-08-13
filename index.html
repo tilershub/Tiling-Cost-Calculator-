@@ -347,27 +347,49 @@
 </script>
 <!-- End of Estimator Script -->
 
-  <!-- Load Top Tilers -->
-  <script>
-    fetch('/tilers/tilers.json')
-      .then(res => res.json())
-      .then(data => {
-        const top = data.slice(0, 10);
-        const container = document.getElementById('home-tiler-list');
-        top.forEach(tiler => {
-          let whatsapp = tiler.whatsapp.trim().replace(/^0/, '94');
-          container.innerHTML += `
-            <div class="tiler-card">
-              <img src="${tiler.image}" alt="${tiler.name}">
-              <h4>${tiler.name}</h4>
-              <p>${tiler.city}</p>
-              <a href="${tiler.facebook}" target="_blank">Facebook</a>
-              <a href="https://wa.me/${whatsapp}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank">WhatsApp</a>
-            </div>
-          `;
-        });
+  <!-- Load Top Tilers (updated to open profile on card tap) -->
+<script>
+  fetch('/tilers/tilers.json')
+    .then(res => res.json())
+    .then(data => {
+      const top = data.slice(0, 10);
+      const container = document.getElementById('home-tiler-list');
+
+      top.forEach(tiler => {
+        // keep your existing WhatsApp logic
+        let whatsapp = String(tiler.whatsapp || '').trim().replace(/^0/, '94');
+
+        // card now carries data-id and is keyboard-focusable
+        container.innerHTML += `
+          <div class="tiler-card" data-id="${tiler.id}" tabindex="0" role="link" aria-label="View ${tiler.name} profile">
+            <img src="${tiler.image}" alt="${tiler.name}">
+            <h4>${tiler.name}</h4>
+            <p>${tiler.city}</p>
+            <a href="${tiler.facebook}" target="_blank" rel="noopener">Facebook</a>
+            <a href="https://wa.me/${whatsapp}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank" rel="noopener">WhatsApp</a>
+          </div>
+        `;
       });
-  </script>
+
+      // Delegate clicks to the container so we don't add many listeners
+      container.addEventListener('click', (e) => {
+        const card = e.target.closest('.tiler-card');
+        if (!card) return;
+        const id = card.getAttribute('data-id');
+        if (id) window.location.href = `/tilers/tiler.html?id=${encodeURIComponent(id)}`;
+      });
+
+      // Keyboard accessibility: Enter/Space to open
+      container.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const card = e.target.closest('.tiler-card');
+        if (!card) return;
+        e.preventDefault();
+        const id = card.getAttribute('data-id');
+        if (id) window.location.href = `/tilers/tiler.html?id=${encodeURIComponent(id)}`;
+      });
+    });
+</script>
 
 </body>
 </html>
