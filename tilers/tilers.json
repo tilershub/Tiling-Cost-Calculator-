@@ -3,15 +3,21 @@
     "id": "saman-anurudda",
     "name": "Saman Anurudda",
     "city": "Galle",
+    "whatsapp": "0773494093",
+    "facebook": "https://www.facebook.com/share/16HQZjRgUZ/?mibextid=wwXIfr",
     "image": "/tilers/images/tilers/saman.png",
     "cover": "/tilers/images/tilers/saman-banner.jpg",
-    "facebook": "https://www.facebook.com/share/16HQZjRgUZ/?mibextid=wwXIfr",
-    "whatsapp": "0773494093",
-    "featured": true,
-    "rating": 5.0,
+    "rating": 5,
     "reviewCount": 8,
-    "bio": "Skilled tiler based in Galle with a reputation for neat bathroom and kitchen tiling work.",
-    "highlights": ["Floor Tiling", "Wall Tiling", "Bathroom Renovation"]
+    "featured": true,
+    "bio": "Saman Anurudda is a trusted TILERSHUB Certified Master Tiler from Galle, celebrated for his precision, artistry, and dedication to delivering flawless results. With expertise in floor and wall tiling, bathroom renovations, custom patterns, and premium finishes, his work is defined by a Signature Finish — a perfect blend of durability, elegance, and attention to detail. From modern coastal homes to timeless heritage renovations, his craftsmanship combines technical excellence with a creative edge, ensuring beauty that lasts.",
+    "highlights": [
+      "Floor Tiling",
+      "Wall Tiling",
+      "Bathroom Renovation",
+      "Large Tiling",
+      "Mosaics"
+    ]
   },
   {
     "id": "sujith-anurada",
@@ -22,10 +28,14 @@
     "facebook": "https://www.facebook.com/share/177fiEgKe7/?mibextid=wwXIfr",
     "whatsapp": "0779509873",
     "featured": true,
-    "rating": 5.0,
+    "rating": 5,
     "reviewCount": 9,
     "bio": "Sujith Anurada\nMaster Tiler | Owner – Gangula Tile Art Service\nTILERSHUB Certified Master Tiler | Government Registered\n\nWith a reputation for precision and artistry, Sujith Anurada is the driving force behind Gangula Tile Art Service in Seeduwa, Gampaha. As a TILERSHUB Certified Master Tiler and a Government Registered professional, Sujith brings unmatched expertise to every project.\n\nSpecializing in large format tiling, pool tiling, bathroom tiling, and intricate mosaic designs, his work is defined by a Signature Finish that blends technical excellence with aesthetic beauty.\n\nFrom luxury bathrooms to statement swimming pools, Sujith’s meticulous attention to detail and commitment to quality have made him a trusted choice for homeowners and developers seeking world-class tiling results.",
-    "highlights": ["Large Tiling", "Waterproofing", "On-time Completion"]
+    "highlights": [
+      "Large Tiling",
+      "Waterproofing",
+      "On-time Completion"
+    ]
   },
   {
     "id": "gallage-construction",
@@ -36,10 +46,14 @@
     "facebook": "https://www.facebook.com/share/1CMLfbTQPV/?mibextid=wwXIfr",
     "whatsapp": "0743551271",
     "featured": true,
-    "rating": 5.0,
+    "rating": 5,
     "reviewCount": 11,
     "bio": "Experienced tilers for floor and wall installations with guaranteed customer satisfaction.",
-    "highlights": ["Large Format Tiles", "Clean Finishing", "Floor Tiling"]
+    "highlights": [
+      "Large Format Tiles",
+      "Clean Finishing",
+      "Floor Tiling"
+    ]
   },
   {
     "id": "rajarata-tile-art",
@@ -50,10 +64,14 @@
     "facebook": "https://www.facebook.com/share/1APAbumfje/?mibextid=wwXIfr",
     "whatsapp": "0717160649",
     "featured": true,
-    "rating": 5.0,
+    "rating": 5,
     "reviewCount": 6,
     "bio": "Trusted tile experts in Anuradhapura for wall, floor, and decorative tiling.",
-    "highlights": ["Floor Tiling", "Bathroom Renovation", "Decorative Wall Work"]
+    "highlights": [
+      "Floor Tiling",
+      "Bathroom Renovation",
+      "Decorative Wall Work"
+    ]
   },
   {
     "id": "tile-thushara",
@@ -64,10 +82,14 @@
     "facebook": "https://www.facebook.com/share/1AoZmGNput/",
     "whatsapp": "0755167599",
     "featured": true,
-    "rating": 5.0,
+    "rating": 5,
     "reviewCount": 7,
     "bio": "Professional and clean tile installations throughout Kandy and nearby areas.",
-    "highlights": ["Tile Leveling", "Waterproofing", "Neat Work"]
+    "highlights": [
+      "Tile Leveling",
+      "Waterproofing",
+      "Neat Work"
+    ]
   },
   {
     "id": "matara-tile-malli",
@@ -78,10 +100,14 @@
     "facebook": "https://www.facebook.com/share/1BuDqAZVet/?mibextid=wwXIfr",
     "whatsapp": "0777200541",
     "featured": true,
-    "rating": 5.0,
+    "rating": 5,
     "reviewCount": 10,
     "bio": "Matara's young and energetic tiler delivering flawless finishes.",
-    "highlights": ["Floor Tiling", "Wall Tiling", "Affordable Rates"]
+    "highlights": [
+      "Floor Tiling",
+      "Wall Tiling",
+      "Affordable Rates"
+    ]
   },
   {
     "id": "keshara-tile-art",
@@ -92,10 +118,14 @@
     "facebook": "https://www.facebook.com/share/1CEyMpAMq1/?mibextid=wwXIfr",
     "whatsapp": "0772576373",
     "featured": true,
-    "rating": 5.0,
+    "rating": 5,
     "reviewCount": 15,
     "bio": "Known for premium quality tile work in bathrooms and kitchens across Mathugama.",
-    "highlights": ["Bathroom Tiling", "Mosaic Installation", "Waterproofing"]
+    "highlights": [
+      "Bathroom Tiling",
+      "Mosaic Installation",
+      "Waterproofing"
+    ]
   },
   {
     "id": "kelum-srimal",
@@ -106,9 +136,13 @@
     "facebook": "https://www.facebook.com/share/1JaMix9rTZ/?mibextid=wwXIfr",
     "whatsapp": "0715560423",
     "featured": true,
-    "rating": 5.0,
+    "rating": 5,
     "reviewCount": 13,
     "bio": "Experienced floor and bathroom tiler with attention to detail.",
-    "highlights": ["Neat Finishing", "Large Tile Installation", "Skirting"]
+    "highlights": [
+      "Neat Finishing",
+      "Large Tile Installation",
+      "Skirting"
+    ]
   }
 ]
