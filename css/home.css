@@ -1,0 +1,152 @@
+:root{
+  --brand:#003049;
+  --brand-2:#006aa7;
+  --ink:#0f172a;
+  --muted:#667085;
+  --line:#e2e8f0;
+  --chip:#f1f5f9;
+  --shadow:0 6px 20px rgba(0,0,0,.06);
+  --shadow-lg:0 14px 30px rgba(0,0,0,.12);
+  --ring:0 0 0 3px rgba(0,96,160,.25), var(--shadow-lg);
+}
+
+html,body{background:#f4f4f4;color:#222;font-family:sans-serif}
+main{padding:20px}
+.container{
+  background:#fff;border:1px solid rgba(0,0,0,.06);
+  border-radius:12px;box-shadow:var(--shadow);
+  padding:20px;margin-bottom:20px;
+}
+
+/* HERO */
+.hero{display:grid;gap:10px;text-align:center}
+.hero h1{margin:0;font-size:26px}
+.hero p{margin:0;color:#555}
+.cta-primary{
+  display:inline-block;margin-top:10px;padding:12px 18px;border-radius:10px;
+  background:var(--brand);color:#fff;font-weight:800;text-decoration:none
+}
+.cta-primary:hover,.cta-primary:focus{background:#005f88;outline:none}
+
+/* Banner image */
+.banner-center{text-align:center}
+.banner-center img{
+  width:100%;max-width:800px;border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,.1);
+  transition:transform .3s ease
+}
+.banner-center img:hover{transform:scale(1.02)}
+
+/* Grid (cards are horizontal) */
+.tiler-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(360px, 1fr));
+  gap:16px;
+}
+
+/* Horizontal card */
+.tiler-card{
+  display:grid;
+  grid-template-columns: 88px 1fr auto; /* avatar | content | CTA */
+  align-items:center;
+  gap:14px;
+  padding:14px;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 4px 14px rgba(0,0,0,.06);
+  transition:transform .2s ease, box-shadow .2s ease;
+  position:relative; overflow:hidden;
+}
+.tiler-card:hover, .tiler-card:focus-within{
+  transform:translateY(-1px); box-shadow:0 10px 24px rgba(0,0,0,.12);
+}
+.tiler-card::before{
+  content:""; position:absolute; inset:0 0 auto 0; height:6px;
+  background:linear-gradient(135deg, var(--brand), var(--brand-2)); opacity:.25;
+}
+
+/* Avatar + certified pill */
+.tiler-avatar-wrap{ position:relative; }
+.tiler-avatar{
+  width:72px; height:72px; border-radius:50%;
+  object-fit:cover; display:block; background:#eee;
+  border:2px solid #fff; box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+.tiler-pill{
+  position:absolute; left:0; top:-6px;
+  background:#16a34a; color:#fff; font-size:11px; font-weight:800;
+  padding:4px 8px; border-radius:999px; box-shadow:0 2px 6px rgba(0,0,0,.18);
+}
+
+/* Content */
+.tiler-body{ min-width:0; }
+.tiler-name{
+  font-size:18px; font-weight:900; margin:0 0 4px; line-height:1.25;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.tiler-meta{ display:flex; align-items:center; gap:10px; margin:0 0 8px; color:#475569; font-size:14px; }
+.tiler-city{ display:flex; align-items:center; gap:6px; }
+.tiler-city svg{ width:16px; height:16px; }
+.tiler-rating{ display:flex; align-items:center; gap:6px; }
+.stars{ display:inline-flex; gap:2px; }
+.stars svg{ width:14px; height:14px; }
+.star-full svg{ color:#f59e0b; } .star-half svg{ color:#fbbf24; clip-path: inset(0 50% 0 0); }
+.star-empty svg{ color:#e5e7eb; }
+.reviews-count{ color:#64748b; }
+
+.tiler-tags{ display:flex; gap:6px; flex-wrap:wrap; }
+.tiler-tag{
+  padding:4px 8px; font-size:12px; border-radius:999px;
+  background:var(--chip); border:1px solid var(--line); color:var(--ink);
+}
+
+/* Single CTA */
+.book-btn{
+  align-self:center; appearance:none; border:none;
+  background:var(--brand); color:#fff; font-weight:800; font-size:14px;
+  padding:10px 14px; border-radius:10px; text-decoration:none;
+  display:inline-flex; align-items:center; justify-content:center;
+  white-space:nowrap; cursor:pointer;
+  transition:background .2s ease, transform .02s ease;
+  z-index:2; /* above stretched link */
+}
+.book-btn:hover, .book-btn:focus{ background:#005f88; outline:none; }
+.book-btn:active{ transform:translateY(1px); }
+
+/* Make whole card clickable to profile, except the button */
+.stretched-link{ position:absolute; inset:0; z-index:1; }
+
+/* CTA card (inserted inside grid) */
+.tiler-cta{
+  display:grid; place-items:center; padding:22px; border:none; color:#fff;
+  background:linear-gradient(135deg,var(--brand) 0%, var(--brand-2) 100%);
+  border-radius:14px;
+}
+.tiler-cta h3{ margin:6px 0 0; font-size:18px }
+.tiler-cta p{ margin:6px 0 14px; color:#e9f5ff }
+.tiler-cta a{
+  background:#fff; color:var(--brand); font-weight:900; border-radius:10px;
+  padding:10px 14px; text-decoration:none;
+}
+.tiler-cta a:hover, .tiler-cta a:focus{ background:#f2f6ff; color:var(--brand); }
+
+/* View more */
+.view-more-wrap{ text-align:center; margin-top:12px }
+.view-more-btn{
+  display:inline-block; padding:10px 20px; background:#0077cc; color:#fff; border-radius:8px; text-decoration:none;
+}
+.view-more-btn:hover, .view-more-btn:focus{ background:#005fa3; outline:none }
+
+/* Estimator banner */
+.estimator-banner{ text-align:center; border:2px dashed #bcd9f2; background:#f7fbff }
+.estimator-banner h3{ margin:0 0 8px }
+.estimator-banner a{
+  display:inline-block; margin-top:8px; padding:10px 16px; border-radius:10px;
+  background:var(--brand); color:#fff; font-weight:900; text-decoration:none;
+}
+.estimator-banner a:hover, .estimator-banner a:focus{ background:#005f88; outline:none }
+
+/* Skeleton shimmer */
+@keyframes sh { 0%{background-position:100% 0} 100%{background-position:-100% 0} }
+.sk-chip{ height:22px; width:70px; background:#e5e7eb; border-radius:999px }
