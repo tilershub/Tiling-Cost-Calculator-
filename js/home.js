@@ -1,152 +1,119 @@
-/* ========= Inline SVG icons ========= */
-const SVG = {
-  pin:'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.438 7-10a7 7 0 10-14 0c0 5.562 7 10 7 10z" stroke="currentColor" stroke-width="2"/></svg>',
-  star:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17.27l6.18 3.73-1.64-7.03L21 9.24l-7.19-.61L12 2 10.19 8.63 3 9.24l4.46 4.73L5.82 21z"/></svg>'
-};
+/* Home page logic to populate Popular Projects + Testimonials */
+(function(){
+  const qs = (s, r=document) => r.querySelector(s);
+  const qsa = (s, r=document) => Array.from(r.querySelectorAll(s));
 
-/* ========= Helpers ========= */
-function starsHTML(rating=0){
-  const full=Math.floor(rating), half=rating-full>=0.5?1:0, empty=5-full-half;
-  const seg=(n,cls)=>Array.from({length:n}).map(()=>`<span class="${cls}" aria-hidden="true">${SVG.star}</span>`).join('');
-  return `<span class="stars" aria-label="${rating} out of 5">
-    ${seg(full,'star-full')}${seg(half,'star-half')}${seg(empty,'star-empty')}
-  </span>`;
-}
-const tag = (t) => `<span class="tiler-tag">${t}</span>`;
+  const elProjects = qs('#popular-projects');
+  const elTestimonials = qs('#home-testimonials');
 
-/* ========= Horizontal card (Book Now only) ========= */
-function tilerCardHTML(t){
-  const rating = Number(t.rating || 0);
-  const reviewCount = Number(t.reviewCount || 0);
-  // Limit chips to 3 (2 on narrow screens)
-  const isNarrow = window.matchMedia('(max-width:520px)').matches;
-  const highlights = Array.isArray(t.highlights) ? t.highlights.slice(0, isNarrow ? 2 : 3) : [];
-  const profileUrl = `/tilers/tiler.html?id=${encodeURIComponent(t.id)}`;
+  const escapeHtml = (str) => String(str||"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s]));
+  const stars = (rating=0) => {
+    const r = Math.round(Number(rating)||0);
+    return '★'.repeat(r) + '☆'.repeat(5 - r);
+  };
 
-  return `
-    <article class="tiler-card" role="article" aria-label="${t.name}">
-      <!-- whole-card link (except button) -->
-      <a class="stretched-link" href="${profileUrl}" aria-hidden="true" tabindex="-1"></a>
+  // Build one project/tiler card (TaskRabbit-like horizontal)
+  function projectCard(t){
+    const id = encodeURIComponent(t.id);
+    const name = escapeHtml(t.name);
+    const city = escapeHtml(t.city || '');
+    const img = t.image || '/icons/placeholder-tile.png';
+    const rating = Number(t.rating || 0);
+    const rc = Number(t.reviewCount || 0);
 
-      <div class="tiler-avatar-wrap">
-        ${t.featured ? `<span class="tiler-pill">Certified</span>` : ``}
-        <img class="tiler-avatar"
-             src="${t.image}"
-             alt="${t.name}"
-             loading="lazy"
-             decoding="async"
-             sizes="(max-width:520px) 64px, 72px" />
-      </div>
-
-      <div class="tiler-body">
-        <h3 class="tiler-name">
-          <a href="${profileUrl}" style="color:inherit;text-decoration:none;position:relative;z-index:2">${t.name}</a>
-        </h3>
-
-        <div class="tiler-meta">
-          ${t.city ? `<span class="tiler-city">${SVG.pin}<span>${t.city}</span></span>` : ``}
-          <span class="tiler-rating">
-            ${starsHTML(rating)} <span>${rating ? rating.toFixed(1) : 'New'}</span>
-            ${reviewCount ? `<span class="reviews-count">(${reviewCount})</span>` : ``}
-          </span>
+    return `
+      <article class="project-card" role="article" aria-label="${name}">
+        <img class="project-thumb" src="${img}" alt="${name} profile photo" loading="lazy" decoding="async">
+        <div class="project-body">
+          <div class="project-name">${name}</div>
+          <div class="project-meta">${city ? `Verified · ${city}` : `Verified`}</div>
+          <div>
+            <span class="stars" aria-hidden="true">${stars(rating)}</span>
+            <span class="revcount">(${rc})</span>
+          </div>
+          <div class="project-actions">
+            <a class="btn btn-primary" href="/tilers/tiler.html?id=${id}" aria-label="Book ${name}">Book Now</a>
+            <a class="btn" href="/tilers/tiler.html?id=${id}" aria-label="View ${name} profile">View Profile</a>
+          </div>
         </div>
+      </article>
+    `;
+  }
 
-        ${highlights.length ? `<div class="tiler-tags">${highlights.map(tag).join('')}</div>` : ``}
-      </div>
+  async function loadProjects(){
+    try{
+      const res = await fetch('/tilers/tilers.json', { cache:'no-cache' });
+      if(!res.ok) throw new Error('Failed to load /tilers/tilers.json');
+      const data = await res.json();
 
-      <!-- Single CTA -->
-      <a class="book-btn" href="${profileUrl}&book=1" aria-label="Book ${t.name} now">Book Now</a>
-    </article>
-  `;
-}
+      // Choose a mix resembling "Popular Projects": featured first, then top rated
+      const featured = data.filter(t => !!t.featured);
+      const topRated = data
+        .slice()
+        .sort((a,b) => (b.rating||0) - (a.rating||0) || (b.reviewCount||0) - (a.reviewCount||0));
 
-/* ========= CTA tile used inside grids ========= */
-const estimatorCTAHTML = () => `
-  <div class="tiler-card tiler-cta" tabindex="0" role="link" aria-label="Open Tiling Cost Estimator"
-       onclick="window.location.href='/estimator/estimator.html'"
-       onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href='/estimator/estimator.html'}">
-    <div>
-      <div style="font-size:32px;line-height:1">🧮</div>
-      <h3>Calculate Your Cost</h3>
-      <p>Tiles • Adhesive • Labor • Skirting</p>
-      <a href="/estimator/estimator.html">Open Estimator</a>
-    </div>
-  </div>
-`;
+      // Merge unique (avoid duplicates)
+      const seen = new Set();
+      const merged = [...featured, ...topRated].filter(t => {
+        if(seen.has(t.id)) return false; seen.add(t.id); return true;
+      }).slice(0, 6);
 
-/* ========= Lightweight skeletons ========= */
-function skeletonCardHTML(){
-  return `
-    <article class="tiler-card" aria-hidden="true">
-      <div class="tiler-avatar-wrap">
-        <div style="width:72px;height:72px;border-radius:50%;background:#e5e7eb;"></div>
-      </div>
-      <div class="tiler-body">
-        <div style="height:16px;width:60%;background:#e5e7eb;border-radius:6px;margin:6px 0 8px;"></div>
-        <div style="height:12px;width:40%;background:#e5e7eb;border-radius:6px;margin:0 0 10px;"></div>
-        <div style="display:flex;gap:6px;">
-          <div class="sk-chip"></div><div class="sk-chip" style="width:60px"></div>
-        </div>
-      </div>
-      <div class="book-btn" style="background:#e5e7eb;color:transparent">Book Now</div>
-    </article>`;
-}
-function injectSkeletons(id,count=4){
-  const el=document.getElementById(id); if(!el) return;
-  el.innerHTML = Array.from({length:count}).map(skeletonCardHTML).join('');
-}
+      elProjects.innerHTML = merged.map(projectCard).join('') ||
+        `<div class="project-card"><div class="project-body"><p>No projects yet.</p></div></div>`;
 
-/* ========= Fetch once, render Featured + Top Rated ========= */
-injectSkeletons('featured-tilers',4);
-injectSkeletons('top-rated-tilers',6);
+      // Make card clickable (except buttons/links)
+      qsa('.project-card').forEach(card => {
+        const link = card.querySelector('.btn-primary');
+        if(!link) return;
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', (e) => {
+          const tag = (e.target && e.target.tagName) || '';
+          if(tag !== 'A' && tag !== 'BUTTON') location.href = link.href;
+        });
+      });
 
-fetch('/tilers/tilers.json')
-  .then(r=>r.json())
-  .then(list=>{
-    const tilers=(Array.isArray(list)?list:[]).map(t=>({
-      ...t,
-      rating:Number(t.rating||0),
-      reviewCount:Number(t.reviewCount||0),
-      featured:Boolean(t.featured)
-    }));
-
-    // FEATURED: featured=true, sort by rating desc then reviews
-    const featured = tilers
-      .filter(t=>t.featured)
-      .sort((a,b)=>(b.rating-a.rating)||(b.reviewCount-a.reviewCount))
-      .slice(0,6);
-
-    // TOP-RATED: >=4.5 stars, >=3 reviews, exclude featured
-    const featuredIds=new Set(featured.map(t=>t.id));
-    let topRated = tilers
-      .filter(t=>t.rating>=4.5 && t.reviewCount>=3 && !featuredIds.has(t.id))
-      .sort((a,b)=>{
-        if(b.rating!==a.rating) return b.rating-a.rating;
-        if(b.reviewCount!==a.reviewCount) return b.reviewCount-a.reviewCount;
-        return String(a.name||'').localeCompare(String(b.name||''));
-      })
-      .slice(0,9);
-
-    // Insert Estimator CTA after 3rd item
-    if(topRated.length>=3){
-      topRated = [...topRated.slice(0,3), '__CTA__', ...topRated.slice(3)];
+    }catch(err){
+      console.error(err);
+      elProjects.innerHTML = `<div class="project-card"><div class="project-body"><p style="color:#b91c1c">Could not load tilers. Check <code>/tilers/tilers.json</code>.</p></div></div>`;
     }
+  }
 
-    const mount=(id,items)=>{
-      const el=document.getElementById(id); if(!el) return;
-      if(!items || !items.length){
-        el.innerHTML = `<p style="margin:8px 0;color:#64748b">No tilers to show yet.</p>`;
-        return;
-      }
-      el.innerHTML = items.map(i => i==='__CTA__' ? estimatorCTAHTML() : tilerCardHTML(i)).join('');
-    };
+  // OPTIONAL: pull a couple of approved reviews from Supabase for the testimonials row
+  async function loadTestimonials(){
+    try{
+      if(!window.supabase) return; // supabase loaded by index.html; safe guard
+      const supabase = window.supabase.createClient(
+        "https://todzlrbaovbqdwxdlcxs.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHpscmJhb3ZicWR3eGRsY3hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUxNzM1MjIsImV4cCI6MjA3MDc0OTUyMn0.zsE2fHxF8QUPpiOfYXKz4oe8wVccN76ewDd56u2F6FY"
+      );
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('name, comment, quality, service, timeline, pricing, cleanliness, created_at')
+        .eq('approved', true)
+        .order('created_at', { ascending:false })
+        .limit(2);
+      if(error){ console.warn(error); return; }
+      if(!data || !data.length){ return; }
 
-    mount('featured-tilers', featured);
-    mount('top-rated-tilers', topRated);
-  })
-  .catch(err=>{
-    console.error('Failed to load tilers.json', err);
-    const msg=`<p style="color:#b91c1c">Couldn’t load tilers right now. Please refresh.</p>`;
-    const f=document.getElementById('featured-tilers'); if(f) f.innerHTML=msg;
-    const t=document.getElementById('top-rated-tilers'); if(t) t.innerHTML=msg;
+      const starAvg = r => {
+        const v = ((r.quality||0)+(r.service||0)+(r.timeline||0)+(r.pricing||0)+(r.cleanliness||0))/5;
+        const rounded = Math.round(v);
+        return '★'.repeat(rounded) + '☆'.repeat(5-rounded);
+      };
+      elTestimonials.innerHTML = data.map(r=>`
+        <div class="testi">
+          <div class="who">${escapeHtml(r.name || 'Customer')} <span class="stars" aria-hidden="true">${starAvg(r)}</span></div>
+          ${r.comment ? `<p class="what">${escapeHtml(r.comment)}</p>` : ``}
+        </div>
+      `).join('');
+    }catch(e){ console.warn(e); }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadProjects();
+    loadTestimonials();
   });
+  document.addEventListener('includes:ready', () => {
+    // No-op, but here if you later want to refetch after header/footer load
+  });
+})();
