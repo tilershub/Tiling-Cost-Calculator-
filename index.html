@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TILERSHUB | Home</title>
+  <title>TILERSHUB | Find Certified Tilers in Sri Lanka</title>
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-DLJDBQZ8N2"></script>
@@ -14,153 +14,116 @@
     gtag('config', 'G-DLJDBQZ8N2');
   </script>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1872998397981052"
-     crossorigin="anonymous"></script>
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1872998397981052" crossorigin="anonymous"></script>
 
   <!-- Meta SEO -->
-  <meta name="description" content="TILERSHUB - Your Ultimate Tiling Community in Sri Lanka. Find tilers, calculate costs, read tips, and shop tools.">
-  <meta property="og:title" content="TILERSHUB | Home" />
-  <meta property="og:description" content="Explore floor tiling calculators, bathroom tiling tips, professional tilers, and tools at TILERSHUB." />
+  <meta name="description" content="Find verified, reviewed tilers across Sri Lanka. Compare profiles and book with confidence. Calculate cost with our estimator." />
+  <meta property="og:title" content="TILERSHUB | Certified Tilers" />
+  <meta property="og:description" content="Browse Certified Tilers and book the right professional for your job. Calculate cost with our estimator when needed." />
   <meta property="og:image" content="/icons/og-image.png" />
   <link rel="icon" href="/icons/favicon.png" type="image/png" />
 
-  <!-- Styles -->
+  <!-- Base layout -->
   <link rel="stylesheet" href="/css/layout.css" />
+
+  <!-- Page styles -->
   <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      background: #f4f4f4;
-      color: #222;
+    :root{
+      --brand:#003049;
+      --brand-2:#006aa7;
+      --ink:#0f172a;
+      --muted:#667085;
+      --line:#e2e8f0;
+      --bg:#f4f7fb;
+      --chip:#f1f5f9;
+      --shadow:0 6px 20px rgba(0,0,0,.06);
+      --shadow-lg:0 14px 30px rgba(0,0,0,.12);
+      --ring:0 0 0 3px rgba(0,96,160,.25), var(--shadow-lg);
     }
-    main {
-      padding: 20px;
+    html,body{margin:0;background:#f4f4f4;color:#222;font-family:sans-serif}
+    main{padding:20px}
+    .container{
+      background:#fff;border:1px solid rgba(0,0,0,.06);
+      border-radius:12px;box-shadow:var(--shadow);padding:20px;margin-bottom:20px;
     }
-    .container {
-      background: white;
-      margin-bottom: 20px;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    nav a.active{text-decoration:underline;font-weight:700}
+
+    /* HERO */
+    .hero{display:grid;gap:10px;text-align:center}
+    .hero h1{margin:0;font-size:26px}
+    .hero p{margin:0;color:#555}
+    .cta-primary{
+      display:inline-block;margin-top:10px;padding:12px 18px;border-radius:10px;
+      background:var(--brand);color:#fff;font-weight:800;text-decoration:none
     }
-    input, select, button {
-      width: 100%;
-      padding: 12px 14px;
-      margin: 12px 0;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      box-sizing: border-box;
+    .cta-primary:hover,.cta-primary:focus{background:#005f88;outline:none}
+
+    /* GRID */
+    .tiler-list{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px
     }
-    button {
-      background: #003049;
-      color: #fff;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s ease;
+
+    /* MODERN CARD */
+    .tiler-card{
+      position:relative;border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line);
+      box-shadow:var(--shadow);transition:transform .25s ease, box-shadow .25s ease;outline:none
     }
-    button:hover, button:focus {
-      background: #005f88;
-      outline: none;
+    .tiler-card:hover,.tiler-card:focus-within{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+    .tiler-cover{height:110px;width:100%;object-fit:cover;display:block;
+      background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+    .tiler-avatar{position:absolute;top:70px;left:16px;width:72px;height:72px;border-radius:50%;
+      border:3px solid #fff;object-fit:cover;background:#eee}
+    .tiler-badge{
+      position:absolute;top:10px;left:10px;background:#17a34a;color:#fff;font-size:12px;font-weight:800;
+      padding:6px 10px;border-radius:999px;display:inline-flex;gap:6px;align-items:center;box-shadow:0 4px 10px rgba(0,0,0,.15)
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 12px 0;
-      font-size: 14px;
+    .tiler-body{padding:54px 16px 14px}
+    .tiler-name{margin:0;font-size:18px;font-weight:900}
+    .tiler-city{color:var(--muted);font-size:14px;margin:6px 0 10px;display:flex;gap:6px;align-items:center}
+    .tiler-rating{display:flex;align-items:center;gap:8px;font-size:14px;color:#111;margin-bottom:10px}
+    .stars{display:inline-flex;gap:2px}
+    .stars svg{width:16px;height:16px}
+    .reviews-count{color:#64748b}
+    .tiler-tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}
+    .tiler-tag{padding:6px 10px;font-size:12px;border-radius:999px;background:var(--chip);color:var(--ink);border:1px solid var(--line)}
+    .tiler-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .btn{appearance:none;border:none;border-radius:10px;padding:10px 12px;font-weight:800;font-size:14px;
+      cursor:pointer;text-align:center;transition:background .2s ease, transform .02s ease;text-decoration:none;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px}
+    .btn:active{transform:translateY(1px)}
+    .btn-primary{background:var(--brand);color:#fff}
+    .btn-primary:hover,.btn-primary:focus{background:#005f88;outline:none}
+    .btn-ghost{background:var(--chip);color:var(--ink);border:1px solid var(--line)}
+    .btn-ghost:hover,.btn-ghost:focus{background:#e7eef7;outline:none}
+    .tiler-card:focus-within{box-shadow:var(--ring)}
+
+    /* CTA TILE that sits inside grids */
+    .tiler-cta{
+      display:grid;place-items:center;padding:22px;border:none;color:#fff;
+      background:linear-gradient(135deg,var(--brand) 0%, var(--brand-2) 100%);
     }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background: #e6f0f8;
-      font-weight: 600;
-    }
-    .report {
-      background: #f8fbfc;
-      padding: 20px;
-      border-radius: 8px;
-      display: none;
-    }
-    a {
-      color: #0077cc;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    a:hover, a:focus {
-      text-decoration: underline;
-      outline: none;
-      color: #005fa3;
-    }
-    nav a.active {
-      text-decoration: underline;
-      font-weight: bold;
-    }
-    .tiler-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    .tiler-card {
-      width: 250px;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      text-align: center;
-      padding: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      transition: box-shadow 0.3s ease;
-    }
-    .tiler-card:hover {
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    }
-    .tiler-card img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-    .tiler-card h4 {
-      margin: 10px 0 5px;
-      font-size: 18px;
-    }
-    .tiler-card p {
-      margin: 0 0 10px;
-      color: #666;
-    }
-    .tiler-card a {
-      display: inline-block;
-      margin: 4px;
-      padding: 8px 12px;
-      font-size: 14px;
-      color: #fff;
-      background: #0077cc;
-      border-radius: 4px;
-      text-decoration: none;
-      transition: background 0.3s ease;
-    }
-    .tiler-card a:hover, .tiler-card a:focus {
-      background: #005fa3;
-      outline: none;
-    }
-    .view-more-btn {
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #0077cc;
-      color: white;
-      border-radius: 5px;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-    }
-    .view-more-btn:hover, .view-more-btn:focus {
-      background-color: #005fa3;
-      outline: none;
-    }
+    .tiler-cta h3{margin:6px 0 0;font-size:18px}
+    .tiler-cta p{margin:6px 0 14px;color:#e9f5ff}
+    .tiler-cta a{background:#fff;color:var(--brand);font-weight:900;border-radius:10px;padding:10px 14px;text-decoration:none}
+    .tiler-cta a:hover,.tiler-cta a:focus{background:#f2f6ff;color:var(--brand);outline:none}
+
+    /* View more */
+    .view-more-wrap{text-align:center;margin-top:12px}
+    .view-more-btn{display:inline-block;padding:10px 20px;background:#0077cc;color:#fff;border-radius:8px;text-decoration:none}
+    .view-more-btn:hover,.view-more-btn:focus{background:#005fa3;outline:none}
+
+    /* Full-width estimator banner */
+    .estimator-banner{text-align:center;border:2px dashed #bcd9f2;background:#f7fbff}
+    .estimator-banner h3{margin:0 0 8px}
+    .estimator-banner a{display:inline-block;margin-top:8px;padding:10px 16px;border-radius:10px;background:var(--brand);color:#fff;font-weight:900;text-decoration:none}
+    .estimator-banner a:hover,.estimator-banner a:focus{background:#005f88;outline:none}
+
+    /* Skeleton shimmer */
+    @keyframes sh {0%{background-position:100% 0}100%{background-position:-100% 0}}
+    .sk-cover{height:110px;background:linear-gradient(90deg,#e5e7eb 25%,#f3f4f6 37%,#e5e7eb 63%);background-size:400% 100%;animation:sh 1.2s infinite}
+    .sk-chip{height:26px;width:70px;background:#e5e7eb;border-radius:999px}
+    @media (max-width:380px){.tiler-actions{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -169,46 +132,46 @@
   <div id="header"></div>
 
   <main>
-    <section class="container">
-      <h2>🧮 Tiling Estimator</h2>
-      <input id="area" type="number" placeholder="Total Area (sqft)" />
-      <select id="tileSize">
-        <option value="">Select Tile Size</option>
-        <option value="300x300">300mm × 300mm</option>
-        <option value="300x600">300mm × 600mm</option>
-        <option value="600x600">600mm × 600mm</option>
-        <option value="600x1200">600mm × 1200mm</option>
-        <option value="800x800">800mm × 800mm</option>
-        <option value="1200x1200">1200mm × 1200mm</option>
-        <option value="800x1800">800mm × 1800mm</option>
-      </select>
-      <input id="tilePrice" type="number" placeholder="Tile Price (LKR per tile)" />
-      <fieldset>
-        <legend>Optional Manual Inputs</legend>
-        <input id="skirting" type="number" placeholder="Skirting (ft) – optional" />
-        <input id="laborRate" type="number" placeholder="Labor rate (LKR/sqft) – optional" />
-      </fieldset>
-      <button onclick="startCalculation()">Calculate</button>
-      <div id="report" class="report"></div>
+    <!-- HERO (estimator removed; CTA available) -->
+    <section class="container hero" aria-labelledby="hero-title">
+      <h1 id="hero-title">Find & Book Certified Tilers</h1>
+      <p>Browse verified pros across Sri Lanka. Compare profiles, message on WhatsApp, and book with confidence.</p>
+      <a class="cta-primary" href="/estimator/estimator.html">💸 Need a cost first? Use the Estimator</a>
     </section>
 
+    <!-- Banner image -->
     <section class="container" style="text-align:center;">
       <a href="/tilers/tilers.html">
         <img src="/icons/find-certified-tiler.png"
              alt="Find Certified Tilers in Sri Lanka - TILERSHUB"
-             style="width:100%; max-width:800px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease;"
-             onmouseover="this.style.transform='scale(1.02)'"
-             onmouseout="this.style.transform='scale(1)'"
-        />
+             style="width:100%;max-width:800px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);transition:transform .3s ease"
+             onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'"/>
       </a>
     </section>
 
-    <section class="container">
-      <h2>👷‍♂️ CERTIFIED TILERS</h2>
-      <div class="tiler-list" id="home-tiler-list"></div>
-      <div style="text-align:center; margin-top: 20px;">
-        <a href="/tilers/tilers.html" class="view-more-btn">🔎 Find More Tilers</a>
+    <!-- FEATURED -->
+    <section class="container" aria-labelledby="featured-tilers-title">
+      <h2 id="featured-tilers-title">🏅 Featured Certified Tilers</h2>
+      <div class="tiler-list" id="featured-tilers"></div>
+      <div class="view-more-wrap">
+        <a class="view-more-btn" href="/tilers/tilers.html?filter=featured">View all featured</a>
       </div>
+    </section>
+
+    <!-- TOP RATED -->
+    <section class="container" aria-labelledby="top-rated-tilers-title">
+      <h2 id="top-rated-tilers-title">⭐ Top-Rated Tilers</h2>
+      <div class="tiler-list" id="top-rated-tilers"></div>
+      <div class="view-more-wrap">
+        <a class="view-more-btn" href="/tilers/tilers.html?sort=rating">View full ratings</a>
+      </div>
+    </section>
+
+    <!-- Full-width estimator banner -->
+    <section class="container estimator-banner" aria-labelledby="estimator-banner-title">
+      <h3 id="estimator-banner-title">Not sure about the budget?</h3>
+      <p>Quickly estimate tiles, materials, and labor for your project.</p>
+      <a href="/estimator/estimator.html" aria-label="Open Tiling Cost Estimator">🧮 Open Tiling Cost Estimator</a>
     </section>
   </main>
 
@@ -218,178 +181,160 @@
   <!-- Header/Footer Injection -->
   <script src="/js/include.js"></script>
 
-  <!-- Estimator Script -->
- <!-- Start of Estimator Script (embed in <script> tag at end of body) -->
-<script>
-  function getTileSettings(size) {
-    return {
-      "300x300": { sqft: 0.96, laborMin: 80, laborMax: 120, skirtingCoverage: 3 },
-      "300x600": { sqft: 1.94, laborMin: 80, laborMax: 120, skirtingCoverage: 6 },
-      "600x600": { sqft: 3.87, laborMin: 80, laborMax: 120, skirtingCoverage: 12 },
-      "600x1200": { sqft: 7.75, laborMin: 110, laborMax: 150, skirtingCoverage: 24 },
-      "800x800": { sqft: 6.89, laborMin: 110, laborMax: 150, skirtingCoverage: 20 },
-      "1200x1200": { sqft: 12.9, laborMin: 200, laborMax: 300, skirtingCoverage: 48 },
-      "800x1800": { sqft: 15.3, laborMin: 200, laborMax: 300, skirtingCoverage: 48 }
-    }[size];
-  }
+  <!-- Card renderer + Sections loader -->
+  <script>
+    /* ---------- Icons (inline SVG) ---------- */
+    const svg = {
+      check:'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 7L9 18l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      pin:'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.438 7-10a7 7 0 10-14 0c0 5.562 7 10 7 10z" stroke="currentColor" stroke-width="2"/></svg>',
+      star:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17.27l6.18 3.73-1.64-7.03L21 9.24l-7.19-.61L12 2 10.19 8.63 3 9.24l4.46 4.73L5.82 21z"/></svg>',
+      fb:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 10-11.5 9.95v-7.04H7.9V12h2.6V9.8c0-2.56 1.52-3.98 3.85-3.98 1.12 0 2.29.2 2.29.2v2.52h-1.29c-1.27 0-1.67.79-1.67 1.6V12h2.84l-.45 2.91H13.7v7.04A10 10 0 0022 12z"/></svg>',
+      wa:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.35c-.26-.13-1.54-.76-1.78-.84-.24-.09-.41-.13-.58.13-.17.26-.67.84-.82 1.01-.15.17-.3.2-.56.07-.26-.13-1.1-.4-2.1-1.29-.78-.69-1.31-1.54-1.47-1.8-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.17.04-.33-.02-.46-.07-.13-.58-1.39-.8-1.9-.21-.5-.42-.43-.58-.43-.15 0-.33-.02-.5-.02-.17 0-.46.07-.7.33-.24.26-.92.9-.92 2.2 0 1.29.94 2.54 1.07 2.72.13.17 1.86 2.83 4.51 3.97.63.27 1.12.43 1.5.55.63.2 1.21.17 1.67.1.51-.08 1.54-.63 1.76-1.23.22-.6.22-1.12.15-1.23-.06-.11-.24-.19-.5-.31zM12.02 2c-5.52 0-10 4.46-10 9.96 0 1.76.46 3.39 1.27 4.82L2 22l5.35-1.4a9.98 9.98 0 004.67 1.19h0c5.52 0 10-4.46 10-9.96 0-2.67-1.07-5.1-2.8-6.86A9.86 9.86 0 0012.02 2z"/></svg>'
+    };
 
-  function startCalculation() {
-    const area = parseFloat(document.getElementById("area").value);
-    const tileSize = document.getElementById("tileSize").value;
-    const tilePrice = parseFloat(document.getElementById("tilePrice").value);
+    /* ---------- Stars ---------- */
+    function starsHTML(rating=0){
+      const full=Math.floor(rating), half=rating-full>=0.5?1:0, empty=5-full-half;
+      const seg=(n,cls)=>Array.from({length:n}).map(()=>`<span class="${cls}" aria-hidden="true">${svg.star}</span>`).join('');
+      return `
+        <span class="stars" aria-label="${rating} out of 5 stars">
+          ${seg(full,'star-full')}${seg(half,'star-half')}${seg(empty,'star-empty')}
+        </span>
+        <style>
+          .star-full svg{color:#f59e0b}
+          .star-half svg{color:#fbbf24;clip-path: inset(0 50% 0 0)}
+          .star-empty svg{color:#e5e7eb}
+        </style>`;
+    }
+    const tag = (t) => `<span class="tiler-tag">${t}</span>`;
 
-    if (!area || area <= 0 || !tileSize || !tilePrice || tilePrice <= 0) {
-      alert("❗ Please enter valid area, tile size, and tile price.");
-      return;
+    /* ---------- Card Template ---------- */
+    function tilerCardHTML(t){
+      const whatsapp=String(t.whatsapp||'').trim().replace(/^0/,'94');
+      const hasCover = t.cover && t.cover.trim()!=='';
+      const rating=Number(t.rating||0), reviewCount=Number(t.reviewCount||0);
+      const highlights=Array.isArray(t.highlights)?t.highlights.slice(0,4):[];
+      return `
+        <article class="tiler-card" role="article" aria-label="${t.name}">
+          ${t.featured ? `<div class="tiler-badge" title="TILERSHUB Certified">${svg.check} Certified</div>`:''}
+          ${hasCover?`<img class="tiler-cover" src="${t.cover}" alt="" loading="lazy">`:`<div class="tiler-cover" aria-hidden="true"></div>`}
+          <img class="tiler-avatar" src="${t.image}" alt="${t.name}" loading="lazy">
+          <div class="tiler-body">
+            <h3 class="tiler-name">${t.name}</h3>
+            ${t.city ? `<div class="tiler-city">${svg.pin}<span>${t.city}</span></div>`:''}
+            <div class="tiler-rating">
+              ${starsHTML(rating)}
+              <span>${rating?rating.toFixed(1):'New'}</span>
+              ${reviewCount?`<span class="reviews-count">(${reviewCount})</span>`:''}
+            </div>
+            ${highlights.length?`<div class="tiler-tags">${highlights.map(tag).join('')}</div>`:''}
+            <div class="tiler-actions">
+              <a class="btn btn-primary"
+                href="https://wa.me/${whatsapp}?text=Hi%20${encodeURIComponent(t.name)}%2C%20I%20found%20you%20on%20TILERSHUB"
+                target="_blank" rel="noopener" aria-label="WhatsApp ${t.name}">
+                ${svg.wa} WhatsApp
+              </a>
+              <a class="btn btn-ghost" href="${t.facebook}" target="_blank" rel="noopener" aria-label="Facebook ${t.name}">
+                ${svg.fb} Facebook
+              </a>
+            </div>
+          </div>
+          <a href="/tilers/tiler.html?id=${encodeURIComponent(t.id)}" aria-label="Open ${t.name} profile" style="position:absolute;inset:0;z-index:1" tabIndex="-1"></a>
+        </article>`;
     }
 
-    generateReport(area, tileSize, tilePrice);
-  }
-
-  function generateReport(area, tileSize, tilePrice) {
-    const settings = getTileSettings(tileSize);
-    const userSkirting = parseFloat(document.getElementById("skirting").value);
-    const userLaborRate = parseFloat(document.getElementById("laborRate").value);
-
-    const skirting = isNaN(userSkirting) || userSkirting <= 0 ? Math.ceil(area * 0.2) : userSkirting;
-    const useDefaultLabor = isNaN(userLaborRate) || userLaborRate <= 0;
-
-    const floorTiles = Math.ceil(area / settings.sqft);
-    const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
-    const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05); // +5% wastage
-
-    const cementMin = Math.ceil(8 * area / 800);
-    const cementMax = Math.ceil(8 * area / 600);
-    const sandMin = Math.round((area / 800) * 4) / 4;
-    const sandMax = Math.round((area / 600) * 4) / 4;
-
-    const cementCostMin = cementMin * 1900;
-    const cementCostMax = cementMax * 1900;
-    const sandCostMin = sandMin * 25000;
-    const sandCostMax = sandMax * 25000;
-
-    const adhesiveMin = Math.ceil(area / 40);
-    const adhesiveMax = Math.ceil(area / 30);
-    const adhesiveCostMin = adhesiveMin * 2200;
-    const adhesiveCostMax = adhesiveMax * 2200;
-
-    const clips = Math.ceil(area / 100);
-    const grout = Math.ceil(area / 175);
-    const clipsCost = clips * 1500;
-    const groutCost = grout * 300;
-
-    const tileCost = totalTiles * tilePrice;
-
-    let floorLaborMin, floorLaborMax, skirtingLaborMin, skirtingLaborMax, laborMin, laborMax;
-
-    if (useDefaultLabor) {
-      floorLaborMin = area * settings.laborMin;
-      floorLaborMax = area * settings.laborMax;
-      skirtingLaborMin = skirting * settings.laborMin;
-      skirtingLaborMax = skirting * settings.laborMax;
-      laborMin = floorLaborMin + skirtingLaborMin;
-      laborMax = floorLaborMax + skirtingLaborMax;
-    } else {
-      floorLaborMin = floorLaborMax = area * userLaborRate;
-      skirtingLaborMin = skirtingLaborMax = skirting * userLaborRate;
-      laborMin = laborMax = floorLaborMin + skirtingLaborMin;
-    }
-
-    const materialMin = tileCost + cementCostMin + sandCostMin + adhesiveCostMin + clipsCost + groutCost;
-    const materialMax = tileCost + cementCostMax + sandCostMax + adhesiveCostMax + clipsCost + groutCost;
-    const totalMin = materialMin + laborMin;
-    const totalMax = materialMax + laborMax;
-
-    document.getElementById("report").innerHTML = `
-      <h3>📌 Project Summary</h3>
-      <table>
-        <tr><th>Area</th><td>${area} sqft</td></tr>
-        <tr><th>Skirting</th><td>${skirting} ft</td></tr>
-        <tr><th>Tile Size</th><td>${tileSize}</td></tr>
-      </table>
-
-      <h3>🧱 Floor Bed Estimate</h3>
-      <table>
-        <tr><th>Material</th><th>Qty</th><th>Cost (LKR)</th></tr>
-        <tr><td>Cement (50kg)</td><td>${cementMin} – ${cementMax}</td><td>${cementCostMin} – ${cementCostMax}</td></tr>
-        <tr><td>Sand (1 cube)</td><td>${sandMin} – ${sandMax}</td><td>${sandCostMin} – ${sandCostMax}</td></tr>
-      </table>
-
-      <h3>🧱 Tiling Estimate</h3>
-      <table>
-        <tr><td>Floor Tiles</td><td>${floorTiles}</td><td>-</td></tr>
-        <tr><td>Skirting Tiles</td><td>${skirtingTiles}</td><td>-</td></tr>
-        <tr><td><b>Total Tiles (5% wastage)</b></td><td>${totalTiles}</td><td>${tileCost}</td></tr>
-        <tr><td>Adhesive (25kg)</td><td>${adhesiveMin} – ${adhesiveMax}</td><td>${adhesiveCostMin} – ${adhesiveCostMax}</td></tr>
-        <tr><td>Clips (100 pcs)</td><td>${clips}</td><td>${clipsCost}</td></tr>
-        <tr><td>Grout (1kg)</td><td>${grout}</td><td>${groutCost}</td></tr>
-      </table>
-
-      <h3>👷 Labor Cost</h3>
-      <table>
-        <tr><th>Type</th><th>Min</th><th>Max</th></tr>
-        <tr><td>Floor Labor</td><td>LKR ${floorLaborMin.toFixed(0)}</td><td>LKR ${floorLaborMax.toFixed(0)}</td></tr>
-        <tr><td>Skirting Labor</td><td>LKR ${skirtingLaborMin.toFixed(0)}</td><td>LKR ${skirtingLaborMax.toFixed(0)}</td></tr>
-        <tr style="font-weight:bold;"><td>Total Labor</td><td>LKR ${laborMin.toFixed(0)}</td><td>LKR ${laborMax.toFixed(0)}</td></tr>
-      </table>
-
-      <h3>💰 Total Cost Estimate</h3>
-      <table>
-        <tr><th>Materials</th><td>LKR ${materialMin.toFixed(0)} – ${materialMax.toFixed(0)}</td></tr>
-        <tr><th>Labor</th><td>LKR ${laborMin.toFixed(0)} – ${laborMax.toFixed(0)}</td></tr>
-        <tr><th>Total</th><td><b>LKR ${totalMin.toFixed(0)} – ${totalMax.toFixed(0)}</b></td></tr>
-      </table>
+    /* ---------- CTA tile injected between cards ---------- */
+    const estimatorCTAHTML = () => `
+      <div class="tiler-card tiler-cta" tabindex="0" role="link" aria-label="Open Tiling Cost Estimator"
+           onclick="window.location.href='/estimator/estimator.html'"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href='/estimator/estimator.html'}">
+        <div>
+          <div style="font-size:32px;line-height:1">🧮</div>
+          <h3>Calculate Your Cost</h3>
+          <p>Tiles • Adhesive • Labor • Skirting</p>
+          <a href="/estimator/estimator.html">Open Estimator</a>
+        </div>
+      </div>
     `;
 
-    document.getElementById("report").style.display = "block";
-    document.getElementById("report").scrollIntoView({ behavior: "smooth" });
-  }
-</script>
-<!-- End of Estimator Script -->
-
-  <!-- Load Top Tilers (updated to open profile on card tap) -->
-<script>
-  fetch('/tilers/tilers.json')
-    .then(res => res.json())
-    .then(data => {
-      const top = data.slice(0, 10);
-      const container = document.getElementById('home-tiler-list');
-
-      top.forEach(tiler => {
-        // keep your existing WhatsApp logic
-        let whatsapp = String(tiler.whatsapp || '').trim().replace(/^0/, '94');
-
-        // card now carries data-id and is keyboard-focusable
-        container.innerHTML += `
-          <div class="tiler-card" data-id="${tiler.id}" tabindex="0" role="link" aria-label="View ${tiler.name} profile">
-            <img src="${tiler.image}" alt="${tiler.name}">
-            <h4>${tiler.name}</h4>
-            <p>${tiler.city}</p>
-            <a href="${tiler.facebook}" target="_blank" rel="noopener">Facebook</a>
-            <a href="https://wa.me/${whatsapp}?text=Hi%20${encodeURIComponent(tiler.name)}%2C%20I%20found%20you%20on%20TILERSHUB" target="_blank" rel="noopener">WhatsApp</a>
+    /* ---------- Skeletons ---------- */
+    function skeletonCardHTML(){
+      return `
+        <article class="tiler-card" aria-hidden="true">
+          <div class="sk-cover"></div>
+          <div class="tiler-body" style="padding-top:20px">
+            <div style="width:72px;height:72px;border-radius:50%;background:#e5e7eb;position:absolute;top:70px;left:16px;border:3px solid #fff"></div>
+            <div style="height:16px;width:60%;background:#e5e7eb;border-radius:6px;margin:20px 0 8px"></div>
+            <div style="height:12px;width:40%;background:#e5e7eb;border-radius:6px;margin:6px 0 14px"></div>
+            <div style="display:flex;gap:6px;margin:10px 0 12px">
+              <div class="sk-chip"></div><div class="sk-chip" style="width:60px"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="height:40px;background:#e5e7eb;border-radius:10px"></div>
+              <div style="height:40px;background:#e5e7eb;border-radius:10px"></div>
+            </div>
           </div>
-        `;
-      });
+        </article>`;
+    }
+    function injectSkeletons(id,count=4){
+      const el=document.getElementById(id); if(!el) return;
+      el.innerHTML = Array.from({length:count}).map(skeletonCardHTML).join('');
+    }
 
-      // Delegate clicks to the container so we don't add many listeners
-      container.addEventListener('click', (e) => {
-        const card = e.target.closest('.tiler-card');
-        if (!card) return;
-        const id = card.getAttribute('data-id');
-        if (id) window.location.href = `/tilers/tiler.html?id=${encodeURIComponent(id)}`;
-      });
+    /* ---------- Load Featured + Top Rated once ---------- */
+    injectSkeletons('featured-tilers',4);
+    injectSkeletons('top-rated-tilers',6);
 
-      // Keyboard accessibility: Enter/Space to open
-      container.addEventListener('keydown', (e) => {
-        if (e.key !== 'Enter' && e.key !== ' ') return;
-        const card = e.target.closest('.tiler-card');
-        if (!card) return;
-        e.preventDefault();
-        const id = card.getAttribute('data-id');
-        if (id) window.location.href = `/tilers/tiler.html?id=${encodeURIComponent(id)}`;
-      });
-    });
-</script>
+    fetch('/tilers/tilers.json')
+      .then(r=>r.json())
+      .then(list=>{
+        const tilers=(Array.isArray(list)?list:[]).map(t=>({
+          ...t,
+          rating:Number(t.rating||0),
+          reviewCount:Number(t.reviewCount||0),
+          featured:Boolean(t.featured)
+        }));
 
+        // FEATURED: featured=true, sorted by rating desc then reviews desc
+        const featured = tilers
+          .filter(t=>t.featured)
+          .sort((a,b)=>(b.rating-a.rating)||(b.reviewCount-a.reviewCount))
+          .slice(0,6);
+
+        // TOP-RATED: rating >=4.5, >=3 reviews, not already in featured
+        const featuredIds=new Set(featured.map(t=>t.id));
+        let topRated = tilers
+          .filter(t=>t.rating>=4.5 && t.reviewCount>=3 && !featuredIds.has(t.id))
+          .sort((a,b)=>{
+            if(b.rating!==a.rating) return b.rating-a.rating;
+            if(b.reviewCount!==a.reviewCount) return b.reviewCount-a.reviewCount;
+            return String(a.name||'').localeCompare(String(b.name||''));
+          })
+          .slice(0,9);
+
+        // Inject CTA tile after 3rd card in Top Rated (index 2)
+        if(topRated.length>=3){
+          topRated = [...topRated.slice(0,3), '__CTA__', ...topRated.slice(3)];
+        }
+
+        const mount=(id,items)=>{
+          const el=document.getElementById(id); if(!el) return;
+          if(!items || !items.length){
+            el.innerHTML = `<p style="margin:8px 0;color:#64748b">No tilers to show yet.</p>`;
+            return;
+          }
+          el.innerHTML = items.map(item=> item==='__CTA__' ? estimatorCTAHTML() : tilerCardHTML(item)).join('');
+        };
+
+        mount('featured-tilers', featured);
+        mount('top-rated-tilers', topRated);
+      })
+      .catch(err=>{
+        console.error('Failed to load tilers.json', err);
+        const msg=`<p style="color:#b91c1c">Couldn’t load tilers right now. Please refresh.</p>`;
+        const f=document.getElementById('featured-tilers'); if(f) f.innerHTML=msg;
+        const t=document.getElementById('top-rated-tilers'); if(t) t.innerHTML=msg;
+      });
+  </script>
 </body>
 </html>
