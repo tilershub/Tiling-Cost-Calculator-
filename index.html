@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TILERSHUB | Find Certified Tilers in Sri Lanka</title>
 
-  <!-- Analytics (unchanged) -->
+  <!-- Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-DLJDBQZ8N2"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -14,13 +14,12 @@
   </script>
 
   <!-- SEO -->
-  <meta name="description" content="Find verified, reviewed tilers across Sri Lanka. Compare profiles and book with confidence. Calculate cost with our estimator." />
+  <meta name="description" content="Book trusted tilers for home tasks. Browse verified profiles, read reviews, and schedule with confidence across Sri Lanka." />
   <meta property="og:title" content="TILERSHUB | Certified Tilers" />
-  <meta property="og:description" content="Browse Certified Tilers and book the right professional for your job. Calculate cost with our estimator when needed." />
+  <meta property="og:description" content="Book trusted help for home tiling tasks. Verified, reviewed pros across Sri Lanka." />
   <meta property="og:image" content="/icons/og-image.png" />
   <link rel="icon" href="/icons/favicon.png" type="image/png" />
 
-  <!-- Base layout + Home styles -->
   <link rel="stylesheet" href="/css/layout.css" />
   <link rel="stylesheet" href="/css/home.css" />
 </head>
@@ -30,51 +29,115 @@
   <div id="header"></div>
 
   <main>
-    <!-- HERO -->
-    <section class="container hero" aria-labelledby="hero-title">
-      <h1 id="hero-title">Find & Book Certified Tilers</h1>
-      <p>Browse verified pros across Sri Lanka. Compare profiles and book with confidence.</p>
-      <a class="cta-primary" href="/estimator/estimator.html">💸 Need a cost first? Use the Estimator</a>
+
+    <!-- HERO like the screenshot -->
+    <section class="hero container" aria-labelledby="hero-title">
+      <div class="hero-badge">TILERSHUB CERTIFIED</div>
+      <h1 id="hero-title">Book trusted help<br>for home tiling tasks</h1>
+
+      <!-- Search bar (non-blocking UI; you can wire later) -->
+      <form class="searchbar" onsubmit="return false" role="search" aria-label="Find services">
+        <input id="home-search" type="search" placeholder="What do you need help with?" aria-label="Search services">
+        <button type="button" id="search-go" aria-label="Search">🔎</button>
+      </form>
+
+      <!-- Quick categories grid (chips) -->
+      <div class="quick-cats" aria-label="Popular tiling services">
+        <a href="/tilers/tilers.html?service=floor">🏠 Floor Tiling</a>
+        <a href="/tilers/tilers.html?service=bathroom">🛁 Bathroom Tiling</a>
+        <a href="/tilers/tilers.html?service=wall">🧱 Wall Tiling</a>
+        <a href="/tilers/tilers.html?service=pool">🏊 Pool Tiling</a>
+        <a href="/tilers/tilers.html?service=mosaic">🎨 Mosaic</a>
+        <a href="/tilers/tilers.html?service=repair">🛠️ Tile Repair</a>
+      </div>
+
+      <!-- Small helper text -->
+      <p class="hero-note">
+        Available for <strong>Site Visits</strong>, <strong>Quotation</strong>, and <strong>Full Installations</strong>.
+        Book verified professionals near you.
+      </p>
     </section>
 
-    <!-- Banner image -->
+    <!-- Big banner image like screenshot -->
     <section class="container banner-center">
       <a href="/tilers/tilers.html">
-        <img src="/icons/find-certified-tiler.png" alt="Find Certified Tilers in Sri Lanka - TILERSHUB" />
+        <img src="/icons/find-certified-tiler.png" alt="Find Certified Tilers in Sri Lanka - TILERSHUB">
       </a>
     </section>
 
-    <!-- FEATURED -->
-    <section class="container" aria-labelledby="featured-tilers-title">
-      <h2 id="featured-tilers-title">🏅 Featured Certified Tilers</h2>
-      <div class="tiler-list" id="featured-tilers"></div>
-      <div class="view-more-wrap">
-        <a class="view-more-btn" href="/tilers/tilers.html?filter=featured">View all featured</a>
+    <!-- STATS band (numbers can be tuned later) -->
+    <section class="stats-band">
+      <div class="container stats-wrap">
+        <div><strong>2.4 million+</strong><span>sqft tiled</span></div>
+        <div><strong>1.5 million+</strong><span>quotes generated</span></div>
+        <div><strong>100,000+</strong><span>happy homeowners</span></div>
       </div>
     </section>
 
-    <!-- TOP RATED -->
-    <section class="container" aria-labelledby="top-rated-tilers-title">
-      <h2 id="top-rated-tilers-title">⭐ Top-Rated Tilers</h2>
-      <div class="tiler-list" id="top-rated-tilers"></div>
+    <!-- Popular Projects (uses your tilers as visual cards) -->
+    <section class="container" aria-labelledby="popular-projects-title">
+      <h2 id="popular-projects-title">Popular Projects</h2>
+      <div id="popular-projects" class="project-list"></div>
       <div class="view-more-wrap">
-        <a class="view-more-btn" href="/tilers/tilers.html?sort=rating">View full ratings</a>
+        <a class="view-more-btn" href="/tilers/tilers.html">See more projects</a>
       </div>
     </section>
 
-    <!-- Estimator banner -->
-    <section class="container estimator-banner" aria-labelledby="estimator-banner-title">
-      <h3 id="estimator-banner-title">Not sure about the budget?</h3>
-      <p>Quickly estimate tiles, materials, and labor for your project.</p>
-      <a href="/estimator/estimator.html" aria-label="Open Tiling Cost Estimator">🧮 Open Tiling Cost Estimator</a>
+    <!-- Testimonials snapshot -->
+    <section class="container testimonials" aria-labelledby="testimonials-title">
+      <h2 id="testimonials-title">See what happy customers are saying</h2>
+      <div class="testi-grid" id="home-testimonials">
+        <!-- optional: will populate from random approved reviews if available -->
+      </div>
     </section>
+
+    <!-- Satisfaction / Guarantees band -->
+    <section class="container promise" aria-labelledby="promise-title">
+      <h2 id="promise-title">Your satisfaction, <span class="accent">guaranteed</span></h2>
+      <ul class="promise-list">
+        <li><strong>TILERSHUB Pledge:</strong> We work with verified tilers only.</li>
+        <li><strong>Vetted Pros:</strong> Background-checked, portfolio-reviewed.</li>
+        <li><strong>Dedicated Support:</strong> Friendly help when you need it.</li>
+      </ul>
+      <a class="pledge-link" href="/about/pledge.html">Read the pledge</a>
+    </section>
+
+    <!-- How it works -->
+    <section class="container how-it-works" aria-labelledby="how-title">
+      <h2 id="how-title">How it works</h2>
+      <ol>
+        <li><strong>Choose a Tiler</strong> by price, reviews, and availability.</li>
+        <li><strong>Schedule</strong> a site visit or start date.</li>
+        <li><strong>Chat, plan, and review</strong> all in one place.</li>
+      </ol>
+    </section>
+
+    <!-- Tag cloud / services -->
+    <section class="container tags-cloud" aria-labelledby="tags-title">
+      <h2 id="tags-title">Get help today</h2>
+      <div class="tags">
+        <a href="/tilers/tilers.html?service=floor">Floor Tiling</a>
+        <a href="/tilers/tilers.html?service=bathroom">Bathroom Tiling</a>
+        <a href="/tilers/tilers.html?service=wall">Wall Tiling</a>
+        <a href="/tilers/tilers.html?service=pool">Pool Tiling</a>
+        <a href="/tilers/tilers.html?service=outdoor">Outdoor Tiling</a>
+        <a href="/tilers/tilers.html?service=steps">Stairs & Nosing</a>
+        <a href="/tilers/tilers.html?service=mosaic">Mosaic</a>
+        <a href="/tilers/tilers.html?service=repairs">Repairs</a>
+        <a href="/tilers/tilers.html?service=grout">Re-grouting</a>
+        <a href="/tilers/tilers.html?service=skirting">Skirting</a>
+      </div>
+      <div class="view-more-wrap"><a class="view-more-btn" href="/services">See all services →</a></div>
+    </section>
+
   </main>
 
   <!-- Injected Footer -->
   <div id="footer"></div>
 
-  <!-- Header/Footer injection + Home logic -->
+  <!-- Scripts -->
   <script src="/js/include.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/js/home.js" defer></script>
 </body>
 </html>
