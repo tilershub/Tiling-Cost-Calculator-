@@ -2,347 +2,408 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Tiler Profile | TILERSHUB</title>
 
   <!-- Shared site styles -->
   <link rel="stylesheet" href="/css/layout.css">
 
   <style>
-    :root { --primary:#0052cc; --accent:#f8b400; --light-bg:#f9f9f9; --text:#333; --border:#ddd; }
-    body { margin:0; font-family:'Segoe UI', Tahoma, sans-serif; background:var(--light-bg); color:var(--text); }
-    header, footer { text-align:center; padding:15px; }
-    .cover{ height:150px; background-size:cover; background-position:center; }
-    .profile-pic{ width:100px; height:100px; border-radius:50%; border:4px solid #fff; margin-top:-50px; background-size:cover; background-position:center; margin-left:auto; margin-right:auto; }
-    .profile-info{ text-align:center; padding:10px 20px; }
-    .stars{ color:var(--accent); font-size:1.2em; margin:5px 0; }
-    .bio{ font-size:14px; color:#555; margin-top:8px; }
-    .highlight-tag{ display:inline-block; background:var(--accent); color:#fff; padding:5px 12px; border-radius:20px; font-size:12px; margin:5px 4px; }
-    .container{ padding:20px; max-width:600px; margin:auto; }
-    .card{ background:#fff; padding:15px; border-radius:10px; box-shadow:0 0 5px rgba(0,0,0,.05); margin-bottom:20px; }
-    .rating-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap:10px; margin-top:10px; }
-    .rating-grid div{ background:#f1f3f6; padding:10px; border-radius:6px; text-align:center; font-weight:500; }
-    input, select, textarea{ width:100%; margin:8px 0; padding:10px; border-radius:6px; border:1px solid var(--border); font-size:14px; }
-    button{ background:var(--primary); color:#fff; border:none; padding:12px; width:100%; border-radius:6px; font-size:16px; margin-top:10px; cursor:pointer; }
-    .review-card{ border-top:1px solid #eee; margin-top:10px; padding-top:10px; }
-    small{ color:#888; }
-    .muted{ color:#888; font-size:14px; }
-    a.link{ color:var(--accent); text-decoration:none; }
-    .hidden{ display:none !important; }
-
-    /* Action buttons row */
-    .action-row {
-      display:grid; grid-template-columns:1fr 1fr; gap:10px;
-      max-width:600px; margin:12px auto 0; padding:0 20px;
+    :root{
+      --primary:#0052cc; --accent:#f8b400; --light-bg:#fafafa; --text:#222; --muted:#666; --border:#e6e6e6;
+      --radius:12px; --radius-sm:10px; --shadow:0 6px 16px rgba(0,0,0,.06);
     }
-    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding:12px 14px; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid transparent; }
-    .btn .ico { width:18px; height:18px; fill:currentColor; }
-    .btn-wa { background:#25D366; color:#fff; }
-    .btn-wa:active { filter:brightness(0.95); }
-    .btn-fb { background:#1877F2; color:#fff; }
-    .btn-fb:active { filter:brightness(0.95); }
+    /* Base */
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:var(--light-bg);color:var(--text);line-height:1.45}
+    header,footer{padding:12px 16px;text-align:center}
 
-    /* Small screens: tighten spacing */
-    @media (max-width: 420px){
-      .cover{ height:120px; }
-      .profile-pic{ width:88px; height:88px; margin-top:-44px; }
+    /* Top visuals */
+    .cover{
+      height:180px;background-size:cover;background-position:center;
+      border-bottom:1px solid var(--border);
+    }
+    .profile-pic{
+      width:112px;height:112px;border-radius:50%;border:4px solid #fff;margin:-56px auto 8px;
+      background-size:cover;background-position:center;box-shadow:var(--shadow)
+    }
+
+    /* Info */
+    .profile-info{padding:0 16px;text-align:center}
+    .profile-info h2{margin:6px 0 2px;font-size:clamp(20px,3.8vw,26px)}
+    .profile-info p{margin:0;color:var(--muted);font-size:clamp(13px,3.4vw,15px)}
+    .stars{color:var(--accent);font-size:clamp(18px,4.4vw,22px);letter-spacing:1px;margin:6px 0}
+    .bio{font-size:clamp(13px,3.6vw,15px);color:#444;margin:6px auto 4px;max-width:680px}
+    #highlightTags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+    .highlight-tag{
+      background:var(--accent);color:#fff;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600
+    }
+
+    /* Layout */
+    .container{padding:16px;max-width:820px;margin:0 auto}
+    .card{
+      background:#fff;padding:14px;border-radius:var(--radius);box-shadow:var(--shadow);
+      border:1px solid var(--border);margin-bottom:14px
+    }
+    .card h3{margin:0 0 8px;font-size:clamp(16px,4vw,18px)}
+    .muted{color:var(--muted);font-size:13px}
+    small{color:#888}
+
+    /* Grid for summary */
+    .rating-grid{
+      display:grid;gap:10px;grid-template-columns:repeat(2,minmax(0,1fr));
+      margin-top:8px
+    }
+    .rating-grid div{
+      background:#f3f5f8;padding:10px;border-radius:var(--radius-sm);text-align:center;font-weight:600;font-size:13px
+    }
+    @media (min-width:600px){
+      .rating-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    }
+
+    /* Form */
+    label{display:block;margin:10px 0 6px;font-weight:600;font-size:14px}
+    input, select, textarea{
+      width:100%;padding:12px 12px;border-radius:10px;border:1px solid var(--border);font-size:15px;background:#fff
+    }
+    textarea{resize:vertical}
+    button{
+      background:var(--primary);color:#fff;border:none;padding:14px 16px;width:100%;
+      border-radius:10px;font-size:16px;font-weight:700;margin-top:10px;cursor:pointer
+    }
+    button:active{filter:brightness(.95)}
+
+    /* Action buttons (default inline + mobile sticky option) */
+    .action-row{
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:820px;margin:12px auto 0;padding:0 16px
+    }
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:14px;border-radius:12px;text-decoration:none;font-weight:800;border:1px solid transparent;font-size:15px
+    }
+    .btn .ico{width:18px;height:18px;fill:currentColor}
+    .btn-wa{background:#25D366;color:#fff}
+    .btn-fb{background:#1877F2;color:#fff}
+    .btn:active{transform:translateY(1px)}
+
+    /* Optional sticky action bar on phones */
+    .action-row--sticky{
+      position:fixed;left:0;right:0;bottom:0;z-index:40;
+      padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.92);
+      backdrop-filter:saturate(140%) blur(6px);border-top:1px solid var(--border)
+    }
+    .with-sticky-padding{padding-bottom:84px} /* prevent overlap when sticky is used */
+
+    /* Small screens */
+    @media (max-width:420px){
+      .cover{height:140px}
+      .profile-pic{width:96px;height:96px;margin-top:-48px}
+    }
+
+    /* Motion/accessibility */
+    @media (prefers-reduced-motion:reduce){
+      *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
     }
   </style>
 </head>
-<body>
+<body class="with-sticky-padding">
 
-<!-- Injected header -->
-<div id="header"></div>
+  <!-- Injected header -->
+  <div id="header"></div>
 
-<div class="cover" id="coverImage"></div>
+  <div class="cover" id="coverImage" role="img" aria-label="Cover image"></div>
 
-<div class="profile-info">
-  <div class="profile-pic" id="profilePic" aria-label="Tiler profile picture"></div>
-  <h2 id="tilerName">Loading...</h2>
-  <p id="tilerCity">City</p>
-  <div class="stars" id="ratingStars" aria-label="Average star rating">★★★★★</div>
-  <div class="bio" id="bioText">Loading bio...</div>
-  <div id="highlightTags" aria-label="Highlights"></div>
+  <div class="profile-info">
+    <div class="profile-pic" id="profilePic" aria-label="Tiler profile picture"></div>
+    <h2 id="tilerName">Loading...</h2>
+    <p id="tilerCity">City</p>
+    <div class="stars" id="ratingStars" aria-label="Average star rating" aria-live="polite">★★★★★</div>
+    <div class="bio" id="bioText">Loading bio...</div>
+    <div id="highlightTags" aria-label="Highlights"></div>
+  </div>
 
-  <!-- Contact / Share buttons -->
-  <div class="action-row">
+  <!-- Contact / Share buttons (sticky on phones) -->
+  <div id="ctaBar" class="action-row action-row--sticky" role="group" aria-label="Contact actions">
     <a id="btnWhatsApp" class="btn btn-wa" target="_blank" rel="noopener" aria-label="Contact on WhatsApp">
       <svg viewBox="0 0 32 32" aria-hidden="true" class="ico"><path d="M19.1 17.6c-.3-.2-1.7-.8-1.9-.9-.3-.1-.5-.2-.7.2s-.8.9-1 .9-.5 0-1-.4c-.5-.3-1-1-1.2-1.2s-.2-.5 0-.7c.2-.2.3-.5.5-.7.2-.2.2-.4.3-.6 0-.2 0-.5-.1-.7s-.7-1.8-1-2.4c-.3-.6-.6-.5-.8-.5h-.7c-.2 0-.7.1-1 .5-.3.3-1.3 1.3-1.3 3.1s1.4 3.6 1.6 3.9c.2.2 2.7 4.1 6.6 5.6 3.9 1.5 3.9 1 4.6 1s2.2-.8 2.5-1.7c.3-.8.3-1.6.2-1.7-.1-.2-.3-.2-.7-.4z"/><path d="M27 5a13 13 0 1 0-4 22l3.4 1-1-3.3A13 13 0 0 0 27 5zm-10 22A10 10 0 1 1 27 17a10 10 0 0 1-10 10z"/></svg>
       <span>WhatsApp</span>
     </a>
-
     <a id="btnFacebook" class="btn btn-fb" target="_blank" rel="noopener" aria-label="Open Facebook or share">
       <svg viewBox="0 0 32 32" aria-hidden="true" class="ico"><path d="M19 6h3V2h-3c-3.3 0-6 2.7-6 6v3H9v4h4v15h4V15h3.3l.7-4H17V8c0-1.1.9-2 2-2z"/></svg>
       <span>Facebook</span>
     </a>
   </div>
-</div>
 
-<div class="container">
-  <div class="card">
-    <h3>Review Summary</h3>
-    <div class="rating-grid">
-      <div>Quality of Work: —</div><div>Customer Service: —</div>
-      <div>Timeliness: —</div><div>Pricing Fairness: —</div>
-      <div>Cleanliness: —</div><div><strong>No reviews yet</strong></div>
+  <div class="container">
+    <div class="card">
+      <h3>Review Summary</h3>
+      <div class="rating-grid" id="summaryGrid">
+        <div>Quality of Work: —</div><div>Customer Service: —</div>
+        <div>Timeliness: —</div><div>Pricing Fairness: —</div>
+        <div>Cleanliness: —</div><div><strong>No reviews yet</strong></div>
+      </div>
+    </div>
+
+    <div class="card" id="reviewList" aria-live="polite">
+      <h3>Customer Reviews</h3>
+      <!-- reviews injected here -->
+    </div>
+
+    <div class="card" aria-labelledby="leaveReviewTitle">
+      <h3 id="leaveReviewTitle">Leave a Review</h3>
+      <!-- Honeypot -->
+      <input id="website" class="hidden" type="text" autocomplete="off" tabindex="-1" aria-hidden="true"/>
+
+      <label for="name">Your name</label>
+      <input type="text" id="name" placeholder="Your name" autocomplete="name" autocapitalize="words" inputmode="text"/>
+
+      <label for="phone">Phone (optional)</label>
+      <input type="tel" id="phone" placeholder="07XXXXXXXX" autocomplete="tel" inputmode="tel" pattern="[0-9+\-\s]{6,}"/>
+
+      <label for="email">Email (optional)</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email" inputmode="email"/>
+
+      <label for="quality">Quality of Work</label>
+      <select id="quality">
+        <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
+        <option value="3">3 - Average</option><option value="2">2 - Poor</option>
+        <option value="1">1 - Very Poor</option>
+      </select>
+
+      <label for="service">Customer Service</label>
+      <select id="service">
+        <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
+        <option value="3">3 - Average</option><option value="2">2 - Poor</option>
+        <option value="1">1 - Very Poor</option>
+      </select>
+
+      <label for="timeline">Timeline</label>
+      <select id="timeline">
+        <option value="5">5 - On time</option><option value="4">4 - Slight delay</option>
+        <option value="3">3 - Delayed</option><option value="2">2 - Late</option>
+        <option value="1">1 - Very late</option>
+      </select>
+
+      <label for="pricing">Pricing Fairness</label>
+      <select id="pricing">
+        <option value="5">5 - Very fair</option><option value="4">4 - Fair</option>
+        <option value="3">3 - Average</option><option value="2">2 - Pricey</option>
+        <option value="1">1 - Overpriced</option>
+      </select>
+
+      <label for="cleanliness">Cleanliness</label>
+      <select id="cleanliness">
+        <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
+        <option value="3">3 - Average</option><option value="2">2 - Poor</option>
+        <option value="1">1 - Very Poor</option>
+      </select>
+
+      <label for="comment">Feedback (optional)</label>
+      <textarea id="comment" rows="3" placeholder="What did you like, or what can be improved?"></textarea>
+
+      <button id="submitBtn" onclick="submitReview()">Submit Review</button>
+      <p class="muted">By submitting you agree to our <a class="link" href="/privacy">Privacy Policy</a>.</p>
     </div>
   </div>
 
-  <div class="card" id="reviewList">
-    <h3>Customer Reviews</h3>
-    <!-- reviews injected here -->
-  </div>
+  <!-- Injected footer -->
+  <div id="footer"></div>
 
-  <div class="card">
-    <h3>Leave a Review</h3>
-    <!-- Honeypot -->
-    <input id="website" class="hidden" type="text" autocomplete="off" tabindex="-1" aria-hidden="true"/>
+  <!-- Inject header & footer -->
+  <script src="/js/include.js" defer></script>
+  <!-- Supabase client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 
-    <input type="text" id="name" placeholder="Your name"/>
-    <input type="tel" id="phone" placeholder="Your phone number (optional)"/>
-    <input type="email" id="email" placeholder="Your email address (optional)"/>
+  <script>
+  // Wait until scripts are available even with defer
+  document.addEventListener("DOMContentLoaded", () => { initPage(); });
 
-    <label>Quality of Work</label>
-    <select id="quality">
-      <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
-      <option value="3">3 - Average</option><option value="2">2 - Poor</option>
-      <option value="1">1 - Very Poor</option>
-    </select>
+  async function initPage(){
+    // --- CONFIG ---
+    const SUPABASE_URL = "https://todzlrbaovbqdwxdlcxs.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHpscmJhb3ZicWR3eGRsY3hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUxNzM1MjIsImV4cCI6MjA3MDc0OTUyMn0.zsE2fHxF8QUPpiOfYXKz4oe8wVccN76ewDd56u2F6FY";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const MODERATED = false;
 
-    <label>Customer Service</label>
-    <select id="service">
-      <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
-      <option value="3">3 - Average</option><option value="2">2 - Poor</option>
-      <option value="1">1 - Very Poor</option>
-    </select>
+    const urlParams = new URLSearchParams(location.search);
+    const tilerId = urlParams.get("id");
 
-    <label>Timeline</label>
-    <select id="timeline">
-      <option value="5">5 - On time</option><option value="4">4 - Slight delay</option>
-      <option value="3">3 - Delayed</option><option value="2">2 - Late</option>
-      <option value="1">1 - Very late</option>
-    </select>
+    // --- UTIL ---
+    const $ = s=>document.querySelector(s);
+    const $$ = s=>document.querySelectorAll(s);
+    function escapeHtml(str){ return String(str||"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s])); }
+    function percentFrom5(avg){ return Math.round((avg/5)*100) + "%"; }
+    function starsFromAvg(avg){ const r = Math.round(avg||0); return "★".repeat(r) + "☆".repeat(5-r); }
+    function avgOfRow(r){ return ((r.quality||0)+(r.service||0)+(r.timeline||0)+(r.pricing||0)+(r.cleanliness||0))/5; }
 
-    <label>Pricing Fairness</label>
-    <select id="pricing">
-      <option value="5">5 - Very fair</option><option value="4">4 - Fair</option>
-      <option value="3">3 - Average</option><option value="2">2 - Pricey</option>
-      <option value="1">1 - Overpriced</option>
-    </select>
-
-    <label>Cleanliness</label>
-    <select id="cleanliness">
-      <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
-      <option value="3">3 - Average</option><option value="2">2 - Poor</option>
-      <option value="1">1 - Very Poor</option>
-    </select>
-
-    <textarea id="comment" rows="3" placeholder="Write your feedback (optional)..."></textarea>
-    <button id="submitBtn" onclick="submitReview()">Submit Review</button>
-    <p class="muted">By submitting you agree to our <a class="link" href="/privacy">Privacy Policy</a>.</p>
-  </div>
-</div>
-
-<!-- Injected footer -->
-<div id="footer"></div>
-
-<!-- Inject header & footer -->
-<script src="/js/include.js"></script>
-<!-- Supabase client -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-  // --- CONFIG ---
-  const SUPABASE_URL = "https://todzlrbaovbqdwxdlcxs.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHpscmJhb3ZicWR3eGRsY3hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUxNzM1MjIsImV4cCI6MjA3MDc0OTUyMn0.zsE2fHxF8QUPpiOfYXKz4oe8wVccN76ewDd56u2F6FY";
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  const MODERATED = false;
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const tilerId = urlParams.get("id");
-
-  // --- UTIL ---
-  function escapeHtml(str){ return String(str||"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s])); }
-  function percentFrom5(avg){ return Math.round((avg/5)*100) + "%"; }
-  function starsFromAvg(avg){ const r = Math.round(avg||0); return "★".repeat(r) + "☆".repeat(5-r); }
-  function avgOfRow(r){ return ((r.quality||0)+(r.service||0)+(r.timeline||0)+(r.pricing||0)+(r.cleanliness||0))/5; }
-
-  // Footer WA wiring retries (header/footer are injected async)
-  function wireFooterWhatsApp(cleanWa, name, tries=0){
-    const waFooter = document.getElementById("whatsappLink");
-    if (waFooter && cleanWa){
-      waFooter.href = `https://wa.me/94${cleanWa}`;
-      waFooter.textContent = "WhatsApp " + name;
-      waFooter.classList.add("link");
-      return;
+    // Footer WA wiring retries (header/footer are injected async)
+    function wireFooterWhatsApp(cleanWa, name, tries=0){
+      const waFooter = document.getElementById("whatsappLink");
+      if (waFooter && cleanWa){
+        waFooter.href = `https://wa.me/94${cleanWa}`;
+        waFooter.textContent = "WhatsApp " + name;
+        waFooter.classList.add("link");
+        return;
+      }
+      if (tries < 20) setTimeout(()=>wireFooterWhatsApp(cleanWa, name, tries+1), 200);
     }
-    if (tries < 20) setTimeout(()=>wireFooterWhatsApp(cleanWa, name, tries+1), 200);
-  }
 
-  // --- PROFILE (also wires buttons + footer WhatsApp) ---
-  async function loadTilerProfile(){
-    try{
-      if(!tilerId){
-        document.getElementById("tilerName").textContent = "Tiler not found";
-        document.querySelector(".container").insertAdjacentHTML("afterbegin",
-          `<div class="card"><p class="muted">Missing ?id= in the URL. Example: <code>/tilers/tiler.html?id=saman-anurudda</code></p></div>`);
-        return;
-      }
-      const res = await fetch("/tilers/tilers.json", { cache:"no-cache" });
-      if(!res.ok) throw new Error("Could not load /tilers/tilers.json");
-      const data = await res.json();
-
-      const tiler = data.find(t => String(t.id) === String(tilerId));
-      if(!tiler){
-        document.getElementById("tilerName").textContent = "Tiler not found";
-        document.querySelector(".container").insertAdjacentHTML("afterbegin",
-          `<div class="card"><p class="muted">Invalid tiler id: <code>${escapeHtml(tilerId)}</code></p></div>`);
-        return;
-      }
-      document.title = `${tiler.name} | TILERSHUB`;
-      document.getElementById("tilerName").textContent = tiler.name;
-      document.getElementById("tilerCity").textContent = "Verified Tiler – " + (tiler.city||"");
-      document.getElementById("bioText").textContent = tiler.bio || "";
-      document.getElementById("highlightTags").innerHTML = (tiler.highlights||[]).map(h=>`<span class="highlight-tag">${escapeHtml(h)}</span>`).join("");
-      document.getElementById("coverImage").style.backgroundImage = `url('${tiler.cover || "/default-cover.jpg"}')`;
-      document.getElementById("profilePic").style.backgroundImage = `url('${tiler.image}')`;
-
-      const cleanWa = String(tiler.whatsapp || "").replace(/\D/g,"").replace(/^0/,"");
-
-      // Action buttons
-      const btnWA = document.getElementById("btnWhatsApp");
-      if (btnWA && cleanWa) {
-        const msg = `Hi ${tiler.name}, I found you on TILERSHUB and would like to discuss a tiling job. (${location.href})`;
-        btnWA.href = `https://wa.me/94${cleanWa}?text=${encodeURIComponent(msg)}`;
-      } else if (btnWA) {
-        btnWA.style.display = "none";
-      }
-
-      const btnFB = document.getElementById("btnFacebook");
-      if (btnFB) {
-        const fbUrl = tiler.facebook && tiler.facebook.trim();
-        const msgr = tiler.messenger && tiler.messenger.trim();
-        if (msgr) {
-          btnFB.href = `https://m.me/${encodeURIComponent(msgr)}`;
-          btnFB.querySelector("span").textContent = "Messenger";
-        } else if (fbUrl) {
-          btnFB.href = fbUrl;
-          btnFB.querySelector("span").textContent = "Facebook";
-        } else {
-          btnFB.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`;
-          btnFB.querySelector("span").textContent = "Share";
+    // --- PROFILE (also wires buttons + footer WhatsApp) ---
+    async function loadTilerProfile(){
+      try{
+        if(!tilerId){
+          $("#tilerName").textContent = "Tiler not found";
+          $(".container").insertAdjacentHTML("afterbegin",
+            `<div class="card"><p class="muted">Missing ?id= in the URL. Example: <code>/tilers/tiler.html?id=saman-anurudda</code></p></div>`);
+          return;
         }
+        const res = await fetch("/tilers/tilers.json", { cache:"no-cache" });
+        if(!res.ok) throw new Error("Could not load /tilers/tilers.json");
+        const data = await res.json();
+        const tiler = data.find(t => String(t.id) === String(tilerId));
+        if(!tiler){
+          $("#tilerName").textContent = "Tiler not found";
+          $(".container").insertAdjacentHTML("afterbegin",
+            `<div class="card"><p class="muted">Invalid tiler id: <code>${escapeHtml(tilerId)}</code></p></div>`);
+          return;
+        }
+
+        document.title = `${tiler.name} | TILERSHUB`;
+        $("#tilerName").textContent = tiler.name;
+        $("#tilerCity").textContent = "Verified Tiler – " + (tiler.city||"");
+        $("#bioText").textContent = tiler.bio || "";
+        $("#highlightTags").innerHTML = (tiler.highlights||[]).map(h=>`<span class="highlight-tag">${escapeHtml(h)}</span>`).join("");
+        $("#coverImage").style.backgroundImage = `url('${tiler.cover || "/default-cover.jpg"}')`;
+        $("#profilePic").style.backgroundImage = `url('${tiler.image}')`;
+
+        const cleanWa = String(tiler.whatsapp || "").replace(/\D/g,"").replace(/^0/,"");
+
+        // Action buttons
+        const btnWA = $("#btnWhatsApp");
+        if (btnWA && cleanWa) {
+          const msg = `Hi ${tiler.name}, I found you on TILERSHUB and would like to discuss a tiling job. (${location.href})`;
+          btnWA.href = `https://wa.me/94${cleanWa}?text=${encodeURIComponent(msg)}`;
+        } else if (btnWA) {
+          btnWA.style.display = "none";
+        }
+
+        const btnFB = $("#btnFacebook");
+        if (btnFB) {
+          const fbUrl = tiler.facebook && tiler.facebook.trim();
+          const msgr = tiler.messenger && tiler.messenger.trim();
+          if (msgr) {
+            btnFB.href = `https://m.me/${encodeURIComponent(msgr)}`;
+            btnFB.querySelector("span").textContent = "Messenger";
+          } else if (fbUrl) {
+            btnFB.href = fbUrl;
+            btnFB.querySelector("span").textContent = "Facebook";
+          } else {
+            btnFB.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`;
+            btnFB.querySelector("span").textContent = "Share";
+          }
+        }
+
+        if (cleanWa) wireFooterWhatsApp(cleanWa, tiler.name);
+      }catch(e){
+        console.error(e);
+        $(".container").insertAdjacentHTML("afterbegin",
+          `<div class="card"><p class="muted">Could not load profile. Check if <code>/tilers/tilers.json</code> exists and is publicly readable.</p></div>`);
+      }
+    }
+
+    // --- REVIEWS LOAD/RENDER ---
+    async function loadReviews(){
+      if(!tilerId){ renderEmptySummary(); return; }
+      const { data, error } = await supabase
+        .from("reviews")
+        .select("*")
+        .eq("tiler_id", tilerId)
+        .eq("approved", true)
+        .order("created_at", { ascending:false });
+      if(error){ console.error(error); renderEmptySummary(); renderReviews([]); return; }
+      renderSummary(data); renderReviews(data);
+    }
+    function renderEmptySummary(){
+      $("#summaryGrid").innerHTML =
+        `<div>Quality of Work: —</div><div>Customer Service: —</div><div>Timeliness: —</div><div>Pricing Fairness: —</div><div>Cleanliness: —</div><div><strong>No reviews yet</strong></div>`;
+      $("#ratingStars").innerHTML = "☆☆☆☆☆";
+    }
+    function renderSummary(rows){
+      if(!rows.length){ renderEmptySummary(); return; }
+      const n = rows.length;
+      const sum = rows.reduce((a,r)=>({ q:a.q+(r.quality||0), s:a.s+(r.service||0), t:a.t+(r.timeline||0), p:a.p+(r.pricing||0), c:a.c+(r.cleanliness||0) }),{q:0,s:0,t:0,p:0,c:0});
+      const avgQ=sum.q/n, avgS=sum.s/n, avgT=sum.t/n, avgP=sum.p/n, avgC=sum.c/n;
+      const avgStars=(avgQ+avgS+avgT+avgP+avgC)/5;
+      const recommends = Math.round((rows.filter(r=>(((r.quality||0)+(r.service||0)+(r.timeline||0)+(r.pricing||0)+(r.cleanliness||0))/5)>=4).length/n)*100);
+      $("#summaryGrid").innerHTML =
+        `<div>Quality of Work: ${percentFrom5(avgQ)}</div><div>Customer Service: ${percentFrom5(avgS)}</div><div>Timeliness: ${percentFrom5(avgT)}</div><div>Pricing Fairness: ${percentFrom5(avgP)}</div><div>Cleanliness: ${percentFrom5(avgC)}</div><div><strong>${recommends}% recommends this tiler</strong></div>`;
+      $("#ratingStars").innerHTML = starsFromAvg(avgStars);
+    }
+    function renderReviews(rows){
+      const list = $("#reviewList");
+      list.querySelectorAll(".review-card").forEach(n=>n.remove());
+      rows.forEach(r=>{
+        const avg = Math.round((((r.quality||0)+(r.service||0)+(r.timeline||0)+(r.pricing||0)+(r.cleanliness||0))/5));
+        const created = new Date(r.created_at).toISOString().split("T")[0];
+        const phone = r.phone ? escapeHtml(r.phone) : "N/A";
+        const email = r.email ? escapeHtml(r.email) : "N/A";
+        const comment = escapeHtml(r.comment||"");
+        const name = escapeHtml(r.name||"Anonymous");
+        list.insertAdjacentHTML("beforeend", `
+          <div class="review-card" style="border-top:1px solid #eee;margin-top:10px;padding-top:10px">
+            <strong>${name}</strong> <small>– ${created}</small>
+            <div class="stars" aria-label="Review average">${"★".repeat(avg)}${"☆".repeat(5-avg)}</div>
+            ${comment ? `<p style="margin:.4rem 0 .2rem">${comment}</p>` : ``}
+            ${(r.phone||r.email)?`<p class="muted"><small>Phone: ${phone} &nbsp;|&nbsp; Email: ${email}</small></p>`:''}
+          </div>`);
+      });
+    }
+
+    // --- SUBMIT REVIEW ---
+    window.submitReview = async function submitReview(){
+      if(!tilerId){ return alert("Missing tiler id."); }
+      const btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+
+      if(document.getElementById("website").value.trim()){ btn.disabled=false; return; } // honeypot
+
+      const name = document.getElementById("name").value.trim() || "Anonymous";
+      const phone = document.getElementById("phone").value.trim() || null;
+      const email = document.getElementById("email").value.trim() || null;
+      const quality = parseInt(document.getElementById("quality").value,10)||5;
+      const service = parseInt(document.getElementById("service").value,10)||5;
+      const timeline = parseInt(document.getElementById("timeline").value,10)||5;
+      const pricing = parseInt(document.getElementById("pricing").value,10)||5;
+      const cleanliness = parseInt(document.getElementById("cleanliness").value,10)||5;
+      const comment = document.getElementById("comment").value.trim() || null;
+
+      if(![quality,service,timeline,pricing,cleanliness].every(v=>v>=1 && v<=5)){
+        btn.disabled=false; return alert("Please select valid ratings (1–5).");
       }
 
-      // Try wiring footer WhatsApp after includes load
-      if (cleanWa) wireFooterWhatsApp(cleanWa, tiler.name);
+      const payload = { tiler_id: tilerId, name, phone, email, quality, service, timeline, pricing, cleanliness, comment };
+      if(MODERATED){ payload.approved = false; }
 
-    }catch(e){
-      console.error(e);
-      document.querySelector(".container").insertAdjacentHTML("afterbegin",
-        `<div class="card"><p class="muted">Could not load profile. Check if <code>/tilers/tilers.json</code> exists and is publicly readable.</p></div>`);
-    }
-  }
+      const { error } = await supabase.from("reviews").insert([payload]);
+      if(error){ console.error(error); btn.disabled=false; return alert("Could not submit review. Please try again."); }
 
-  // --- REVIEWS LOAD/RENDER ---
-  async function loadReviews(){
-    if(!tilerId){ renderEmptySummary(); return; }
-    const { data, error } = await supabase
-      .from("reviews")
-      .select("*")
-      .eq("tiler_id", tilerId)
-      .eq("approved", true)
-      .order("created_at", { ascending:false });
-    if(error){ console.error(error); renderEmptySummary(); renderReviews([]); return; }
-    renderSummary(data); renderReviews(data);
-  }
-  function renderEmptySummary(){
-    document.querySelector(".rating-grid").innerHTML =
-      `<div>Quality of Work: —</div><div>Customer Service: —</div><div>Timeliness: —</div><div>Pricing Fairness: —</div><div>Cleanliness: —</div><div><strong>No reviews yet</strong></div>`;
-    document.getElementById("ratingStars").innerHTML = "☆☆☆☆☆";
-  }
-  function renderSummary(rows){
-    if(!rows.length){ renderEmptySummary(); return; }
-    const n = rows.length;
-    const sum = rows.reduce((a,r)=>({ q:a.q+(r.quality||0), s:a.s+(r.service||0), t:a.t+(r.timeline||0), p:a.p+(r.pricing||0), c:a.c+(r.cleanliness||0) }),{q:0,s:0,t:0,p:0,c:0});
-    const avgQ=sum.q/n, avgS=sum.s/n, avgT=sum.t/n, avgP=sum.p/n, avgC=sum.c/n;
-    const avgStars=(avgQ+avgS+avgT+avgP+avgC)/5;
-    const recommends = Math.round((rows.filter(r=>avgOfRow(r)>=4).length/n)*100);
-    document.querySelector(".rating-grid").innerHTML =
-      `<div>Quality of Work: ${percentFrom5(avgQ)}</div><div>Customer Service: ${percentFrom5(avgS)}</div><div>Timeliness: ${percentFrom5(avgT)}</div><div>Pricing Fairness: ${percentFrom5(avgP)}</div><div>Cleanliness: ${percentFrom5(avgC)}</div><div><strong>${recommends}% recommends this tiler</strong></div>`;
-    document.getElementById("ratingStars").innerHTML = starsFromAvg(avgStars);
-  }
-  function renderReviews(rows){
-    const list = document.getElementById("reviewList");
-    list.querySelectorAll(".review-card").forEach(n=>n.remove());
-    rows.forEach(r=>{
-      const avg = Math.round(avgOfRow(r));
-      const created = new Date(r.created_at).toISOString().split("T")[0];
-      const phone = r.phone ? escapeHtml(r.phone) : "N/A";
-      const email = r.email ? escapeHtml(r.email) : "N/A";
-      const comment = escapeHtml(r.comment||"");
-      const name = escapeHtml(r.name||"Anonymous");
-      list.insertAdjacentHTML("beforeend", `
-        <div class="review-card">
-          <strong>${name}</strong> <small>– ${created}</small>
-          <div class="stars" aria-label="Review average">${"★".repeat(avg)}${"☆".repeat(5-avg)}</div>
-          ${comment ? `<p>${comment}</p>` : ``}
-          ${(r.phone||r.email)?`<p><small>Phone: ${phone} | Email: ${email}</small></p>`:''}
-        </div>`);
-    });
-  }
+      ["name","phone","email","comment"].forEach(id=>document.getElementById(id).value="");
+      ["quality","service","timeline","pricing","cleanliness"].forEach(id=>document.getElementById(id).value="5");
 
-  // --- SUBMIT REVIEW ---
-  async function submitReview(){
-    if(!tilerId){ return alert("Missing tiler id."); }
-    const btn = document.getElementById("submitBtn");
-    btn.disabled = true;
+      if(MODERATED){ alert("Thanks! Your review will be visible after approval."); }
+      else { await loadReviews(); alert("Review submitted."); }
 
-    if(document.getElementById("website").value.trim()){ btn.disabled=false; return; } // honeypot
-
-    const name = document.getElementById("name").value.trim() || "Anonymous";
-    const phone = document.getElementById("phone").value.trim() || null;
-    const email = document.getElementById("email").value.trim() || null;
-    const quality = parseInt(document.getElementById("quality").value,10)||5;
-    const service = parseInt(document.getElementById("service").value,10)||5;
-    const timeline = parseInt(document.getElementById("timeline").value,10)||5;
-    const pricing = parseInt(document.getElementById("pricing").value,10)||5;
-    const cleanliness = parseInt(document.getElementById("cleanliness").value,10)||5;
-    const comment = document.getElementById("comment").value.trim() || null;
-
-    if(![quality,service,timeline,pricing,cleanliness].every(v=>v>=1 && v<=5)){
-      btn.disabled=false; return alert("Please select valid ratings (1–5).");
+      btn.disabled=false;
     }
 
-    const payload = { tiler_id: tilerId, name, phone, email, quality, service, timeline, pricing, cleanliness, comment };
-    if(MODERATED){ payload.approved = false; }
+    // Kickoff
+    await loadTilerProfile();
+    await loadReviews();
 
-    const { error } = await supabase.from("reviews").insert([payload]);
-    if(error){ console.error(error); btn.disabled=false; return alert("Could not submit review. Please try again."); }
-
-    ["name","phone","email","comment"].forEach(id=>document.getElementById(id).value="");
-    ["quality","service","timeline","pricing","cleanliness"].forEach(id=>document.getElementById(id).value="5");
-
-    if(MODERATED){ alert("Thanks! Your review will be visible after approval."); }
-    else { await loadReviews(); alert("Review submitted."); }
-
-    btn.disabled=false;
+    // If include.js later dispatches a custom event, refresh again (harmless if already loaded)
+    document.addEventListener("includes:ready", async () => { await loadTilerProfile(); await loadReviews(); });
   }
-  window.submitReview = submitReview;
-
-  // --- KICKOFF: run after DOM is ready (don’t depend on custom include events) ---
-  document.addEventListener("DOMContentLoaded", async () => {
-    await loadTilerProfile();
-    await loadReviews();
-  });
-
-  // If include.js later dispatches a custom event, refresh again (harmless if already loaded)
-  document.addEventListener("includes:ready", async () => {
-    await loadTilerProfile();
-    await loadReviews();
-  });
-</script>
-
+  </script>
 </body>
 </html>
