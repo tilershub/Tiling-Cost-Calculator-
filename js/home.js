@@ -1,10 +1,10 @@
-/* ==== Inline SVG icons ==== */
+/* ========= Inline SVG icons ========= */
 const SVG = {
   pin:'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.438 7-10a7 7 0 10-14 0c0 5.562 7 10 7 10z" stroke="currentColor" stroke-width="2"/></svg>',
   star:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17.27l6.18 3.73-1.64-7.03L21 9.24l-7.19-.61L12 2 10.19 8.63 3 9.24l4.46 4.73L5.82 21z"/></svg>'
 };
 
-/* ==== Helpers ==== */
+/* ========= Helpers ========= */
 function starsHTML(rating=0){
   const full=Math.floor(rating), half=rating-full>=0.5?1:0, empty=5-full-half;
   const seg=(n,cls)=>Array.from({length:n}).map(()=>`<span class="${cls}" aria-hidden="true">${SVG.star}</span>`).join('');
@@ -14,20 +14,28 @@ function starsHTML(rating=0){
 }
 const tag = (t) => `<span class="tiler-tag">${t}</span>`;
 
-/* ==== Horizontal card template (Book Now only) ==== */
+/* ========= Horizontal card (Book Now only) ========= */
 function tilerCardHTML(t){
   const rating = Number(t.rating || 0);
   const reviewCount = Number(t.reviewCount || 0);
-  const highlights = Array.isArray(t.highlights) ? t.highlights.slice(0,3) : [];
+  // Limit chips to 3 (2 on narrow screens)
+  const isNarrow = window.matchMedia('(max-width:520px)').matches;
+  const highlights = Array.isArray(t.highlights) ? t.highlights.slice(0, isNarrow ? 2 : 3) : [];
   const profileUrl = `/tilers/tiler.html?id=${encodeURIComponent(t.id)}`;
 
   return `
     <article class="tiler-card" role="article" aria-label="${t.name}">
-      <span class="stretched-link" aria-hidden="true"></span>
+      <!-- whole-card link (except button) -->
+      <a class="stretched-link" href="${profileUrl}" aria-hidden="true" tabindex="-1"></a>
 
       <div class="tiler-avatar-wrap">
         ${t.featured ? `<span class="tiler-pill">Certified</span>` : ``}
-        <img class="tiler-avatar" src="${t.image}" alt="${t.name}" loading="lazy">
+        <img class="tiler-avatar"
+             src="${t.image}"
+             alt="${t.name}"
+             loading="lazy"
+             decoding="async"
+             sizes="(max-width:520px) 64px, 72px" />
       </div>
 
       <div class="tiler-body">
@@ -46,12 +54,13 @@ function tilerCardHTML(t){
         ${highlights.length ? `<div class="tiler-tags">${highlights.map(tag).join('')}</div>` : ``}
       </div>
 
+      <!-- Single CTA -->
       <a class="book-btn" href="${profileUrl}&book=1" aria-label="Book ${t.name} now">Book Now</a>
     </article>
   `;
 }
 
-/* ==== CTA tile used inside grids ==== */
+/* ========= CTA tile used inside grids ========= */
 const estimatorCTAHTML = () => `
   <div class="tiler-card tiler-cta" tabindex="0" role="link" aria-label="Open Tiling Cost Estimator"
        onclick="window.location.href='/estimator/estimator.html'"
@@ -65,7 +74,7 @@ const estimatorCTAHTML = () => `
   </div>
 `;
 
-/* ==== Lightweight horizontal skeleton ==== */
+/* ========= Lightweight skeletons ========= */
 function skeletonCardHTML(){
   return `
     <article class="tiler-card" aria-hidden="true">
@@ -87,7 +96,7 @@ function injectSkeletons(id,count=4){
   el.innerHTML = Array.from({length:count}).map(skeletonCardHTML).join('');
 }
 
-/* ==== Fetch once, render sections ==== */
+/* ========= Fetch once, render Featured + Top Rated ========= */
 injectSkeletons('featured-tilers',4);
 injectSkeletons('top-rated-tilers',6);
 
@@ -101,13 +110,13 @@ fetch('/tilers/tilers.json')
       featured:Boolean(t.featured)
     }));
 
-    // FEATURED
+    // FEATURED: featured=true, sort by rating desc then reviews
     const featured = tilers
       .filter(t=>t.featured)
       .sort((a,b)=>(b.rating-a.rating)||(b.reviewCount-a.reviewCount))
       .slice(0,6);
 
-    // TOP-RATED (exclude already featured)
+    // TOP-RATED: >=4.5 stars, >=3 reviews, exclude featured
     const featuredIds=new Set(featured.map(t=>t.id));
     let topRated = tilers
       .filter(t=>t.rating>=4.5 && t.reviewCount>=3 && !featuredIds.has(t.id))
@@ -118,7 +127,7 @@ fetch('/tilers/tilers.json')
       })
       .slice(0,9);
 
-    // Insert Estimator CTA after the 3rd top-rated card
+    // Insert Estimator CTA after 3rd item
     if(topRated.length>=3){
       topRated = [...topRated.slice(0,3), '__CTA__', ...topRated.slice(3)];
     }
