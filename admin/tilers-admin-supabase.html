@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TILERSHUB — Tilers Admin (Supabase)</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root { --bg:#0b1220; --panel:#11192b; --muted:#97a0b5; --text:#e9edf7; --accent:#42b883; --danger:#ff5d5d; --border:#21314d; }
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  header{position:sticky;top:0;background:rgba(11,18,32,.9);backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--border);z-index:9}
+  .wrap{max-width:1100px;margin:0 auto;padding:16px}
+  h1{margin:0;font-size:18px;display:flex;gap:10px;align-items:center}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  button,.btn{background:#1b2742;border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:10px;cursor:pointer}
+  button:hover{border-color:#2b436c}
+  .btn-accent{background:var(--accent);border:0;color:#07131a}
+  .btn-danger{background:var(--danger);border:0;color:#1b0005}
+  .btn-ghost{background:transparent;border:1px dashed var(--border)}
+  .grid{display:grid;gap:16px}
+  .panels{display:grid;grid-template-columns:320px 1fr;gap:16px;margin-top:16px}
+  @media(max-width:960px){.panels{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px}
+  .search{display:flex;gap:8px}
+  input,select,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0f1626;color:var(--text)}
+  textarea{min-height:120px}
+  .list{display:flex;flex-direction:column;gap:8px;max-height:65vh;overflow:auto}
+  .card{display:flex;gap:10px;padding:10px;border:1px solid var(--border);border-radius:12px;align-items:center}
+  .card small{color:var(--muted)}
+  .pill{display:inline-flex;gap:6px;align-items:center;padding:6px 8px;background:#0f1a2e;border:1px solid var(--border);border-radius:999px;font-size:12px}
+  .tags{display:flex;flex-wrap:wrap;gap:8px}
+  .flex{display:flex;gap:8px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .muted{color:var(--muted)}
+  .danger{color:var(--danger)}
+  .footer{margin-top:16px;color:var(--muted);font-size:12px}
+  .divider{height:1px;background:var(--border);margin:12px 0}
+  .inline{display:flex;align-items:center;gap:8px}
+  .switch{display:inline-flex;align-items:center;gap:8px}
+  .switch input{width:auto}
+  .hlp{font-size:12px;color:var(--muted)}
+  .error{background:#2b0f16;border:1px solid #6b1e2b;color:#ffd3da;padding:10px;border-radius:10px;white-space:pre-wrap}
+  .success{background:#0f2b1b;border:1px solid #1e6b3c;color:#d8ffea;padding:10px;border-radius:10px;white-space:pre-wrap}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .kpi .panel{padding:12px;text-align:center}
+  .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
+  .sticky-actions{position:sticky;bottom:0;background:var(--panel);border-top:1px solid var(--border);padding:10px;margin:12px -14px -14px;border-bottom-left-radius:14px;border-bottom-right-radius:14px;display:flex;gap:8px;justify-content:flex-end}
+  .authbar{display:flex;gap:8px;align-items:center;margin-left:auto}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>🛠️ TILERSHUB — Tilers Admin (Supabase)
+      <span class="authbar">
+        <span id="authStatus" class="muted">Signed out</span>
+        <button id="btnShowLogin">Sign in</button>
+        <button id="btnSignOut" style="display:none">Sign out</button>
+      </span>
+    </h1>
+    <div class="toolbar">
+      <button id="btnReload">Reload</button>
+      <button id="btnImport">Import JSON → DB</button>
+      <button id="btnExport" class="btn-accent">Export DB → JSON</button>
+      <button id="btnValidate">Validate</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="kpi">
+    <div class="panel"><div class="muted">Total Tilers</div><div id="kpiCount" style="font-size:24px">0</div></div>
+    <div class="panel"><div class="muted">Featured</div><div id="kpiFeatured" style="font-size:24px">0</div></div>
+    <div class="panel"><div class="muted">Avg Rating</div><div id="kpiRating" style="font-size:24px">0</div></div>
+    <div class="panel"><div class="muted">Cities</div><div id="kpiCities" style="font-size:24px">0</div></div>
+  </div>
+
+  <div class="panels">
+    <!-- Left: list -->
+    <section class="panel">
+      <div class="search">
+        <input id="search" placeholder="Search by name, city, id…" />
+        <select id="sort">
+          <option value="name">Sort: Name</option>
+          <option value="city">Sort: City</option>
+          <option value="rating">Sort: Rating</option>
+          <option value="review_count">Sort: Reviews</option>
+          <option value="featured">Sort: Featured</option>
+        </select>
+      </div>
+      <div class="divider"></div>
+      <div class="list" id="list"></div>
+      <div class="divider"></div>
+      <button id="btnAdd" class="btn-accent">+ Add New Tiler</button>
+      <div class="footer">Changes are saved to Supabase (requires admin sign-in).</div>
+    </section>
+
+    <!-- Right: editor -->
+    <section class="panel">
+      <div class="grid" id="editor" style="display:none">
+        <div class="row">
+          <div>
+            <label>ID (slug) <span class="hlp">e.g., saman-anurudda</span></label>
+            <input id="id" />
+          </div>
+          <div>
+            <label>Name</label>
+            <input id="name" />
+          </div>
+        </div>
+        <div class="row3">
+          <div><label>City</label><input id="city" /></div>
+          <div><label>WhatsApp</label><input id="whatsapp" /></div>
+          <div><label>Facebook URL</label><input id="facebook" /></div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Image URL</label>
+            <input id="image" placeholder="https://... or /tilers/..." />
+            <div class="flex">
+              <input type="file" id="imageFile" accept="image/*" />
+              <button id="btnUploadImage">Upload → set URL</button>
+            </div>
+          </div>
+          <div>
+            <label>Cover URL</label>
+            <input id="cover" placeholder="https://... or /tilers/..." />
+            <div class="flex">
+              <input type="file" id="coverFile" accept="image/*" />
+              <button id="btnUploadCover">Upload → set URL</button>
+            </div>
+          </div>
+        </div>
+        <div class="row3">
+          <div><label>Rating (0–5)</label><input id="rating" type="number" step="0.1" min="0" max="5" /></div>
+          <div><label>Review Count</label><input id="review_count" type="number" step="1" min="0" /></div>
+          <div class="switch"><input id="featured" type="checkbox" /> <label for="featured">Featured</label></div>
+        </div>
+
+        <div>
+          <label>Bio (supports line breaks)</label>
+          <textarea id="bio" placeholder="Short professional bio"></textarea>
+          <div class="hlp">Tip: render with <code class="mono">white-space: pre-line;</code> on the site.</div>
+        </div>
+
+        <div>
+          <label>Highlights</label>
+          <div class="tags" id="highlights"></div>
+          <div class="flex">
+            <input id="newHighlight" placeholder="Add highlight (Enter)" />
+            <button id="btnAddHighlight">Add</button>
+          </div>
+        </div>
+
+        <div class="sticky-actions">
+          <button id="btnGenerateId" title="Generate ID from Name">Generate ID</button>
+          <button id="btnDelete" class="btn-danger">Delete</button>
+          <button id="btnSave" class="btn-accent">Save Changes</button>
+        </div>
+      </div>
+
+      <div id="emptyState">
+        <p class="muted">Select a tiler on the left to edit — or click “Add New Tiler”.</p>
+      </div>
+
+      <div id="messages" style="margin-top:10px"></div>
+    </section>
+  </div>
+</main>
+
+<!-- Login modal -->
+<div id="loginModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);align-items:center;justify-content:center">
+  <div style="background:#0f1626;border:1px solid var(--border);padding:20px;border-radius:12px;min-width:320px;max-width:90%">
+    <h3 style="margin-top:0">Admin Sign in</h3>
+    <div class="row">
+      <div>
+        <label>Email</label>
+        <input id="loginEmail" type="email" placeholder="you@example.com" />
+      </div>
+      <div>
+        <label>Password (or leave blank for magic link)</label>
+        <input id="loginPassword" type="password" placeholder="••••••••" />
+      </div>
+    </div>
+    <div class="toolbar" style="margin-top:12px">
+      <button id="btnDoPassword" class="btn-accent">Sign in (password)</button>
+      <button id="btnDoMagic" class="btn">Send magic link</button>
+      <button id="btnCloseLogin" class="btn-ghost">Close</button>
+    </div>
+    <div id="loginMsg" style="margin-top:10px" class="muted"></div>
+  </div>
+</div>
+
+<input type="file" id="fileInput" accept="application/json" hidden />
+
+<script>
+/* --------- CONFIG: fill these from your Supabase project --------- */
+const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR-ANON-KEY";
+const BUCKET = "tilers";
+/* ---------------------------------------------------------------- */
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
+
+/* ----------------- DOM helpers & state ----------------- */
+const $ = (sel)=>document.querySelector(sel);
+const ById = (id)=>document.getElementById(id);
+const slugify = s => s.toLowerCase().normalize('NFKD').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
+const deepClone = obj => JSON.parse(JSON.stringify(obj));
+
+let rows = [];           // Live DB rows
+let filtered = [];
+let selectedIndex = -1;
+
+/* ----------------- Schema validation (client-side) ----------------- */
+function validate(arr) {
+  const errors = [];
+  if (!Array.isArray(arr)) return ["Root must be an array"];
+  const seen = new Set();
+  arr.forEach((t,i)=>{
+    const p = `Item ${i+1} (${t.name || t.id || "no-id"})`;
+    if (!t.id) errors.push(`${p}: "id" required`);
+    if (seen.has(t.id)) errors.push(`${p}: duplicate id "${t.id}"`);
+    seen.add(t.id);
+    if (!t.name) errors.push(`${p}: "name" required`);
+    ["city","facebook","whatsapp","image","cover","bio"].forEach(k=>{
+      if (typeof t[k] !== "string") errors.push(`${p}: "${k}" must be string`);
+    });
+    if (!Array.isArray(t.highlights)) errors.push(`${p}: "highlights" must be string[]`);
+    if (typeof t.featured !== "boolean") errors.push(`${p}: "featured" must be boolean`);
+    const rating = Number(t.rating);
+    if (Number.isNaN(rating) || rating < 0 || rating > 5) errors.push(`${p}: "rating" must be 0–5`);
+    if (!Number.isInteger(t.reviewCount ?? t.review_count) || (t.reviewCount ?? t.review_count) < 0)
+      errors.push(`${p}: "reviewCount" must be integer ≥ 0`);
+  });
+  return errors;
+}
+
+/* ----------------- Auth UI ----------------- */
+function setAuthUi(session){
+  if (session?.user) {
+    ById('authStatus').textContent = `Signed in as ${session.user.email || session.user.id}`;
+    ById('btnShowLogin').style.display = 'none';
+    ById('btnSignOut').style.display = 'inline-block';
+  } else {
+    ById('authStatus').textContent = 'Signed out';
+    ById('btnShowLogin').style.display = 'inline-block';
+    ById('btnSignOut').style.display = 'none';
+  }
+}
+sb.auth.getSession().then(({ data }) => setAuthUi(data.session));
+sb.auth.onAuthStateChange((_event, session) => { setAuthUi(session); });
+
+/* ----------------- Flash messages ----------------- */
+function flash(msg, isError=false){
+  const box = document.createElement('div');
+  box.className = isError ? "error" : "success";
+  box.textContent = msg;
+  ById('messages').prepend(box);
+  setTimeout(()=>box.remove(), 4000);
+}
+
+/* ----------------- Load / Render ----------------- */
+async function loadRows(){
+  const { data, error } = await sb
+    .from('tilers')
+    .select('*')
+    .order('name', { ascending: true });
+  if (error) { flash("Load error: "+error.message, true); return; }
+  rows = data.map(r=>({
+    id: r.id, name: r.name, city: r.city,
+    image: r.image || "", cover: r.cover || "",
+    facebook: r.facebook || "", whatsapp: r.whatsapp || "",
+    featured: !!r.featured,
+    rating: Number(r.rating || 0),
+    review_count: Number.isInteger(r.review_count) ? r.review_count : 0,
+    bio: r.bio || "",
+    highlights: Array.isArray(r.highlights) ? r.highlights : []
+  }));
+  render();
+}
+
+function render(){
+  const q = ById('search').value?.toLowerCase() || "";
+  const sort = ById('sort').value;
+  filtered = rows.filter(t=>{
+    const hay = (t.name+" "+t.city+" "+t.id).toLowerCase();
+    return hay.includes(q);
+  }).sort((a,b)=>{
+    if (sort==='rating') return (b.rating||0)-(a.rating||0);
+    if (sort==='review_count') return (b.review_count||0)-(a.review_count||0);
+    if (sort==='featured') return (b.featured?1:0)-(a.featured?1:0);
+    return (""+(a[sort]||"")).localeCompare(""+(b[sort]||""));
+  });
+
+  const list = ById('list'); list.innerHTML = "";
+  filtered.forEach((t)=>{
+    const card = document.createElement('div'); card.className = "card";
+    card.innerHTML = `
+      <div style="width:44px;height:44px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:#0f1626">
+        ${t.image ? `<img src="${t.image}" style="width:100%;height:100%;object-fit:cover">` : ""}
+      </div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;gap:8px">
+          <strong>${t.name || "<unnamed>"}</strong>
+          ${t.featured ? `<span class="pill">Featured</span>` : ""}
+        </div>
+        <small class="muted"> ${t.city || "—"} • ⭐ ${t.rating ?? 0} • ${t.review_count ?? 0} reviews</small><br/>
+        <small class="muted mono">${t.id || ""}</small>
+      </div>
+      <div class="inline">
+        <button data-act="edit">Edit</button>
+        <button class="btn-ghost" data-act="dup">Duplicate</button>
+      </div>
+    `;
+    card.addEventListener('click', (e)=>{
+      const act = e.target?.dataset?.act;
+      if (act === 'dup') { duplicateTiler(t); e.stopPropagation(); return; }
+      selectById(t.id);
+    });
+    list.appendChild(card);
+  });
+
+  // KPIs
+  ById('kpiCount').textContent = rows.length;
+  ById('kpiFeatured').textContent = rows.filter(x=>x.featured).length;
+  const avg = rows.length ? (rows.reduce((s,x)=>s+(x.rating||0),0)/rows.length) : 0;
+  ById('kpiRating').textContent = avg.toFixed(2);
+  ById('kpiCities').textContent = new Set(rows.map(x=>x.city).filter(Boolean)).size;
+
+  if (selectedIndex>=0) {
+    const selId = rows[selectedIndex]?.id;
+    if (selId) selectById(selId, true);
+  }
+}
+
+function selectById(id, keepScroll=false){
+  const idx = rows.findIndex(t=>t.id===id);
+  if (idx===-1) return;
+  selectedIndex = idx;
+  const t = rows[idx];
+  ById('emptyState').style.display = "none";
+  ById('editor').style.display = "block";
+  ById('id').value = t.id || "";
+  ById('name').value = t.name || "";
+  ById('city').value = t.city || "";
+  ById('whatsapp').value = t.whatsapp || "";
+  ById('facebook').value = t.facebook || "";
+  ById('image').value = t.image || "";
+  ById('cover').value = t.cover || "";
+  ById('rating').value = t.rating ?? 0;
+  ById('review_count').value = t.review_count ?? 0;
+  ById('featured').checked = !!t.featured;
+  ById('bio').value = t.bio || "";
+  renderHighlights(t.highlights||[]);
+  if (!keepScroll) window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function renderHighlights(arr){
+  const host = ById('highlights'); host.innerHTML = "";
+  (arr||[]).forEach((h,i)=>{
+    const el = document.createElement('span');
+    el.className = "pill";
+    el.innerHTML = `<span>${h}</span> <button data-i="${i}" title="Remove">✕</button>`;
+    el.querySelector('button').onclick = (e)=>{ removeHighlight(i); e.stopPropagation(); };
+    host.appendChild(el);
+  });
+}
+
+/* ----------------- CRUD ----------------- */
+async function saveCurrent(){
+  if (selectedIndex<0) return;
+  const original = rows[selectedIndex];
+  const updated = {
+    id: ById('id').value.trim() || (original.id || ""),
+    name: ById('name').value.trim(),
+    city: ById('city').value.trim(),
+    whatsapp: ById('whatsapp').value.trim(),
+    facebook: ById('facebook').value.trim(),
+    image: ById('image').value.trim(),
+    cover: ById('cover').value.trim(),
+    rating: Number(ById('rating').value),
+    review_count: parseInt(ById('review_count').value || "0",10),
+    featured: ById('featured').checked,
+    bio: ById('bio').value,
+    highlights: deepClone(rows[selectedIndex].highlights || [])
+  };
+
+  // basic checks
+  if (!updated.id) return flash(`ID (slug) is required`, true);
+  if (updated.rating<0 || updated.rating>5) return flash(`Rating must be 0–5`, true);
+  if (!Number.isInteger(updated.review_count) || updated.review_count<0) return flash(`Review Count must be integer ≥ 0`, true);
+
+  // if user changed the slug, delete old and insert new to keep PK unique
+  const slugChanged = original.id !== updated.id;
+
+  const session = (await sb.auth.getSession()).data.session;
+  if (!session) return flash("Please sign in (admin) to save.", true);
+
+  if (slugChanged) {
+    // upsert new
+    const { error: e1 } = await sb.from('tilers').upsert(updated, { onConflict: 'id' });
+    if (e1) return flash("Save error: "+e1.message, true);
+    // delete old
+    const { error: e2 } = await sb.from('tilers').delete().eq('id', original.id);
+    if (e2) return flash("Cleanup error: "+e2.message, true);
+  } else {
+    const { error } = await sb.from('tilers').upsert(updated, { onConflict: 'id' });
+    if (error) return flash("Save error: "+error.message, true);
+  }
+
+  flash(`Saved “${updated.name}”`);
+  await loadRows();
+  selectById(updated.id, true);
+}
+
+async function addNew(){
+  // create a temp row
+  const n = {
+    id: `new-tiler-${Date.now()}`,
+    name: "New Tiler",
+    city: "",
+    whatsapp: "", facebook: "",
+    image: "", cover: "", rating: 0, review_count: 0,
+    featured: false, bio: "", highlights: []
+  };
+  const session = (await sb.auth.getSession()).data.session;
+  if (!session) { // allow offline draft in UI but won’t save
+    rows.unshift(n);
+    render(); selectById(n.id);
+    flash("You’re signed out — this draft isn’t saved until you sign in.", true);
+    return;
+  }
+  const { error } = await sb.from('tilers').insert(n);
+  if (error) { flash("Create error: "+error.message, true); return; }
+  await loadRows(); selectById(n.id);
+}
+
+async function deleteCurrent(){
+  if (selectedIndex<0) return;
+  const t = rows[selectedIndex];
+  if (!confirm(`Delete ${t.name}? This cannot be undone.`)) return;
+  const { error } = await sb.from('tilers').delete().eq('id', t.id);
+  if (error) { flash("Delete error: "+error.message, true); return; }
+  selectedIndex = -1;
+  ById('editor').style.display="none";
+  ById('emptyState').style.display="block";
+  await loadRows();
+  flash("Deleted.");
+}
+
+function addHighlight(val){
+  const v = (val||"").trim(); if (!v) return;
+  rows[selectedIndex].highlights.push(v);
+  renderHighlights(rows[selectedIndex].highlights);
+  ById('newHighlight').value="";
+}
+function removeHighlight(i){
+  rows[selectedIndex].highlights.splice(i,1);
+  renderHighlights(rows[selectedIndex].highlights);
+}
+function generateIdFromName(){
+  const name = ById('name').value.trim();
+  if (!name) return flash("Enter a Name first", true);
+  const id = slugify(name);
+  ById('id').value = id;
+  flash(`ID generated: ${id}`);
+}
+
+/* ----------------- Storage uploads ----------------- */
+function extOf(file){ return (file.name.split('.').pop()||'jpg').toLowerCase(); }
+async function uploadAndSet(kind){ // kind: 'image' | 'cover'
+  if (selectedIndex<0) return;
+  const slug = (ById('id').value || '').trim() || rows[selectedIndex].id;
+  if (!slug) return flash("Set the ID (slug) first.", true);
+
+  const inputId = kind === 'image' ? 'imageFile' : 'coverFile';
+  const f = ById(inputId).files?.[0];
+  if (!f) return flash("Choose a file first.", true);
+
+  // unique path avoids upsert semantics
+  const path = `${slug}/${kind}-${Date.now()}.${extOf(f)}`;
+  const { error: upErr } = await sb.storage.from(BUCKET).upload(path, f, { cacheControl: '3600' });
+  if (upErr) return flash(`Upload error: ${upErr.message}`, true);
+
+  const { data } = sb.storage.from(BUCKET).getPublicUrl(path);
+  const url = data.publicUrl;
+  ById(kind).value = url;
+  flash(`Uploaded ${kind} ✓ (URL set)`);
+}
+
+/* ----------------- Import / Export ----------------- */
+ById('btnImport').onclick = ()=> ById('fileInput').click();
+ById('fileInput').addEventListener('change', async (e)=>{
+  const file = e.target.files[0]; if (!file) return;
+  const txt = await file.text();
+  let arr;
+  try { arr = JSON.parse(txt); } catch(err){ return flash("Invalid JSON: "+err.message, true); }
+  // normalize reviewCount -> review_count
+  arr = arr.map(r=>({ ...r, review_count: r.review_count ?? r.reviewCount ?? 0 }));
+  const errs = validate(arr);
+  if (errs.length) return flash("Import failed:\n"+errs.join("\n"), true);
+
+  // strip unknown keys
+  const cleaned = arr.map(r=>({
+    id:r.id, name:r.name, city:r.city,
+    image:r.image||"", cover:r.cover||"",
+    facebook:r.facebook||"", whatsapp:r.whatsapp||"",
+    featured:!!r.featured,
+    rating:Number(r.rating||0),
+    review_count:parseInt(r.review_count||0,10),
+    bio:r.bio||"",
+    highlights:Array.isArray(r.highlights)?r.highlights:[]
+  }));
+
+  const session = (await sb.auth.getSession()).data.session;
+  if (!session) return flash("Sign in as admin to import.", true);
+
+  // Bulk upsert
+  const { error } = await sb.from('tilers').upsert(cleaned, { onConflict:'id' });
+  if (error) return flash("Upsert error: "+error.message, true);
+  await loadRows();
+  flash(`Imported ${cleaned.length} records to DB`);
+});
+
+ById('btnExport').onclick = async ()=>{
+  const arr = rows.map(r=>({
+    id:r.id, name:r.name, city:r.city,
+    image:r.image, cover:r.cover,
+    facebook:r.facebook, whatsapp:r.whatsapp,
+    featured:r.featured, rating:r.rating,
+    reviewCount:r.review_count, // keep your original JSON field name
+    bio:r.bio, highlights:r.highlights
+  }));
+  const blob = new Blob([JSON.stringify(arr, null, 2)], {type:"application/json"});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'tilers.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  flash("Exported DB → tilers.json");
+};
+
+ById('btnValidate').onclick = ()=>{
+  const arr = rows.map(r=>({ ...r, reviewCount: r.review_count }));
+  const errs = validate(arr);
+  if (errs.length) flash("Validation errors:\n"+errs.join("\n"), true);
+  else flash("All good ✅");
+};
+
+/* ----------------- Events ----------------- */
+ById('btnAdd').onclick = addNew;
+ById('btnSave').onclick = saveCurrent;
+ById('btnDelete').onclick = deleteCurrent;
+ById('btnGenerateId').onclick = generateIdFromName;
+ById('btnUploadImage').onclick = ()=> uploadAndSet('image');
+ById('btnUploadCover').onclick = ()=> uploadAndSet('cover');
+ById('btnReload').onclick = loadRows;
+
+ById('search').oninput = render;
+ById('sort').onchange = render;
+ById('btnAddHighlight').onclick = ()=> addHighlight(ById('newHighlight').value);
+ById('newHighlight').addEventListener('keydown',(e)=>{ if (e.key==='Enter'){ addHighlight(e.target.value); } });
+
+['id','name','city','whatsapp','facebook','image','cover','rating','review_count','featured','bio'].forEach(id=>{
+  const el = ById(id);
+  el && el.addEventListener(el.type==='checkbox'?'change':'input', ()=>{ /* just mark dirty in UI */ });
+});
+
+/* ----------------- Auth controls ----------------- */
+ById('btnShowLogin').onclick = ()=> ById('loginModal').style.display = 'flex';
+ById('btnCloseLogin').onclick = ()=> ById('loginModal').style.display = 'none';
+ById('btnSignOut').onclick = async ()=>{ await sb.auth.signOut(); flash("Signed out"); };
+
+ById('btnDoPassword').onclick = async ()=>{
+  const email = ById('loginEmail').value.trim();
+  const password = ById('loginPassword').value;
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) ById('loginMsg').textContent = error.message; else { ById('loginMsg').textContent = "Signed in ✓"; ById('loginModal').style.display='none'; await loadRows(); }
+};
+
+ById('btnDoMagic').onclick = async ()=>{
+  const email = ById('loginEmail').value.trim();
+  const { error } = await sb.auth.signInWithOtp({ email });
+  ById('loginMsg').textContent = error ? error.message : "Magic link sent. Check your email.";
+};
+
+/* ----------------- Init ----------------- */
+loadRows();
+</script>
+</body>
+</html>
