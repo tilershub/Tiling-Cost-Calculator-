@@ -2,343 +2,346 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Tilers Directory | TILERSHUB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tiler Profile | TILERSHUB</title>
 
-  <!-- Shared site styles (optional) -->
-  <link rel="stylesheet" href="/css/layout.css"/>
+  <!-- Shared site styles -->
+  <link rel="stylesheet" href="/css/layout.css">
 
   <style>
-    :root{
-      --primary:#0052cc; --accent:#f8b400; --bg:#f5f7fb; --text:#222; --sub:#667085; --card:#fff; --border:#e6e8ee;
-    }
-    *{box-sizing:border-box}
-    body{margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif; background:var(--bg); color:var(--text);}
+    :root { --primary:#0052cc; --accent:#f8b400; --light-bg:#f9f9f9; --text:#333; --border:#ddd; }
+    body { margin:0; font-family:'Segoe UI', Tahoma, sans-serif; background:var(--light-bg); color:var(--text); }
+    header, footer { text-align:center; padding:15px; }
+    .cover{ height:150px; background-size:cover; background-position:center; }
+    .profile-pic{ width:100px; height:100px; border-radius:50%; border:4px solid #fff; margin-top:-50px; background-size:cover; background-position:center; margin-left:auto; margin-right:auto; }
+    .profile-info{ text-align:center; padding:10px 20px; }
+    .stars{ color:var(--accent); font-size:1.2em; margin:5px 0; }
+    .bio{ font-size:14px; color:#555; margin-top:8px; }
+    .highlight-tag{ display:inline-block; background:var(--accent); color:#fff; padding:5px 12px; border-radius:20px; font-size:12px; margin:5px 4px; }
+    .container{ padding:20px; max-width:600px; margin:auto; }
+    .card{ background:#fff; padding:15px; border-radius:10px; box-shadow:0 0 5px rgba(0,0,0,.05); margin-bottom:20px; }
+    .rating-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap:10px; margin-top:10px; }
+    .rating-grid div{ background:#f1f3f6; padding:10px; border-radius:6px; text-align:center; font-weight:500; }
+    input, select, textarea{ width:100%; margin:8px 0; padding:10px; border-radius:6px; border:1px solid var(--border); font-size:14px; }
+    button{ background:var(--primary); color:#fff; border:none; padding:12px; width:100%; border-radius:6px; font-size:16px; margin-top:10px; cursor:pointer; }
+    .review-card{ border-top:1px solid #eee; margin-top:10px; padding-top:10px; }
+    small{ color:#888; }
+    .muted{ color:#888; font-size:14px; }
+    a.link{ color:var(--accent); text-decoration:none; }
+    .hidden{ display:none !important; }
 
-    header, footer{padding:14px 16px}
+    /* Action buttons row */
+    .action-row {
+      display:grid; grid-template-columns:1fr 1fr; gap:10px;
+      max-width:600px; margin:12px auto 0; padding:0 20px;
+    }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:12px 14px; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid transparent; }
+    .btn .ico { width:18px; height:18px; fill:currentColor; }
+    .btn-wa { background:#25D366; color:#fff; }
+    .btn-wa:active { filter:brightness(0.95); }
+    .btn-fb { background:#1877F2; color:#fff; }
+    .btn-fb:active { filter:brightness(0.95); }
 
-    .container{max-width:1100px; margin:0 auto; padding:16px;}
-
-    /* Toolbar */
-    .toolbar{
-      display:grid; gap:10px; grid-template-columns:1fr; margin-bottom:14px;
+    /* Small screens: tighten spacing */
+    @media (max-width: 420px){
+      .cover{ height:120px; }
+      .profile-pic{ width:88px; height:88px; margin-top:-44px; }
     }
-    @media(min-width:680px){
-      .toolbar{grid-template-columns: 1.2fr 0.9fr 0.9fr;}
-    }
-    .toolbar input,.toolbar select{
-      width:100%; padding:12px 12px; border:1px solid var(--border); border-radius:10px; background:#fff; font-size:14px;
-      outline:none;
-    }
-
-    /* Cards list */
-    .list{display:flex; flex-direction:column; gap:12px;}
-
-    /* Horizontal card */
-    .card{
-      display:grid; grid-template-columns:92px 1fr; gap:12px;
-      background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px;
-      box-shadow:0 1px 0 rgba(16,24,40,.02);
-    }
-    @media(min-width:560px){
-      .card{grid-template-columns:120px 1fr;}
-    }
-
-    .avatar-wrap{position:relative}
-    .avatar{
-      width:100%; aspect-ratio:1/1; border-radius:12px; background:#eef1f6; object-fit:cover;
-      border:1px solid var(--border);
-    }
-    .badge{
-      position:absolute; left:8px; top:8px; background:var(--accent); color:#fff; font-size:12px; font-weight:700;
-      padding:4px 8px; border-radius:999px; box-shadow:0 2px 8px rgba(0,0,0,.08);
-    }
-
-    .meta{display:flex; flex-direction:column; gap:6px; min-width:0}
-    .title-row{display:flex; align-items:center; gap:8px; min-width:0}
-    .name{font-size:18px; font-weight:700; line-height:1.2; text-wrap:balance; margin:0}
-    .city{color:var(--sub); font-size:14px}
-
-    .stars{color:var(--accent); font-variation-settings:"FILL" 1; font-size:14px; letter-spacing:.5px}
-    .subgrid{
-      display:grid; gap:8px; grid-template-columns:1fr; align-items:center;
-    }
-    @media(min-width:680px){
-      .subgrid{grid-template-columns:1.4fr 1fr auto;}
-    }
-
-    .highlights{display:flex; flex-wrap:wrap; gap:6px}
-    .chip{
-      font-size:12px; padding:6px 10px; border-radius:999px; background:#f2f4f7; color:#344054; border:1px solid var(--border);
-    }
-
-    .counts{color:#475467; font-size:13px}
-    .btn{
-      appearance:none; border:none; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      background:var(--primary); color:#fff; padding:10px 14px; border-radius:10px; font-weight:700; font-size:14px; text-decoration:none;
-      transition:transform .05s ease, filter .15s ease;
-      white-space:nowrap;
-    }
-    .btn:active{transform:translateY(1px)}
-    .btn.secondary{background:#fff; color:#1d2939; border:1px solid var(--border)}
-    .btn.block{width:100%}
-
-    .empty{
-      text-align:center; padding:18px; color:#667085; border:1px dashed var(--border); background:#fff; border-radius:12px;
-    }
-
-    /* Row of quick filters */
-    .quick-filters{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 16px}
-    .pill{
-      padding:8px 12px; border-radius:999px; border:1px solid var(--border);
-      background:#fff; color:#344054; font-size:13px; cursor:pointer;
-    }
-    .pill.active{background:#EEF4FF; border-color:#DBE3FF; color:#3538CD}
-
-    /* Small helper */
-    .muted{color:#98A2B3; font-size:13px}
-    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;}
   </style>
 </head>
 <body>
 
-<!-- Header include -->
+<!-- Injected header -->
 <div id="header"></div>
 
-<main class="container">
-  <h1 style="margin:6px 0 8px; font-size:22px;">Find a Verified Tiler</h1>
-  <p class="muted" style="margin:0 0 12px;">Browse featured pros, filter by city, and tap <strong>Book Now</strong> to view each profile.</p>
+<div class="cover" id="coverImage"></div>
 
-  <!-- Toolbar -->
-  <div class="toolbar">
-    <input id="q" type="search" placeholder="Search by name, city, skill…" autocomplete="off"/>
-    <select id="city">
-      <option value="">All cities</option>
-    </select>
-    <select id="sort">
-      <option value="featured">Featured first</option>
-      <option value="rating_desc">Highest rating</option>
-      <option value="reviews_desc">Most reviews</option>
-      <option value="name_asc">Name A → Z</option>
-    </select>
+<div class="profile-info">
+  <div class="profile-pic" id="profilePic" aria-label="Tiler profile picture"></div>
+  <h2 id="tilerName">Loading...</h2>
+  <p id="tilerCity">City</p>
+  <div class="stars" id="ratingStars" aria-label="Average star rating">★★★★★</div>
+  <div class="bio" id="bioText">Loading bio...</div>
+  <div id="highlightTags" aria-label="Highlights"></div>
+
+  <!-- Contact / Share buttons -->
+  <div class="action-row">
+    <a id="btnWhatsApp" class="btn btn-wa" target="_blank" rel="noopener" aria-label="Contact on WhatsApp">
+      <svg viewBox="0 0 32 32" aria-hidden="true" class="ico"><path d="M19.1 17.6c-.3-.2-1.7-.8-1.9-.9-.3-.1-.5-.2-.7.2s-.8.9-1 .9-.5 0-1-.4c-.5-.3-1-1-1.2-1.2s-.2-.5 0-.7c.2-.2.3-.5.5-.7.2-.2.2-.4.3-.6 0-.2 0-.5-.1-.7s-.7-1.8-1-2.4c-.3-.6-.6-.5-.8-.5h-.7c-.2 0-.7.1-1 .5-.3.3-1.3 1.3-1.3 3.1s1.4 3.6 1.6 3.9c.2.2 2.7 4.1 6.6 5.6 3.9 1.5 3.9 1 4.6 1s2.2-.8 2.5-1.7c.3-.8.3-1.6.2-1.7-.1-.2-.3-.2-.7-.4z"/><path d="M27 5a13 13 0 1 0-4 22l3.4 1-1-3.3A13 13 0 0 0 27 5zm-10 22A10 10 0 1 1 27 17a10 10 0 0 1-10 10z"/></svg>
+      <span>WhatsApp</span>
+    </a>
+
+    <a id="btnFacebook" class="btn btn-fb" target="_blank" rel="noopener" aria-label="Open Facebook or share">
+      <svg viewBox="0 0 32 32" aria-hidden="true" class="ico"><path d="M19 6h3V2h-3c-3.3 0-6 2.7-6 6v3H9v4h4v15h4V15h3.3l.7-4H17V8c0-1.1.9-2 2-2z"/></svg>
+      <span>Facebook</span>
+    </a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h3>Review Summary</h3>
+    <div class="rating-grid">
+      <div>Quality of Work: —</div><div>Customer Service: —</div>
+      <div>Timeliness: —</div><div>Pricing Fairness: —</div>
+      <div>Cleanliness: —</div><div><strong>No reviews yet</strong></div>
+    </div>
   </div>
 
-  <!-- Quick filter pills (auto from highlights) -->
-  <div id="pills" class="quick-filters" aria-label="Quick filters"></div>
-
-  <!-- Cards -->
-  <div id="list" class="list" role="list"></div>
-
-  <div id="empty" class="empty" style="display:none">
-    No tilers match your filters. Try clearing filters or searching a different term.
+  <div class="card" id="reviewList">
+    <h3>Customer Reviews</h3>
+    <!-- reviews injected here -->
   </div>
-</main>
 
-<!-- Footer include -->
+  <div class="card">
+    <h3>Leave a Review</h3>
+    <!-- Honeypot -->
+    <input id="website" class="hidden" type="text" autocomplete="off" tabindex="-1" aria-hidden="true"/>
+
+    <input type="text" id="name" placeholder="Your name"/>
+    <input type="tel" id="phone" placeholder="Your phone number (optional)"/>
+    <input type="email" id="email" placeholder="Your email address (optional)"/>
+
+    <label>Quality of Work</label>
+    <select id="quality">
+      <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
+      <option value="3">3 - Average</option><option value="2">2 - Poor</option>
+      <option value="1">1 - Very Poor</option>
+    </select>
+
+    <label>Customer Service</label>
+    <select id="service">
+      <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
+      <option value="3">3 - Average</option><option value="2">2 - Poor</option>
+      <option value="1">1 - Very Poor</option>
+    </select>
+
+    <label>Timeline</label>
+    <select id="timeline">
+      <option value="5">5 - On time</option><option value="4">4 - Slight delay</option>
+      <option value="3">3 - Delayed</option><option value="2">2 - Late</option>
+      <option value="1">1 - Very late</option>
+    </select>
+
+    <label>Pricing Fairness</label>
+    <select id="pricing">
+      <option value="5">5 - Very fair</option><option value="4">4 - Fair</option>
+      <option value="3">3 - Average</option><option value="2">2 - Pricey</option>
+      <option value="1">1 - Overpriced</option>
+    </select>
+
+    <label>Cleanliness</label>
+    <select id="cleanliness">
+      <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
+      <option value="3">3 - Average</option><option value="2">2 - Poor</option>
+      <option value="1">1 - Very Poor</option>
+    </select>
+
+    <textarea id="comment" rows="3" placeholder="Write your feedback (optional)..."></textarea>
+    <button id="submitBtn" onclick="submitReview()">Submit Review</button>
+    <p class="muted">By submitting you agree to our <a class="link" href="/privacy">Privacy Policy</a>.</p>
+  </div>
+</div>
+
+<!-- Injected footer -->
 <div id="footer"></div>
 
-<!-- Includes & App -->
+<!-- Inject header & footer -->
 <script src="/js/include.js"></script>
+<!-- Supabase client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  // ---- Config / State ----
-  const DATA_URL = "/tilers/tilers.json";   // must be deployed and public
-  let ALL = [];      // raw
-  let FILTERED = []; // after filters
-  let HIGHLIGHT_INDEX = []; // for pills
+  // --- CONFIG ---
+  const SUPABASE_URL = "https://todzlrbaovbqdwxdlcxs.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHpscmJhb3ZicWR3eGRsY3hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUxNzM1MjIsImV4cCI6MjA3MDc0OTUyMn0.zsE2fHxF8QUPpiOfYXKz4oe8wVccN76ewDd56u2F6FY";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const MODERATED = false;
 
-  // Small utils
-  const $ = (s,p=document)=>p.querySelector(s);
-  const $$ = (s,p=document)=>Array.from(p.querySelectorAll(s));
-  const esc = (s)=>String(s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-  const stars = (val)=> {
-    const r = Math.round(Number(val||0));
-    return "★".repeat(r) + "☆".repeat(5-r);
-  };
+  const urlParams = new URLSearchParams(window.location.search);
+  const tilerId = urlParams.get("id");
 
-  // Build quick unique list of highlights for pills
-  function buildHighlightIndex(data){
-    const set = new Set();
-    data.forEach(t => (t.highlights||[]).forEach(h => set.add(h)));
-    return Array.from(set).sort();
-  }
+  // --- UTIL ---
+  function escapeHtml(str){ return String(str||"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s])); }
+  function percentFrom5(avg){ return Math.round((avg/5)*100) + "%"; }
+  function starsFromAvg(avg){ const r = Math.round(avg||0); return "★".repeat(r) + "☆".repeat(5-r); }
+  function avgOfRow(r){ return ((r.quality||0)+(r.service||0)+(r.timeline||0)+(r.pricing||0)+(r.cleanliness||0))/5; }
 
-  // Populate city dropdown
-  function populateCityOptions(data){
-    const citySel = $("#city");
-    const cities = Array.from(new Set(data.map(t => t.city).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-    cities.forEach(c => {
-      const opt = document.createElement("option");
-      opt.value = c; opt.textContent = c;
-      citySel.appendChild(opt);
-    });
-  }
-
-  // Build pills
-  function renderPills(){
-    const pills = $("#pills");
-    pills.innerHTML = "";
-    HIGHLIGHT_INDEX.slice(0,18).forEach(h => {
-      const b = document.createElement("button");
-      b.className = "pill"; b.type="button"; b.textContent = h;
-      b.dataset.val = h;
-      b.addEventListener("click", () => {
-        b.classList.toggle("active");
-        applyAndRender();
-      });
-      pills.appendChild(b);
-    });
-  }
-
-  // Core filter/sort
-  function computeFiltered(){
-    const q = $("#q").value.trim().toLowerCase();
-    const city = $("#city").value;
-    const activePills = $$(".pill.active").map(n => n.dataset.val);
-    const sort = $("#sort").value;
-
-    let rows = [...ALL];
-
-    if (q){
-      rows = rows.filter(t => {
-        const hay = [
-          t.name, t.city, (t.bio||""), ...(t.highlights||[])
-        ].join(" ").toLowerCase();
-        return hay.includes(q);
-      });
-    }
-    if (city){
-      rows = rows.filter(t => String(t.city).toLowerCase() === city.toLowerCase());
-    }
-    if (activePills.length){
-      rows = rows.filter(t => {
-        const hs = new Set(t.highlights||[]);
-        return activePills.every(p => hs.has(p));
-      });
-    }
-
-    // sort
-    switch (sort){
-      case "rating_desc":
-        rows.sort((a,b) => (b.rating||0) - (a.rating||0));
-        break;
-      case "reviews_desc":
-        rows.sort((a,b) => (b.reviewCount||0) - (a.reviewCount||0));
-        break;
-      case "name_asc":
-        rows.sort((a,b) => String(a.name).localeCompare(String(b.name)));
-        break;
-      case "featured":
-      default:
-        rows.sort((a,b) => {
-          // featured first; then rating desc; then reviews desc; then name
-          const fa = a.featured?1:0, fb=b.featured?1:0;
-          if (fb!==fa) return fb-fa;
-          const r = (b.rating||0)-(a.rating||0); if (r) return r;
-          const rc = (b.reviewCount||0)-(a.reviewCount||0); if (rc) return rc;
-          return String(a.name).localeCompare(String(b.name));
-        });
-        break;
-    }
-
-    FILTERED = rows;
-  }
-
-  // Render list
-  function renderList(){
-    const list = $("#list");
-    const empty = $("#empty");
-    list.innerHTML = "";
-
-    if (!FILTERED.length){
-      empty.style.display = "block";
+  // Footer WA wiring retries (header/footer are injected async)
+  function wireFooterWhatsApp(cleanWa, name, tries=0){
+    const waFooter = document.getElementById("whatsappLink");
+    if (waFooter && cleanWa){
+      waFooter.href = `https://wa.me/94${cleanWa}`;
+      waFooter.textContent = "WhatsApp " + name;
+      waFooter.classList.add("link");
       return;
     }
-    empty.style.display = "none";
-
-    FILTERED.forEach(t => {
-      const img = t.image || "/tilers/images/placeholder.jpg";
-      const cover = t.cover || "/tilers/images/cover-placeholder.jpg";
-      const rating = Number(t.rating||0);
-      const reviews = Number(t.reviewCount||0);
-      const hl = (t.highlights||[]).slice(0,3);
-
-      const item = document.createElement("article");
-      item.className = "card"; item.role = "listitem";
-
-      item.innerHTML = `
-        <div class="avatar-wrap">
-          <img class="avatar" loading="lazy" src="${esc(img)}" alt="${esc(t.name)}"/>
-          ${t.featured ? `<span class="badge" title="TILERSHUB Featured">Featured</span>` : ``}
-        </div>
-
-        <div class="meta">
-          <div class="title-row">
-            <h2 class="name">${esc(t.name)}</h2>
-          </div>
-          <div class="city">Verified Tiler – ${esc(t.city||"")}</div>
-
-          <div class="subgrid">
-            <div class="highlights">
-              ${hl.map(h=>`<span class="chip">${esc(h)}</span>`).join("")}
-            </div>
-
-            <div class="counts">
-              <span class="stars" aria-label="${rating} out of 5">${stars(rating)}</span>
-              <span class="muted">(${reviews} reviews)</span>
-            </div>
-
-            <a class="btn" href="/tilers/profile.html?id=${encodeURIComponent(t.id)}" aria-label="Book ${esc(t.name)} now">
-              Book Now
-            </a>
-          </div>
-        </div>
-      `;
-
-      list.appendChild(item);
-    });
+    if (tries < 20) setTimeout(()=>wireFooterWhatsApp(cleanWa, name, tries+1), 200);
   }
 
-  function applyAndRender(){
-    computeFiltered();
-    renderList();
-  }
-
-  async function loadData(){
+  // --- PROFILE (also wires buttons + footer WhatsApp) ---
+  async function loadTilerProfile(){
     try{
-      const res = await fetch(DATA_URL, {cache:"no-cache"});
-      if(!res.ok) throw new Error("Failed to fetch tilers.json");
+      if(!tilerId){
+        document.getElementById("tilerName").textContent = "Tiler not found";
+        document.querySelector(".container").insertAdjacentHTML("afterbegin",
+          `<div class="card"><p class="muted">Missing ?id= in the URL. Example: <code>/tilers/tiler.html?id=saman-anurudda</code></p></div>`);
+        return;
+      }
+      const res = await fetch("/tilers/tilers.json", { cache:"no-cache" });
+      if(!res.ok) throw new Error("Could not load /tilers/tilers.json");
       const data = await res.json();
 
-      // Basic validation
-      if (!Array.isArray(data)) throw new Error("tilers.json must be an array");
+      const tiler = data.find(t => String(t.id) === String(tilerId));
+      if(!tiler){
+        document.getElementById("tilerName").textContent = "Tiler not found";
+        document.querySelector(".container").insertAdjacentHTML("afterbegin",
+          `<div class="card"><p class="muted">Invalid tiler id: <code>${escapeHtml(tilerId)}</code></p></div>`);
+        return;
+      }
+      document.title = `${tiler.name} | TILERSHUB`;
+      document.getElementById("tilerName").textContent = tiler.name;
+      document.getElementById("tilerCity").textContent = "Verified Tiler – " + (tiler.city||"");
+      document.getElementById("bioText").textContent = tiler.bio || "";
+      document.getElementById("highlightTags").innerHTML = (tiler.highlights||[]).map(h=>`<span class="highlight-tag">${escapeHtml(h)}</span>`).join("");
+      document.getElementById("coverImage").style.backgroundImage = `url('${tiler.cover || "/default-cover.jpg"}')`;
+      document.getElementById("profilePic").style.backgroundImage = `url('${tiler.image}')`;
 
-      ALL = data;
-      HIGHLIGHT_INDEX = buildHighlightIndex(ALL);
-      populateCityOptions(ALL);
-      renderPills();
-      applyAndRender();
-    }catch(err){
-      console.error(err);
-      $("#list").innerHTML = `<div class="empty">Could not load tilers list. Make sure <code>${esc(DATA_URL)}</code> exists and is public.</div>`;
+      const cleanWa = String(tiler.whatsapp || "").replace(/\D/g,"").replace(/^0/,"");
+
+      // Action buttons
+      const btnWA = document.getElementById("btnWhatsApp");
+      if (btnWA && cleanWa) {
+        const msg = `Hi ${tiler.name}, I found you on TILERSHUB and would like to discuss a tiling job. (${location.href})`;
+        btnWA.href = `https://wa.me/94${cleanWa}?text=${encodeURIComponent(msg)}`;
+      } else if (btnWA) {
+        btnWA.style.display = "none";
+      }
+
+      const btnFB = document.getElementById("btnFacebook");
+      if (btnFB) {
+        const fbUrl = tiler.facebook && tiler.facebook.trim();
+        const msgr = tiler.messenger && tiler.messenger.trim();
+        if (msgr) {
+          btnFB.href = `https://m.me/${encodeURIComponent(msgr)}`;
+          btnFB.querySelector("span").textContent = "Messenger";
+        } else if (fbUrl) {
+          btnFB.href = fbUrl;
+          btnFB.querySelector("span").textContent = "Facebook";
+        } else {
+          btnFB.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`;
+          btnFB.querySelector("span").textContent = "Share";
+        }
+      }
+
+      // Try wiring footer WhatsApp after includes load
+      if (cleanWa) wireFooterWhatsApp(cleanWa, tiler.name);
+
+    }catch(e){
+      console.error(e);
+      document.querySelector(".container").insertAdjacentHTML("afterbegin",
+        `<div class="card"><p class="muted">Could not load profile. Check if <code>/tilers/tilers.json</code> exists and is publicly readable.</p></div>`);
     }
   }
 
-  // Wire inputs
-  function bindUI(){
-    $("#q").addEventListener("input", applyAndRender);
-    $("#city").addEventListener("change", applyAndRender);
-    $("#sort").addEventListener("change", applyAndRender);
+  // --- REVIEWS LOAD/RENDER ---
+  async function loadReviews(){
+    if(!tilerId){ renderEmptySummary(); return; }
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("*")
+      .eq("tiler_id", tilerId)
+      .eq("approved", true)
+      .order("created_at", { ascending:false });
+    if(error){ console.error(error); renderEmptySummary(); renderReviews([]); return; }
+    renderSummary(data); renderReviews(data);
+  }
+  function renderEmptySummary(){
+    document.querySelector(".rating-grid").innerHTML =
+      `<div>Quality of Work: —</div><div>Customer Service: —</div><div>Timeliness: —</div><div>Pricing Fairness: —</div><div>Cleanliness: —</div><div><strong>No reviews yet</strong></div>`;
+    document.getElementById("ratingStars").innerHTML = "☆☆☆☆☆";
+  }
+  function renderSummary(rows){
+    if(!rows.length){ renderEmptySummary(); return; }
+    const n = rows.length;
+    const sum = rows.reduce((a,r)=>({ q:a.q+(r.quality||0), s:a.s+(r.service||0), t:a.t+(r.timeline||0), p:a.p+(r.pricing||0), c:a.c+(r.cleanliness||0) }),{q:0,s:0,t:0,p:0,c:0});
+    const avgQ=sum.q/n, avgS=sum.s/n, avgT=sum.t/n, avgP=sum.p/n, avgC=sum.c/n;
+    const avgStars=(avgQ+avgS+avgT+avgP+avgC)/5;
+    const recommends = Math.round((rows.filter(r=>avgOfRow(r)>=4).length/n)*100);
+    document.querySelector(".rating-grid").innerHTML =
+      `<div>Quality of Work: ${percentFrom5(avgQ)}</div><div>Customer Service: ${percentFrom5(avgS)}</div><div>Timeliness: ${percentFrom5(avgT)}</div><div>Pricing Fairness: ${percentFrom5(avgP)}</div><div>Cleanliness: ${percentFrom5(avgC)}</div><div><strong>${recommends}% recommends this tiler</strong></div>`;
+    document.getElementById("ratingStars").innerHTML = starsFromAvg(avgStars);
+  }
+  function renderReviews(rows){
+    const list = document.getElementById("reviewList");
+    list.querySelectorAll(".review-card").forEach(n=>n.remove());
+    rows.forEach(r=>{
+      const avg = Math.round(avgOfRow(r));
+      const created = new Date(r.created_at).toISOString().split("T")[0];
+      const phone = r.phone ? escapeHtml(r.phone) : "N/A";
+      const email = r.email ? escapeHtml(r.email) : "N/A";
+      const comment = escapeHtml(r.comment||"");
+      const name = escapeHtml(r.name||"Anonymous");
+      list.insertAdjacentHTML("beforeend", `
+        <div class="review-card">
+          <strong>${name}</strong> <small>– ${created}</small>
+          <div class="stars" aria-label="Review average">${"★".repeat(avg)}${"☆".repeat(5-avg)}</div>
+          ${comment ? `<p>${comment}</p>` : ``}
+          ${(r.phone||r.email)?`<p><small>Phone: ${phone} | Email: ${email}</small></p>`:''}
+        </div>`);
+    });
   }
 
-  // Boot
-  document.addEventListener("DOMContentLoaded", () => {
-    bindUI();
-    loadData();
+  // --- SUBMIT REVIEW ---
+  async function submitReview(){
+    if(!tilerId){ return alert("Missing tiler id."); }
+    const btn = document.getElementById("submitBtn");
+    btn.disabled = true;
+
+    if(document.getElementById("website").value.trim()){ btn.disabled=false; return; } // honeypot
+
+    const name = document.getElementById("name").value.trim() || "Anonymous";
+    const phone = document.getElementById("phone").value.trim() || null;
+    const email = document.getElementById("email").value.trim() || null;
+    const quality = parseInt(document.getElementById("quality").value,10)||5;
+    const service = parseInt(document.getElementById("service").value,10)||5;
+    const timeline = parseInt(document.getElementById("timeline").value,10)||5;
+    const pricing = parseInt(document.getElementById("pricing").value,10)||5;
+    const cleanliness = parseInt(document.getElementById("cleanliness").value,10)||5;
+    const comment = document.getElementById("comment").value.trim() || null;
+
+    if(![quality,service,timeline,pricing,cleanliness].every(v=>v>=1 && v<=5)){
+      btn.disabled=false; return alert("Please select valid ratings (1–5).");
+    }
+
+    const payload = { tiler_id: tilerId, name, phone, email, quality, service, timeline, pricing, cleanliness, comment };
+    if(MODERATED){ payload.approved = false; }
+
+    const { error } = await supabase.from("reviews").insert([payload]);
+    if(error){ console.error(error); btn.disabled=false; return alert("Could not submit review. Please try again."); }
+
+    ["name","phone","email","comment"].forEach(id=>document.getElementById(id).value="");
+    ["quality","service","timeline","pricing","cleanliness"].forEach(id=>document.getElementById(id).value="5");
+
+    if(MODERATED){ alert("Thanks! Your review will be visible after approval."); }
+    else { await loadReviews(); alert("Review submitted."); }
+
+    btn.disabled=false;
+  }
+  window.submitReview = submitReview;
+
+  // --- KICKOFF: run after DOM is ready (don’t depend on custom include events) ---
+  document.addEventListener("DOMContentLoaded", async () => {
+    await loadTilerProfile();
+    await loadReviews();
   });
 
-  // If your include.js fires this when header/footer are ready, no harm:
-  document.addEventListener("includes:ready", () => {});
+  // If include.js later dispatches a custom event, refresh again (harmless if already loaded)
+  document.addEventListener("includes:ready", async () => {
+    await loadTilerProfile();
+    await loadReviews();
+  });
 </script>
 
 </body>
