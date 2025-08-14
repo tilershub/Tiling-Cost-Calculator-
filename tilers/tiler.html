@@ -4,13 +4,14 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tiler Profile | TILERSHUB</title>
+
+  <!-- Shared site styles -->
   <link rel="stylesheet" href="/css/layout.css">
+
   <style>
     :root { --primary:#0052cc; --accent:#f8b400; --light-bg:#f9f9f9; --text:#333; --border:#ddd; }
     body { margin:0; font-family:'Segoe UI', Tahoma, sans-serif; background:var(--light-bg); color:var(--text); }
     header, footer { text-align:center; padding:15px; }
-    header{ background:var(--primary); color:#fff; }
-    footer{ background:#222; color:#ccc; font-size:14px; }
     .cover{ height:150px; background-size:cover; background-position:center; }
     .profile-pic{ width:100px; height:100px; border-radius:50%; border:4px solid #fff; margin-top:-50px; background-size:cover; background-position:center; margin-left:auto; margin-right:auto; }
     .profile-info{ text-align:center; padding:10px 20px; }
@@ -28,190 +29,25 @@
     .muted{ color:#888; font-size:14px; }
     a.link{ color:var(--accent); text-decoration:none; }
     .hidden{ display:none !important; }
+
+    /* Action buttons row */
+    .action-row {
+      display:grid; grid-template-columns:1fr 1fr; gap:10px;
+      max-width:600px; margin:12px auto 0; padding:0 20px;
+    }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:12px 14px; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid transparent; }
+    .btn .ico { width:18px; height:18px; fill:currentColor; }
+    .btn-wa { background:#25D366; color:#fff; }
+    .btn-wa:active { filter:brightness(0.95); }
+    .btn-fb { background:#1877F2; color:#fff; }
+    .btn-fb:active { filter:brightness(0.95); }
   </style>
-
-  <!-- Supabase client -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    // ---- CONFIG (replace with your project) ----
-    const SUPABASE_URL = "https://lkrpuxshoxtmgiameane.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrcnB1eHNob3h0bWdpYW1lYW5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUxMDAwMzcsImV4cCI6MjA3MDY3NjAzN30.GfzGPHSp6wzKQ8qX0sxwH7IAeg2SdkQQeoN1VEMKOxY";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const MODERATED = false; // true = insert with approved=false and show after manual approval
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const tilerId = urlParams.get("id");
-
-    // ---- PARTIALS LOADER (header/footer) ----
-    async function loadPartials() {
-      try {
-        const [headerRes, footerRes] = await Promise.all([
-          fetch("/partials/header.html", { cache: "no-cache" }),
-          fetch("/partials/footer.html", { cache: "no-cache" })
-        ]);
-        document.getElementById("site-header").innerHTML = await headerRes.text();
-        document.getElementById("site-footer").innerHTML = await footerRes.text();
-      } catch (e) {
-        console.error("Error loading partials", e);
-      }
-    }
-
-    // ---- UTIL ----
-    function escapeHtml(str){ return String(str||"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s])); }
-    function percentFrom5(avg){ return Math.round((avg/5)*100) + "%"; }
-    function starsFromAvg(avg){ const r = Math.round(avg||0); return "★".repeat(r) + "☆".repeat(5-r); }
-    function avgOfRow(r){ return ((r.quality||0)+(r.service||0)+(r.timeline||0)+(r.pricing||0)+(r.cleanliness||0))/5; }
-
-    // ---- PROFILE ----
-    async function loadTilerProfile(){
-      try{
-        const res = await fetch("/tilers/tilers.json", { cache: "no-cache" });
-        const data = await res.json();
-        const tiler = data.find(t => String(t.id) === String(tilerId));
-        if(!tiler){
-          document.getElementById("tilerName").textContent = "Tiler not found";
-          document.querySelector(".container").insertAdjacentHTML("afterbegin",
-            `<div class="card"><p class="muted">Invalid or missing tiler id.</p></div>`);
-          return;
-        }
-        document.title = tiler.name + " | TILERSHUB";
-        document.getElementById("tilerName").textContent = tiler.name;
-        document.getElementById("tilerCity").textContent = "Verified Tiler – " + (tiler.city||"");
-        document.getElementById("bioText").textContent = tiler.bio || "";
-        document.getElementById("highlightTags").innerHTML = (tiler.highlights||[])
-          .map(h=>`<span class="highlight-tag">${escapeHtml(h)}</span>`).join("");
-        document.getElementById("coverImage").style.backgroundImage = `url('${tiler.cover || "/default-cover.jpg"}')`;
-        document.getElementById("profilePic").style.backgroundImage = `url('${tiler.image}')`;
-
-        // Footer has been injected now; set WhatsApp link if present
-        const wa = document.getElementById("whatsappLink");
-        if (wa) {
-          wa.href = "https://wa.me/94" + String(tiler.whatsapp||"").replace(/\D/g,"").replace(/^0/,"");
-          wa.textContent = "WhatsApp " + tiler.name;
-          wa.classList.add("link");
-        }
-      }catch(e){ console.error(e); }
-    }
-
-    // ---- REVIEWS: LOAD & RENDER ----
-    async function loadReviews(){
-      if(!tilerId){ renderEmptySummary(); return; }
-      const { data, error } = await supabase
-        .from("reviews")
-        .select("*")
-        .eq("tiler_id", tilerId)
-        .eq("approved", true)
-        .order("created_at",{ascending:false});
-      if(error){ console.error(error); renderEmptySummary(); renderReviews([]); return; }
-      renderSummary(data);
-      renderReviews(data);
-    }
-
-    function renderEmptySummary(){
-      document.querySelector(".rating-grid").innerHTML = `
-        <div>Quality of Work: —</div>
-        <div>Customer Service: —</div>
-        <div>Timeliness: —</div>
-        <div>Pricing Fairness: —</div>
-        <div>Cleanliness: —</div>
-        <div><strong>No reviews yet</strong></div>`;
-      document.getElementById("ratingStars").innerHTML = "☆☆☆☆☆";
-    }
-
-    function renderSummary(rows){
-      if(!rows.length){ renderEmptySummary(); return; }
-      const n = rows.length;
-      const sum = rows.reduce((a,r)=>({
-        q:a.q+(r.quality||0), s:a.s+(r.service||0), t:a.t+(r.timeline||0),
-        p:a.p+(r.pricing||0), c:a.c+(r.cleanliness||0)
-      }),{q:0,s:0,t:0,p:0,c:0});
-      const avgQ=sum.q/n, avgS=sum.s/n, avgT=sum.t/n, avgP=sum.p/n, avgC=sum.c/n;
-      const avgStars=(avgQ+avgS+avgT+avgP+avgC)/5;
-      const recommends = Math.round((rows.filter(r=>avgOfRow(r)>=4).length/n)*100);
-
-      document.querySelector(".rating-grid").innerHTML = `
-        <div>Quality of Work: ${percentFrom5(avgQ)}</div>
-        <div>Customer Service: ${percentFrom5(avgS)}</div>
-        <div>Timeliness: ${percentFrom5(avgT)}</div>
-        <div>Pricing Fairness: ${percentFrom5(avgP)}</div>
-        <div>Cleanliness: ${percentFrom5(avgC)}</div>
-        <div><strong>${recommends}% recommends this tiler</strong></div>`;
-      document.getElementById("ratingStars").innerHTML = starsFromAvg(avgStars);
-    }
-
-    function renderReviews(rows){
-      const list = document.getElementById("reviewList");
-      list.querySelectorAll(".review-card").forEach(n=>n.remove());
-      rows.forEach(r=>{
-        const avg = Math.round(avgOfRow(r));
-        const created = new Date(r.created_at).toISOString().split("T")[0];
-        const phone = r.phone ? escapeHtml(r.phone) : "N/A";
-        const email = r.email ? escapeHtml(r.email) : "N/A";
-        const comment = escapeHtml(r.comment||"");
-        const name = escapeHtml(r.name||"Anonymous");
-        list.insertAdjacentHTML("beforeend", `
-          <div class="review-card">
-            <strong>${name}</strong> <small>– ${created}</small>
-            <div class="stars">${"★".repeat(avg)}${"☆".repeat(5-avg)}</div>
-            ${comment ? `<p>${comment}</p>` : ``}
-            ${(r.phone||r.email) ? `<p><small>Phone: ${phone} | Email: ${email}</small></p>` : ``}
-          </div>`);
-      });
-    }
-
-    // ---- SUBMIT REVIEW ----
-    async function submitReview(){
-      if(!tilerId){ return alert("Missing tiler id."); }
-      const btn = document.getElementById("submitBtn");
-      btn.disabled = true;
-
-      // Honeypot
-      if(document.getElementById("website").value.trim()){
-        btn.disabled = false; return;
-      }
-
-      const name = document.getElementById("name").value.trim() || "Anonymous";
-      const phone = document.getElementById("phone").value.trim() || null;
-      const email = document.getElementById("email").value.trim() || null;
-      const quality = parseInt(document.getElementById("quality").value,10)||5;
-      const service = parseInt(document.getElementById("service").value,10)||5;
-      const timeline = parseInt(document.getElementById("timeline").value,10)||5;
-      const pricing = parseInt(document.getElementById("pricing").value,10)||5;
-      const cleanliness = parseInt(document.getElementById("cleanliness").value,10)||5;
-      const comment = document.getElementById("comment").value.trim() || null;
-
-      if(![quality,service,timeline,pricing,cleanliness].every(v=>v>=1 && v<=5)){
-        btn.disabled=false; return alert("Please select valid ratings (1–5).");
-      }
-
-      const payload = { tiler_id: tilerId, name, phone, email, quality, service, timeline, pricing, cleanliness, comment };
-      if(MODERATED){ payload.approved = false; }
-
-      const { error } = await supabase.from("reviews").insert([payload]);
-      if(error){ console.error(error); btn.disabled=false; return alert("Could not submit review. Please try again."); }
-
-      ["name","phone","email","comment"].forEach(id=>document.getElementById(id).value="");
-      ["quality","service","timeline","pricing","cleanliness"].forEach(id=>document.getElementById(id).value="5");
-
-      if(MODERATED){ alert("Thanks! Your review will be visible after approval."); }
-      else { await loadReviews(); alert("Review submitted."); }
-
-      btn.disabled=false;
-    }
-    window.submitReview = submitReview;
-
-    // ---- BOOT: load partials first (so footer elements exist), then profile/reviews ----
-    document.addEventListener("DOMContentLoaded", async ()=>{
-      await loadPartials();
-      await loadTilerProfile();
-      await loadReviews();
-    });
-  </script>
 </head>
 <body>
 
-<!-- Injected from /partials/header.html -->
-<div id="site-header"></div>
+<!-- Injected header -->
+<div id="header"></div>
 
 <div class="cover" id="coverImage"></div>
 
@@ -222,30 +58,39 @@
   <div class="stars" id="ratingStars">★★★★★</div>
   <div class="bio" id="bioText">Loading bio...</div>
   <div id="highlightTags"></div>
+
+  <!-- Contact / Share buttons -->
+  <div class="action-row">
+    <a id="btnWhatsApp" class="btn btn-wa" target="_blank" rel="noopener">
+      <svg viewBox="0 0 32 32" aria-hidden="true" class="ico"><path d="M19.1 17.6c-.3-.2-1.7-.8-1.9-.9-.3-.1-.5-.2-.7.2s-.8.9-1 .9-.5 0-1-.4c-.5-.3-1-1-1.2-1.2s-.2-.5 0-.7c.2-.2.3-.5.5-.7.2-.2.2-.4.3-.6 0-.2 0-.5-.1-.7s-.7-1.8-1-2.4c-.3-.6-.6-.5-.8-.5h-.7c-.2 0-.7.1-1 .5-.3.3-1.3 1.3-1.3 3.1s1.4 3.6 1.6 3.9c.2.2 2.7 4.1 6.6 5.6 3.9 1.5 3.9 1 4.6 1s2.2-.8 2.5-1.7c.3-.8.3-1.6.2-1.7-.1-.2-.3-.2-.7-.4z"/><path d="M27 5a13 13 0 1 0-4 22l3.4 1-1-3.3A13 13 0 0 0 27 5zm-10 22A10 10 0 1 1 27 17a10 10 0 0 1-10 10z"/></svg>
+      <span>WhatsApp</span>
+    </a>
+
+    <a id="btnFacebook" class="btn btn-fb" target="_blank" rel="noopener">
+      <svg viewBox="0 0 32 32" aria-hidden="true" class="ico"><path d="M19 6h3V2h-3c-3.3 0-6 2.7-6 6v3H9v4h4v15h4V15h3.3l.7-4H17V8c0-1.1.9-2 2-2z"/></svg>
+      <span>Facebook</span>
+    </a>
+  </div>
 </div>
 
 <div class="container">
   <div class="card">
     <h3>Review Summary</h3>
     <div class="rating-grid">
-      <div>Quality of Work: —</div>
-      <div>Customer Service: —</div>
-      <div>Timeliness: —</div>
-      <div>Pricing Fairness: —</div>
-      <div>Cleanliness: —</div>
-      <div><strong>No reviews yet</strong></div>
+      <div>Quality of Work: —</div><div>Customer Service: —</div>
+      <div>Timeliness: —</div><div>Pricing Fairness: —</div>
+      <div>Cleanliness: —</div><div><strong>No reviews yet</strong></div>
     </div>
   </div>
 
   <div class="card" id="reviewList">
     <h3>Customer Reviews</h3>
-    <!-- reviews inject here -->
+    <!-- reviews injected here -->
   </div>
 
   <div class="card">
     <h3>Leave a Review</h3>
-
-    <!-- Honeypot (anti-bot) -->
+    <!-- Honeypot -->
     <input id="website" class="hidden" type="text" autocomplete="off" tabindex="-1" aria-hidden="true"/>
 
     <input type="text" id="name" placeholder="Your name"/>
@@ -254,59 +99,226 @@
 
     <label>Quality of Work</label>
     <select id="quality">
-      <option value="5">5 - Excellent</option>
-      <option value="4">4 - Good</option>
-      <option value="3">3 - Average</option>
-      <option value="2">2 - Poor</option>
+      <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
+      <option value="3">3 - Average</option><option value="2">2 - Poor</option>
       <option value="1">1 - Very Poor</option>
     </select>
 
     <label>Customer Service</label>
     <select id="service">
-      <option value="5">5 - Excellent</option>
-      <option value="4">4 - Good</option>
-      <option value="3">3 - Average</option>
-      <option value="2">2 - Poor</option>
+      <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
+      <option value="3">3 - Average</option><option value="2">2 - Poor</option>
       <option value="1">1 - Very Poor</option>
     </select>
 
     <label>Timeline</label>
     <select id="timeline">
-      <option value="5">5 - On time</option>
-      <option value="4">4 - Slight delay</option>
-      <option value="3">3 - Delayed</option>
-      <option value="2">2 - Late</option>
+      <option value="5">5 - On time</option><option value="4">4 - Slight delay</option>
+      <option value="3">3 - Delayed</option><option value="2">2 - Late</option>
       <option value="1">1 - Very late</option>
     </select>
 
     <label>Pricing Fairness</label>
     <select id="pricing">
-      <option value="5">5 - Very fair</option>
-      <option value="4">4 - Fair</option>
-      <option value="3">3 - Average</option>
-      <option value="2">2 - Pricey</option>
+      <option value="5">5 - Very fair</option><option value="4">4 - Fair</option>
+      <option value="3">3 - Average</option><option value="2">2 - Pricey</option>
       <option value="1">1 - Overpriced</option>
     </select>
 
     <label>Cleanliness</label>
     <select id="cleanliness">
-      <option value="5">5 - Excellent</option>
-      <option value="4">4 - Good</option>
-      <option value="3">3 - Average</option>
-      <option value="2">2 - Poor</option>
+      <option value="5">5 - Excellent</option><option value="4">4 - Good</option>
+      <option value="3">3 - Average</option><option value="2">2 - Poor</option>
       <option value="1">1 - Very Poor</option>
     </select>
 
     <textarea id="comment" rows="3" placeholder="Write your feedback (optional)..."></textarea>
     <button id="submitBtn" onclick="submitReview()">Submit Review</button>
-
     <p class="muted">By submitting you agree to our <a class="link" href="/privacy">Privacy Policy</a>.</p>
   </div>
 </div>
 
-<!-- Injected from /partials/footer.html -->
-<div id="site-footer"></div>
-  <!-- Inject header & footer -->
-  <script src="/js/include.js"></script>
+<!-- Injected footer -->
+<div id="footer"></div>
+
+<!-- Inject header & footer -->
+<script src="/js/include.js"></script>
+<!-- Supabase client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // --- CONFIG (replace) ---
+  const SUPABASE_URL = "https://lkrpuxshoxtmgiameane.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrcnB1eHNob3h0bWdpYW1lYW5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUxMDAwMzcsImV4cCI6MjA3MDY3NjAzN30.GfzGPHSp6wzKQ8qX0sxwH7IAeg2SdkQQeoN1VEMKOxY";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const MODERATED = false;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const tilerId = urlParams.get("id");
+
+  // --- UTIL ---
+  function escapeHtml(str){ return String(str||"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s])); }
+  function percentFrom5(avg){ return Math.round((avg/5)*100) + "%"; }
+  function starsFromAvg(avg){ const r = Math.round(avg||0); return "★".repeat(r) + "☆".repeat(5-r); }
+  function avgOfRow(r){ return ((r.quality||0)+(r.service||0)+(r.timeline||0)+(r.pricing||0)+(r.cleanliness||0))/5; }
+
+  // --- PROFILE (also wires buttons + footer WhatsApp) ---
+  async function loadTilerProfile(){
+    try{
+      const res = await fetch("/tilers/tilers.json", { cache:"no-cache" });
+      const data = await res.json();
+      const tiler = data.find(t => String(t.id) === String(tilerId));
+      if(!tiler){
+        document.getElementById("tilerName").textContent = "Tiler not found";
+        document.querySelector(".container").insertAdjacentHTML("afterbegin", `<div class="card"><p class="muted">Invalid or missing tiler id.</p></div>`);
+        return;
+      }
+      document.title = tiler.name + " | TILERSHUB";
+      document.getElementById("tilerName").textContent = tiler.name;
+      document.getElementById("tilerCity").textContent = "Verified Tiler – " + (tiler.city||"");
+      document.getElementById("bioText").textContent = tiler.bio || "";
+      document.getElementById("highlightTags").innerHTML = (tiler.highlights||[]).map(h=>`<span class="highlight-tag">${escapeHtml(h)}</span>`).join("");
+      document.getElementById("coverImage").style.backgroundImage = `url('${tiler.cover || "/default-cover.jpg"}')`;
+      document.getElementById("profilePic").style.backgroundImage = `url('${tiler.image}')`;
+
+      const cleanWa = String(tiler.whatsapp || "").replace(/\D/g,"").replace(/^0/,"");
+
+      // Footer WhatsApp (from partial)
+      const waFooter = document.getElementById("whatsappLink");
+      if (waFooter && cleanWa) {
+        waFooter.href = `https://wa.me/94${cleanWa}`;
+        waFooter.textContent = "WhatsApp " + tiler.name;
+        waFooter.classList.add("link");
+      }
+
+      // Action buttons
+      const btnWA = document.getElementById("btnWhatsApp");
+      if (btnWA && cleanWa) {
+        const msg = `Hi ${tiler.name}, I found you on TILERSHUB and would like to discuss a tiling job. (${location.href})`;
+        btnWA.href = `https://wa.me/94${cleanWa}?text=${encodeURIComponent(msg)}`;
+      } else if (btnWA) {
+        btnWA.style.display = "none";
+      }
+
+      const btnFB = document.getElementById("btnFacebook");
+      if (btnFB) {
+        const fbUrl = tiler.facebook && tiler.facebook.trim();
+        const msgr = tiler.messenger && tiler.messenger.trim();
+        if (msgr) {
+          btnFB.href = `https://m.me/${encodeURIComponent(msgr)}`;
+          btnFB.querySelector("span").textContent = "Messenger";
+        } else if (fbUrl) {
+          btnFB.href = fbUrl;
+          btnFB.querySelector("span").textContent = "Facebook";
+        } else {
+          const share = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`;
+          btnFB.href = share;
+          btnFB.querySelector("span").textContent = "Share";
+        }
+      }
+    }catch(e){ console.error(e); }
+  }
+
+  // --- REVIEWS LOAD/RENDER ---
+  async function loadReviews(){
+    if(!tilerId){ renderEmptySummary(); return; }
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("*")
+      .eq("tiler_id", tilerId)
+      .eq("approved", true)
+      .order("created_at", { ascending:false });
+    if(error){ console.error(error); renderEmptySummary(); renderReviews([]); return; }
+    renderSummary(data); renderReviews(data);
+  }
+  function renderEmptySummary(){
+    document.querySelector(".rating-grid").innerHTML =
+      `<div>Quality of Work: —</div><div>Customer Service: —</div><div>Timeliness: —</div><div>Pricing Fairness: —</div><div>Cleanliness: —</div><div><strong>No reviews yet</strong></div>`;
+    document.getElementById("ratingStars").innerHTML = "☆☆☆☆☆";
+  }
+  function renderSummary(rows){
+    if(!rows.length){ renderEmptySummary(); return; }
+    const n = rows.length;
+    const sum = rows.reduce((a,r)=>({ q:a.q+(r.quality||0), s:a.s+(r.service||0), t:a.t+(r.timeline||0), p:a.p+(r.pricing||0), c:a.c+(r.cleanliness||0) }),{q:0,s:0,t:0,p:0,c:0});
+    const avgQ=sum.q/n, avgS=sum.s/n, avgT=sum.t/n, avgP=sum.p/n, avgC=sum.c/n;
+    const avgStars=(avgQ+avgS+avgT+avgP+avgC)/5;
+    const recommends = Math.round((rows.filter(r=>avgOfRow(r)>=4).length/n)*100);
+    document.querySelector(".rating-grid").innerHTML =
+      `<div>Quality of Work: ${percentFrom5(avgQ)}</div><div>Customer Service: ${percentFrom5(avgS)}</div><div>Timeliness: ${percentFrom5(avgT)}</div><div>Pricing Fairness: ${percentFrom5(avgP)}</div><div>Cleanliness: ${percentFrom5(avgC)}</div><div><strong>${recommends}% recommends this tiler</strong></div>`;
+    document.getElementById("ratingStars").innerHTML = starsFromAvg(avgStars);
+  }
+  function renderReviews(rows){
+    const list = document.getElementById("reviewList");
+    list.querySelectorAll(".review-card").forEach(n=>n.remove());
+    rows.forEach(r=>{
+      const avg = Math.round(avgOfRow(r));
+      const created = new Date(r.created_at).toISOString().split("T")[0];
+      const phone = r.phone ? escapeHtml(r.phone) : "N/A";
+      const email = r.email ? escapeHtml(r.email) : "N/A";
+      const comment = escapeHtml(r.comment||"");
+      const name = escapeHtml(r.name||"Anonymous");
+      list.insertAdjacentHTML("beforeend", `
+        <div class="review-card">
+          <strong>${name}</strong> <small>– ${created}</small>
+          <div class="stars">${"★".repeat(avg)}${"☆".repeat(5-avg)}</div>
+          ${comment ? `<p>${comment}</p>` : ``}
+          ${(r.phone||r.email)?`<p><small>Phone: ${phone} | Email: ${email}</small></p>`:''}
+        </div>`);
+    });
+  }
+
+  // --- SUBMIT REVIEW ---
+  async function submitReview(){
+    if(!tilerId){ return alert("Missing tiler id."); }
+    const btn = document.getElementById("submitBtn");
+    btn.disabled = true;
+
+    if(document.getElementById("website").value.trim()){ btn.disabled=false; return; } // honeypot
+
+    const name = document.getElementById("name").value.trim() || "Anonymous";
+    const phone = document.getElementById("phone").value.trim() || null;
+    const email = document.getElementById("email").value.trim() || null;
+    const quality = parseInt(document.getElementById("quality").value,10)||5;
+    const service = parseInt(document.getElementById("service").value,10)||5;
+    const timeline = parseInt(document.getElementById("timeline").value,10)||5;
+    const pricing = parseInt(document.getElementById("pricing").value,10)||5;
+    const cleanliness = parseInt(document.getElementById("cleanliness").value,10)||5;
+    const comment = document.getElementById("comment").value.trim() || null;
+
+    if(![quality,service,timeline,pricing,cleanliness].every(v=>v>=1 && v<=5)){
+      btn.disabled=false; return alert("Please select valid ratings (1–5).");
+    }
+
+    const payload = { tiler_id: tilerId, name, phone, email, quality, service, timeline, pricing, cleanliness, comment };
+    if(MODERATED){ payload.approved = false; }
+
+    const { error } = await supabase.from("reviews").insert([payload]);
+    if(error){ console.error(error); btn.disabled=false; return alert("Could not submit review. Please try again."); }
+
+    ["name","phone","email","comment"].forEach(id=>document.getElementById(id).value="");
+    ["quality","service","timeline","pricing","cleanliness"].forEach(id=>document.getElementById(id).value="5");
+
+    if(MODERATED){ alert("Thanks! Your review will be visible after approval."); }
+    else { await loadReviews(); alert("Review submitted."); }
+
+    btn.disabled=false;
+  }
+  window.submitReview = submitReview;
+
+  // Wait for header/footer to load (via include.js) before binding footer WhatsApp link etc.
+  document.addEventListener("includes:ready", async () => {
+    await loadTilerProfile();
+    await loadReviews();
+  });
+
+  // Fallback if partials fail
+  setTimeout(async () => {
+    if (!document.getElementById("footer")) {
+      await loadTilerProfile();
+      await loadReviews();
+    }
+  }, 2000);
+</script>
+
 </body>
 </html>
