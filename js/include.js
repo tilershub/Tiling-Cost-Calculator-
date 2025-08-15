@@ -6,34 +6,43 @@ function loadIncludes() {
         document.getElementById(id).innerHTML = html;
 
         if (id === "header") {
-          activateNav();      // Highlight current nav
-          bindNavToggle();    // Bind hamburger after DOM is ready
+          initHeaderNav();
         }
       })
       .catch(err => console.error(`Error loading ${file}`, err));
   };
 
-  function activateNav() {
-    const currentPath = window.location.pathname.replace(/\/$/, '');
-    const navLinks = document.querySelectorAll('#nav-menu a');
+  function initHeaderNav() {
+    const header = document.getElementById("header");
+    if (!header) return;
 
-    navLinks.forEach(link => {
-      const href = link.getAttribute('href').replace(/\/$/, '');
-      if (href === currentPath) {
-        link.classList.add('active');
-      }
-    });
-  }
+    const menu = header.querySelector(".nav-menu");
+    const toggle = header.querySelector(".nav-toggle");
 
-  function bindNavToggle() {
-    const toggle = document.querySelector(".nav-toggle");
-    const menu = document.getElementById("nav-menu");
-
+    // Mobile menu toggle
     if (toggle && menu) {
       toggle.addEventListener("click", () => {
-        menu.classList.toggle("active");
+        const open = menu.classList.toggle("active");
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
       });
     }
+
+    // Highlight active nav link by path prefix
+    const currentPath = window.location.pathname.replace(/\/$/, "");
+    header.querySelectorAll(".nav-menu a").forEach(link => {
+      const basePath = (link.dataset.path || link.getAttribute("href")).replace(/\/$/, "");
+      if (currentPath.startsWith(basePath) && basePath !== "") {
+        link.classList.add("active");
+      }
+    });
+
+    // Basic ripple effect for .ripple elements in header/footer
+    document.addEventListener("pointerdown", (e) => {
+      const el = e.target.closest(".ripple");
+      if (!el) return;
+      el.classList.add("is-pressed");
+      setTimeout(() => el.classList.remove("is-pressed"), 240);
+    });
   }
 
   loadComponent("header", "/partials/header.html");
