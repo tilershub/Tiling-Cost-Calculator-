@@ -157,3 +157,6 @@
     text-align: center;
   }
 }
+/* AppBar-ish header container that you inject */
+#header{ background: var(--m-surface); border-bottom:1px solid var(--m-outline); box-shadow: var(--elev-1); position: sticky; top:0; z-index: 50; }
+#footer{ background: var(--m-surface); border-top:1px solid var(--m-outline); }
