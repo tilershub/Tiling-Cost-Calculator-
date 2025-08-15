@@ -1,162 +1,210 @@
-/* HEADER */
+/* ========= Material 3 Global Tokens ========= */
+:root {
+  --m-primary: #0b57d0;
+  --m-on-primary: #fff;
+  --m-primary-container: #d3e3fd;
+  --m-on-primary-container: #041e49;
 
-.header {
-  background: var(--primary-color);
-  color: var(--text-color);
+  --m-surface: #ffffff;
+  --m-surface-variant: #f3f6fb;
+  --m-on-surface: #1f1f1f;
+  --m-outline: #d0d7e2;
+
+  --elev-1: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08);
+  --elev-2: 0 3px 10px rgba(0,0,0,.14), 0 1px 4px rgba(0,0,0,.10);
+
+  /* Backward-compat with your old vars */
+  --primary-color: var(--m-primary);
+  --text-color: var(--m-on-surface);
+}
+
+/* ========= Page Container ========= */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--m-surface-variant);
+  color: var(--m-on-surface);
+}
+
+/* ========= AppBar / Header ========= */
+#header {
   position: sticky;
   top: 0;
-  z-index: 999;
-  width: 100%;
+  z-index: 100;
+  background: var(--m-surface);
+  border-bottom: 1px solid var(--m-outline);
+  box-shadow: var(--elev-1);
+  padding-top: env(safe-area-inset-top);
 }
 
-.header .container {
-  max-width: 1200px;
+/* Header inner structure */
+.appbar {
+  max-width: min(1200px, 96%);
   margin: 0 auto;
-  padding: 10px 16px;
 }
-
-.header-inner {
+.appbar-row {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  min-height: 56px;
+  padding: 8px 4px;
 }
 
+/* Logo + name */
 .logo-wrap {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 12px;
+  padding: 6px 8px;
 }
-
 .logo-wrap img {
-  height: 36px;
+  height: 28px;
   width: auto;
-  max-width: 100%;
 }
-
 .site-name {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-color);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  white-space: nowrap;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: .1px;
 }
 
-/* Hamburger */
-.nav-toggle {
-  display: none;
-  font-size: 28px;
-  cursor: pointer;
-  color: var(--text-color);
+/* Hamburger icon */
+.icon-btn {
+  border: 0;
+  background: transparent;
+  padding: 8px;
+  border-radius: 12px;
+  color: inherit;
+  display: inline-grid;
+  place-items: center;
+}
+.icon-btn .material-symbols-rounded {
+  font-size: 24px;
+  line-height: 1;
 }
 
-/* Nav Menu */
+/* Nav menu */
 .nav-menu {
   display: flex;
-  gap: 16px;
-  margin-top: 10px;
+  gap: 14px;
+  padding: 8px 4px 10px;
 }
-
 .nav-menu a {
-  color: var(--text-color);
   text-decoration: none;
-  font-size: 16px;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
+  color: inherit;
+  font-weight: 600;
+  font-size: 14.5px;
+  padding: 8px 12px;
+  border-radius: 999px;
 }
-
 .nav-menu a.active {
-  font-weight: bold;
-  text-decoration: underline;
+  background: var(--m-surface-variant);
 }
 
-/* Responsive */
+/* Mobile nav */
 @media (max-width: 768px) {
-  .nav-toggle {
-    display: block;
-  }
-
   .nav-menu {
     display: none;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 10px;
+    gap: 8px;
+    border-top: 1px solid var(--m-outline);
   }
-
   .nav-menu.active {
     display: flex;
   }
 }
-/* FOOTER */
+
+/* ========= Footer ========= */
+#footer {
+  background: var(--m-surface);
+  border-top: 1px solid var(--m-outline);
+  box-shadow: var(--elev-1);
+}
+
 .footer {
-  background: var(--primary-color);
-  color: var(--text-color);
-  padding: 40px 0 20px;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: transparent;
+  color: var(--m-on-surface);
+  padding: 28px 0 20px;
   font-size: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
-
 .footer .container {
-  max-width: 1200px;
+  max-width: min(1200px, 96%);
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 8px;
 }
-
 .footer-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  gap: 10px;
 }
-
 .footer-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 10px;
   justify-content: center;
-  margin: 16px 0;
+  margin: 8px 0;
 }
-
 .footer-nav a {
-  color: var(--text-color);
+  color: inherit;
   text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  padding: 6px 10px;
-  border-radius: 4px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 999px;
 }
-
-.footer-nav a:hover,
-.footer-nav a:focus {
-  background: rgba(255, 255, 255, 0.1);
-  text-decoration: none;
-  opacity: 0.9;
+.footer-nav a:hover {
+  background: var(--m-surface-variant);
 }
-
 .footer p {
   margin: 0;
-  font-size: 13px;
-  opacity: 0.8;
+  opacity: .8;
 }
 
-/* Optional: Add a top divider */
+/* Decorative rule */
 .footer::before {
   content: "";
   display: block;
   height: 4px;
   width: 60px;
-  margin: 0 auto 20px;
-  background-color: rgba(255, 255, 255, 0.3);
+  margin: 0 auto 16px;
+  background: linear-gradient(90deg, var(--m-primary), transparent);
   border-radius: 2px;
 }
-/* Mobile Centered Layout */
-@media (max-width: 600px) {
-  .footer-inner {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+
+/* ========= Ripple ========= */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+.ripple::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(255,255,255,.35) 12%, rgba(255,255,255,0) 13%) center/0 0 no-repeat;
+  transition: background-size .35s ease, opacity .6s ease;
+}
+.ripple:active::after {
+  background-size: 220% 220%;
+  opacity: 1;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ripple::after { transition: none; }
+}
+
+/* ========= Dark mode optional ========= */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --m-surface: #111418;
+    --m-surface-variant: #1a2028;
+    --m-on-surface: #e9eef6;
+    --m-outline: #2b3440;
   }
 }
-/* AppBar-ish header container that you inject */
-#header{ background: var(--m-surface); border-bottom:1px solid var(--m-outline); box-shadow: var(--elev-1); position: sticky; top:0; z-index: 50; }
-#footer{ background: var(--m-surface); border-top:1px solid var(--m-outline); }
