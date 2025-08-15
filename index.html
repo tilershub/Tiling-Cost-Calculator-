@@ -5,37 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TILERSHUB | Find Certified Tilers in Sri Lanka</title>
 
-  <!-- Material Symbols + theme color -->
+  <!-- Icons / fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:FILL,GRAD@1,0&display=swap" rel="stylesheet">
+  <link rel="icon" href="/icons/favicon.png" type="image/png" />
   <meta name="theme-color" content="#0b57d0">
-
-  <!-- Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DLJDBQZ8N2"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date()); gtag('config', 'G-DLJDBQZ8N2');
-  </script>
 
   <!-- SEO -->
   <meta name="description" content="Book trusted tilers for home tasks. Browse verified profiles, read reviews, and schedule with confidence across Sri Lanka." />
   <meta property="og:title" content="TILERSHUB | Certified Tilers" />
   <meta property="og:description" content="Book trusted help for home tiling tasks. Verified, reviewed pros across Sri Lanka." />
   <meta property="og:image" content="/icons/og-image.png" />
-  <link rel="icon" href="/icons/favicon.png" type="image/png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
 
+  <!-- Styles -->
   <link rel="stylesheet" href="/css/layout.css" />
   <link rel="stylesheet" href="/css/home.css" />
+  <!-- Modern 2025 theme -->
+  <link rel="stylesheet" href="/css/modern.css?v=1" />
 </head>
 <body>
 
-  <!-- Injected Header -->
+  <!-- Injected Header (via /partials/header.html) -->
   <div id="header"></div>
 
   <main>
-    <!-- HERO like the screenshot -->
+    <!-- HERO -->
     <section class="hero container" aria-labelledby="hero-title">
       <div class="hero-badge">TILERSHUB CERTIFIED</div>
       <h1 id="hero-title">Book trusted help<br>for home tiling tasks</h1>
@@ -43,7 +40,10 @@
       <!-- Search bar -->
       <form class="searchbar" onsubmit="return false" role="search" aria-label="Find services">
         <input id="home-search" type="search" placeholder="What do you need help with?" aria-label="Search services">
-        <button type="button" id="search-go" aria-label="Search">🔎</button>
+        <button type="button" id="search-go" aria-label="Search">
+          <span class="material-symbols-rounded" aria-hidden="true">search</span>
+          <span class="sr-only">Search</span>
+        </button>
       </form>
 
       <!-- Quick categories -->
@@ -62,7 +62,7 @@
       </p>
     </section>
 
-    <!-- Big banner -->
+    <!-- Banner -->
     <section class="container banner-center">
       <a href="/tilers/tilers.html">
         <img src="/icons/find-certified-tiler.png" alt="Find Certified Tilers in Sri Lanka - TILERSHUB">
@@ -70,7 +70,7 @@
     </section>
 
     <!-- Stats -->
-    <section class="stats-band">
+    <section class="stats-band" aria-label="TILERSHUB stats">
       <div class="container stats-wrap">
         <div><strong>2.4 million+</strong><span>sqft tiled</span></div>
         <div><strong>1.5 million+</strong><span>quotes generated</span></div>
@@ -83,7 +83,7 @@
       <h2 id="popular-projects-title">Popular Projects</h2>
       <div id="popular-projects" class="project-list"></div>
       <div class="view-more-wrap">
-        <a class="view-more-btn" href="/tilers/tilers.html">See more projects</a>
+        <a class="btn btn--filled" href="/tilers/tilers.html">See more projects</a>
       </div>
     </section>
 
@@ -101,7 +101,7 @@
         <li><strong>Vetted Pros:</strong> Background-checked, portfolio-reviewed.</li>
         <li><strong>Dedicated Support:</strong> Friendly help when you need it.</li>
       </ul>
-      <a class="pledge-link" href="/about/pledge.html">Read the pledge</a>
+      <a class="btn" href="/about/pledge.html">Read the pledge</a>
     </section>
 
     <!-- How it works -->
@@ -123,22 +123,25 @@
         <a href="/tilers/tilers.html?service=wall">Wall Tiling</a>
         <a href="/tilers/tilers.html?service=pool">Pool Tiling</a>
         <a href="/tilers/tilers.html?service=outdoor">Outdoor Tiling</a>
-        <a href="/tilers/tilers.html?service=steps">Stairs & Nosing</a>
+        <a href="/tilers/tilers.html?service=steps">Stairs &amp; Nosing</a>
         <a href="/tilers/tilers.html?service=mosaic">Mosaic</a>
         <a href="/tilers/tilers.html?service=repairs">Repairs</a>
         <a href="/tilers/tilers.html?service=grout">Re-grouting</a>
         <a href="/tilers/tilers.html?service=skirting">Skirting</a>
       </div>
-      <div class="view-more-wrap"><a class="view-more-btn" href="/services">See all services →</a></div>
+      <div class="view-more-wrap">
+        <a class="view-more-btn" href="/services">See all services →</a>
+      </div>
     </section>
   </main>
 
-  <!-- Injected Footer -->
+  <!-- Injected Footer (via /partials/footer.html) -->
   <div id="footer"></div>
 
   <!-- Scripts -->
   <script src="/js/include.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/js/home.js" defer></script>
+  <script src="/js/reveal.js" defer></script>
 </body>
 </html>
