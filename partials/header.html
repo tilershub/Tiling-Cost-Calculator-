@@ -1,17 +1,21 @@
-<header class="header">
-  <div class="container">
-    <div class="header-inner">
-      <div class="logo-wrap">
-        <img src="/icons/logo.png" alt="TILERSHUB Logo" />
-        <span class="site-name">TILERSHUB</span>
-      </div>
-      <div class="nav-toggle">☰</div>
-    </div>
-    <nav id="nav-menu" class="nav-menu" aria-label="Main Navigation">
-      <a href="/index.html">Home</a>
-      <a href="/estimator/estimator.html">Estimator</a>
-      <a href="/tilers/tilers.html">Tilers</a>
-      <a href="/shop/shop.html">Shop</a>
-    </nav>
+<!-- /partials/header.html -->
+<header class="appbar" role="banner">
+  <div class="appbar-row">
+    <a class="logo-wrap ripple" href="/" aria-label="TILERSHUB Home">
+      <img src="/icons/favicon.png" alt="" height="28" width="28"/>
+      <span class="site-name">TILERSHUB</span>
+    </a>
+
+    <button class="nav-toggle icon-btn ripple" aria-label="Open menu" aria-expanded="false">
+      <span class="material-symbols-rounded">menu</span>
+    </button>
   </div>
+
+  <nav class="nav-menu" role="navigation" aria-label="Primary">
+    <a href="/" data-path="/">Home</a>
+    <a href="/tilers/tilers.html" data-path="/tilers">Find Tiler</a>
+    <a href="/estimators" data-path="/estimators">Estimators</a>
+    <a href="/blog" data-path="/blog">Blog</a>
+    <a href="/contact" data-path="/contact">Contact</a>
+  </nav>
 </header>
