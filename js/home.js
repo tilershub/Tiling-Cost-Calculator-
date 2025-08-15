@@ -117,3 +117,11 @@
     // No-op, but here if you later want to refetch after header/footer load
   });
 })();
+// Basic ripple on pointerdown for elements with .ripple
+document.addEventListener('pointerdown', (e) => {
+  const el = e.target.closest('.ripple');
+  if (!el) return;
+  // trigger CSS :active reliably on iOS
+  el.classList.add('is-pressed');
+  setTimeout(() => el.classList.remove('is-pressed'), 220);
+});
