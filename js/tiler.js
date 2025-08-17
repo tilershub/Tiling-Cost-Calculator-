@@ -171,7 +171,6 @@ async function initPage(){
 
     if (!ev) { card.style.display = "none"; return; }
 
-    attachEvalDebug(ev, sourceNote);
     renderExactEvaluation(ev);  // <<< exact, no summarization
     card.style.display = "";
   }
