@@ -396,6 +396,99 @@ async function initPage(){
     });
   }
 
+// --- SUBMIT REVIEW (robust + clear errors) ---
+window.submitReview = async function submitReview(){
+  try{
+    const tilerId = new URLSearchParams(location.search).get("id");
+    if(!tilerId){
+      alert("Missing tiler id in URL (e.g. ?id=saman-anurudda).");
+      return;
+    }
+
+    const btn = document.getElementById("submitBtn");
+    if (btn) btn.disabled = true;
+
+    // Honeypot (bot trap)
+    if (document.getElementById("website")?.value.trim()){
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    // Collect fields
+    const name        = document.getElementById("name").value.trim() || "Anonymous";
+    const phone       = document.getElementById("phone").value.trim() || null;
+    const email       = document.getElementById("email").value.trim() || null;
+    const quality     = parseInt(document.getElementById("quality").value,10);
+    const service     = parseInt(document.getElementById("service").value,10);
+    const timeline    = parseInt(document.getElementById("timeline").value,10);
+    const pricing     = parseInt(document.getElementById("pricing").value,10);
+    const cleanliness = parseInt(document.getElementById("cleanliness").value,10);
+    const comment     = document.getElementById("comment").value.trim() || null;
+
+    // Basic validation
+    const scores = [quality, service, timeline, pricing, cleanliness];
+    if (!scores.every(v => Number.isInteger(v) && v >= 1 && v <= 5)) {
+      if (btn) btn.disabled = false;
+      alert("Please select valid ratings (1–5) for all categories.");
+      return;
+    }
+
+    // Extra: basic email sanity if provided
+    if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+      if (btn) btn.disabled = false;
+      alert("Please enter a valid email or leave it blank.");
+      return;
+    }
+
+    const payload = {
+      tiler_id: tilerId,
+      name,
+      phone,
+      email,
+      quality,
+      service,
+      timeline,
+      pricing,
+      cleanliness,
+      comment
+    };
+
+    // Ensure Supabase client exists
+    if (!window.supabase || !window.supabase.from) {
+      if (btn) btn.disabled = false;
+      alert("Supabase client not available. Check the script tag for @supabase/supabase-js.");
+      return;
+    }
+
+    // Insert
+    const { data, error } = await supabase.from("reviews").insert([payload]).select();
+
+    if (error) {
+      console.error("Supabase insert error:", error);
+      // Show helpful message for common causes
+      const msg =
+        (error.message || "Unknown error") +
+        "\n\nCommon fixes:\n• Table name/columns must match the payload.\n• RLS policy must allow INSERT for anon role.\n• Your Supabase project must accept requests from this domain.";
+      alert("Could not submit review:\n" + msg);
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    // Success: clear form + refresh list
+    ["name","phone","email","comment"].forEach(id=>{ const el=document.getElementById(id); if (el) el.value=""; });
+    ["quality","service","timeline","pricing","cleanliness"].forEach(id=>{ const el=document.getElementById(id); if (el) el.value="5"; });
+    await loadReviews();
+    alert("Review submitted. Thank you!");
+
+    if (btn) btn.disabled = false;
+  }catch(err){
+    console.error(err);
+    alert("Unexpected error submitting review. See console for details.");
+    const btn = document.getElementById("submitBtn");
+    if (btn) btn.disabled = false;
+  }
+};
+
   // Kickoff
   await loadTilerProfile();
   await loadReviews();
