@@ -17,13 +17,19 @@ function loadIncludes() {
     if (!header) return;
 
     const menu = header.querySelector(".nav-menu");
-    const toggle = header.querySelector(".nav-toggle");
+    const toggle = header.querySelector(".menu-toggle"); // <-- changed from .nav-toggle
 
     // Mobile menu toggle
     if (toggle && menu) {
       toggle.addEventListener("click", () => {
         const open = menu.classList.toggle("active");
         toggle.setAttribute("aria-expanded", open ? "true" : "false");
+
+        // Swap Material symbol icon (menu <-> close)
+        const icon = toggle.querySelector(".material-symbols-rounded");
+        if (icon) {
+          icon.textContent = open ? "close" : "menu";
+        }
       });
     }
 
