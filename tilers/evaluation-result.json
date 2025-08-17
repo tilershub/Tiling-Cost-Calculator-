@@ -5,13 +5,6 @@
     "Project Address": "Galle",
     "Date (YYYY-MM-DD)": "2025-08-05",
     "Certification Level Applied (CT/ACT/MT)": "MT",
-    "Key Highlights / Specializations (Tick applicable)": [
-      "Bathroom Tiling", "Large Format / Slab Tiling", "Swimming Pool / Mosaic Tiling"
-    ],
-    "Customer Service – 10 Points": {
-      "Communication with client": 5,
-      "Timeliness & punctuality": 4
-    },
     "Work Quality – 50 Points": {
       "Site cleanliness": 5,
       "Chipping & surface cleaning": 5,
@@ -23,6 +16,10 @@
       "Cutting & grinding precision": 4,
       "Grouting accuracy & neatness": 5,
       "Final finish quality": 5
+    },
+    "Customer Service – 10 Points": {
+      "Communication with client": 5,
+      "Timeliness & punctuality": 4
     },
     "Tools & Technology – 10 Points": {
       "Professional tools/technology use": 5,
@@ -50,13 +47,6 @@
       "TOTAL SCORE": 95
     },
     "Certification Level": "Certified Master",
-    "Final Decision": "Approved",
     "Assessor Comments": "Excellent waterproofing detail and final finish."
-  },
-
-  "sujith-anurada": {
-    "...": "another tiler’s evaluation"
   }
-
-  /* more tilers... */
 }
