@@ -1,10 +1,22 @@
 {
   "saman-anurudda": {
-    "Assessor Name": "TILERSHUB Audit Team",
-    "Tiler Name": "Saman Anurudda",
-    "Project Address": "Galle",
-    "Date (YYYY-MM-DD)": "2025-08-05",
-    "Certification Level Applied (CT/ACT/MT)": "MT",
+    "Assessor Name:": "TILERSHUB Audit Team",
+    "Tiler Name:": "Saman Anurudda",
+    "Project Address:": "Galle",
+    "Date (YYYY-MM-DD):": "2025-08-05",
+    "Certification Level Applied (CT/ACT/MT):": "MT",
+
+    "Key Highlights / Specializations (Tick applicable)": [
+      "Bathroom Tiling",
+      "Large Format / Slab Tiling",
+      "Swimming Pool / Mosaic Tiling"
+    ],
+
+    "Customer Service – 10 Points": {
+      "Communication with client": 5,
+      "Timeliness & punctuality": 4
+    },
+
     "Work Quality – 50 Points": {
       "Site cleanliness": 5,
       "Chipping & surface cleaning": 5,
@@ -17,26 +29,27 @@
       "Grouting accuracy & neatness": 5,
       "Final finish quality": 5
     },
-    "Customer Service – 10 Points": {
-      "Communication with client": 5,
-      "Timeliness & punctuality": 4
-    },
+
     "Tools & Technology – 10 Points": {
       "Professional tools/technology use": 5,
       "Efficiency & safety of tool use": 4
     },
+
     "Safety Equipment – 10 Points": {
       "PPE usage (gloves, mask, boots)": 5,
       "Safe work practices": 5
     },
+
     "Knowledge & Theory Test – 10 Points": {
       "Question 1 (Standards, materials)": 5,
       "Question 2 (Tools, problem-solving, safety)": 4
     },
+
     "Customer Feedback – 10 Points": {
       "Client satisfaction survey": 5,
       "Peer/assessor endorsement": 5
     },
+
     "Final Scoring Framework": {
       "Customer Service subtotal": 9,
       "Work Quality subtotal": 48,
@@ -46,7 +59,9 @@
       "Customer Feedback subtotal": 10,
       "TOTAL SCORE": 95
     },
+
     "Certification Level": "Certified Master",
-    "Assessor Comments": "Excellent waterproofing detail and final finish."
+    "Final Decision": "Approved",
+    "Assessor Comments:": "Excellent waterproofing detail and final finish."
   }
 }
