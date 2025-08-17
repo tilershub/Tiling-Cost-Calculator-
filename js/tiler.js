@@ -347,32 +347,7 @@ async function initPage(){
   }
   function clampPct(n){ return Math.max(0, Math.min(100, Number(n)||0)); }
 
-  // Tiny debug helper (toggle view of loaded raw JSON)
-  function attachEvalDebug(ev, sourceNote){
-    let btn = document.getElementById("evalDebugBtn");
-    if(!btn){
-      const head = document.getElementById("evalHeader");
-      btn = document.createElement("button");
-      btn.id = "evalDebugBtn";
-      btn.textContent = "Debug";
-      btn.type = "button";
-      btn.style.cssText = "margin-left:auto;border:1px solid var(--border);background:#fff;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px";
-      head && head.appendChild(btn);
-    }
-    let open = false, pre;
-    btn.onclick = () => {
-      open = !open;
-      if(open){
-        pre = document.createElement("pre");
-        pre.style.cssText = "white-space:pre-wrap;background:#f7f9fc;border:1px solid var(--border);padding:10px;border-radius:10px;margin-top:8px;font-size:12px";
-        pre.textContent = `(${sourceNote})\n` + JSON.stringify(ev, null, 2);
-        document.getElementById("evaluationCard").appendChild(pre);
-      } else if(pre){
-        pre.remove();
-      }
-    };
-  }
-
+  
   /* ==================== REVIEWS (unchanged) ==================== */
   async function loadReviews(){
     if(!tilerId){ renderEmptySummary(); return; }
@@ -420,43 +395,6 @@ async function initPage(){
         </div>`);
     });
   }
-
-  // --- SUBMIT REVIEW ---
-  window.submitReview = async function submitReview(){
-    if(!tilerId){ return alert("Missing tiler id."); }
-    const btn = document.getElementById("submitBtn");
-    btn.disabled = true;
-
-    if(document.getElementById("website").value.trim()){ btn.disabled=false; return; } // honeypot
-
-    const name = document.getElementById("name").value.trim() || "Anonymous";
-    const phone = document.getElementById("phone").value.trim() || null;
-    const email = document.getElementById("email").value.trim() || null;
-    const quality = parseInt(document.getElementById("quality").value,10)||5;
-    const service = parseInt(document.getElementById("service").value,10)||5;
-    const timeline = parseInt(document.getElementById("timeline").value,10)||5;
-    const pricing = parseInt(document.getElementById("pricing").value,10)||5;
-    const cleanliness = parseInt(document.getElementById("cleanliness").value,10)||5;
-    const comment = document.getElementById("comment").value.trim() || null;
-
-    if(![quality,service,timeline,pricing,cleanliness].every(v=>v>=1 && v<=5)){
-      btn.disabled=false; return alert("Please select valid ratings (1–5).");
-    }
-
-    const payload = { tiler_id: tilerId, name, phone, email, quality, service, timeline, pricing, cleanliness, comment };
-    if(MODERATED){ payload.approved = false; }
-
-    const { error } = await supabase.from("reviews").insert([payload]);
-    if(error){ console.error(error); btn.disabled=false; return alert("Could not submit review. Please try again."); }
-
-    ["name","phone","email","comment"].forEach(id=>document.getElementById(id).value="");
-    ["quality","service","timeline","pricing","cleanliness"].forEach(id=>document.getElementById(id).value="5");
-
-    if(MODERATED){ alert("Thanks! Your review will be visible after approval."); }
-    else { await loadReviews(); alert("Review submitted."); }
-
-    btn.disabled=false;
-  };
 
   // Kickoff
   await loadTilerProfile();
