@@ -17,7 +17,6 @@ async function initPage(){
   function escapeHtml(str){ return String(str||"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;","&gt;":"&gt;","\"":"&quot;","'":"&#39;"}[s])); }
   function percentFrom5(avg){ return Math.round((avg/5)*100) + "%"; }
   function starsFromAvg(avg){ const r = Math.round(avg||0); return "★".repeat(r) + "☆".repeat(5-r); }
-  function avgOfRow(r){ return ((r.quality||0)+(r.service||0)+(r.timeline||0)+(r.pricing||0)+(r.cleanliness||0))/5; }
 
   // Footer WA wiring retries (header/footer are injected async)
   function wireFooterWhatsApp(cleanWa, name, tries=0){
@@ -97,7 +96,7 @@ async function initPage(){
     }
   }
 
-  /* ===== EVALUATION: load from /tilers/evaluation-result.json and render ===== */
+  /* ============== EVALUATION: EXACT PDF RENDERING (no summarizing) ============== */
 
   // Robust key/id helpers
   function normKey(s){
@@ -173,170 +172,181 @@ async function initPage(){
     if (!ev) { card.style.display = "none"; return; }
 
     attachEvalDebug(ev, sourceNote);
-    const mapped = mapPdfJsonToMetrics(ev);
-    renderEvaluation(mapped);
+    renderExactEvaluation(ev);  // <<< exact, no summarization
     card.style.display = "";
   }
 
-  function mapPdfJsonToMetrics(pdfRaw){
-    const pdf = {};
-    for(const k of Object.keys(pdfRaw||{})) pdf[normKey(k)] = pdfRaw[k];
-
-    const dateVal = pdf[normKey("Date (YYYY-MM-DD)")] || pdf[normKey("Date")] || "";
-    const assessor = pdf[normKey("Assessor Name")] || pdf[normKey("Assessor Name:")] || "TILERSHUB";
-    const levelText =
-      pdf[normKey("Certification Level")] ||
-      pdf[normKey("Certification Level Applied (CT/ACT/MT)")] ||
-      "Verified";
-
-    const cs = getSection(pdfRaw, "Customer Service – 10 Points") || getSection(pdfRaw, "Customer Service - 10 Points") || {};
-    const wq = getSection(pdfRaw, "Work Quality – 50 Points") || getSection(pdfRaw, "Work Quality - 50 Points") || {};
-    const tt = getSection(pdfRaw, "Tools & Technology – 10 Points") || getSection(pdfRaw, "Tools & Technology - 10 Points") || {};
-    const se = getSection(pdfRaw, "Safety Equipment – 10 Points") || getSection(pdfRaw, "Safety Equipment - 10 Points") || {};
-    const kt = getSection(pdfRaw, "Knowledge & Theory Test – 10 Points") || getSection(pdfRaw, "Knowledge & Theory Test - 10 Points") || {};
-    const cf = getSection(pdfRaw, "Customer Feedback – 10 Points") || getSection(pdfRaw, "Customer Feedback - 10 Points") || {};
-    const fs = getSection(pdfRaw, "Final Scoring Framework") || {};
-
-    const crit = (section, label)=>{
-      if(!section) return undefined;
+  // ---------- EXACT RENDERER ----------
+  function renderExactEvaluation(pdfRaw){
+    // Normalize a shallow lookup, but we will display the ORIGINAL labels verbatim.
+    const nget = (key) => {
       const map = {};
-      for(const k of Object.keys(section)) map[normKey(k)] = section[k];
-      return map[normKey(label)];
+      for(const k of Object.keys(pdfRaw||{})) map[normKey(k)] = k;
+      const foundKey = map[normKey(key)];
+      return foundKey ? pdfRaw[foundKey] : undefined;
     };
 
-    const toPct = v => Math.round((Number(v)||0) * 20);
+    // Header fields (shown as meta)
+    const assessor = nget("Assessor Name") || nget("Assessor Name:") || "TILERSHUB";
+    const dateVal  = nget("Date (YYYY-MM-DD)") || nget("Date (YYYY-MM-DD):") || nget("Date") || "";
+    const levelApplied = nget("Certification Level Applied (CT/ACT/MT)") || nget("Certification Level Applied (CT/ACT/MT):");
+    const levelFinal   = nget("Certification Level") || nget("Certification Level:");
+    const comments     = nget("Assessor Comments") || nget("Assessor Comments:");
 
-    const metrics = {
-      workmanship: avgPercent([
-        crit(wq, "Final finish quality"),
-        crit(wq, "Cutting & grinding precision"),
-        crit(wq, "Clean work during installation")
-      ], toPct),
-      waterproofing: toPct( crit(kt, "Question 1 (Standards, materials)") ),
-      adhesive_usage: toPct( crit(wq, "Adhesive spreading & coverage") ),
-      tile_alignment: toPct( crit(wq, "Layout lines & accuracy") ),
-      grout_finish: toPct( crit(wq, "Grouting accuracy & neatness") ),
-      safety: avgPercent([
-        crit(se, "PPE usage (gloves, mask, boots)"),
-        crit(se, "Safe work practices")
-      ], toPct),
-      site_cleanliness: toPct( crit(wq, "Site cleanliness") ),
-      timeliness: toPct( crit(cs, "Timeliness & punctuality") ),
-      communication: toPct( crit(cs, "Communication with client") ),
-      pricing_fairness: 0 // not part of the PDF; keep 0 or compute elsewhere
-    };
-
-    const fsMap = {};
-    for(const k of Object.keys(fs)) fsMap[normKey(k)] = fs[k];
-    const overall = Number(
-      fsMap[normKey("TOTAL SCORE")] ??
-      (
-        (fsMap[normKey("Customer Service subtotal")]||0) +
-        (fsMap[normKey("Work Quality subtotal")]||0) +
-        (fsMap[normKey("Tools & Technology subtotal")]||0) +
-        (fsMap[normKey("Safety Equipment subtotal")]||0) +
-        (fsMap[normKey("Knowledge & Theory Test subtotal")]||0) +
-        (fsMap[normKey("Customer Feedback subtotal")]||0)
-      )
-    );
-
-    let levelClass = "verified";
-    if(/master/i.test(levelText)) levelClass = "master";
-    else if(/pro|act/i.test(levelText)) levelClass = "pro";
-
-    return {
-      level: levelText,
-      levelClass,
-      overall_score: isFinite(overall) ? overall : 0,
-      last_audit_date: dateVal,
-      evaluator: assessor,
-      metrics,
-      checks: [
-        { label: "Verified NIC & Business Registration", pass: true },
-        { label: "Insurance/Indemnity Coverage", pass: true }
-      ],
-      notes: pdf[normKey("Assessor Comments")] || pdf[normKey("Assessor Comments:")] || ""
-    };
-  }
-
-  function renderEvaluation(ev){
-    // header
+    // Display level pill + meta
+    const levelText = levelFinal || levelApplied || "Verified";
     const levelEl = document.getElementById("evalLevel");
-    levelEl.textContent = ev.level;
+    levelEl.textContent = levelText;
     levelEl.classList.remove("master","pro","verified");
-    levelEl.classList.add(ev.levelClass || "verified");
+    levelEl.classList.add(/master/i.test(levelText) ? "master" : (/pro|act/i.test(levelText) ? "pro" : "verified"));
 
     document.getElementById("evalMeta").textContent =
-      `Audited: ${ev.last_audit_date || "—"} · By ${ev.evaluator || "TILERSHUB"}`;
-    document.getElementById("evalOverall").textContent =
-      `Overall: ${Math.round(Number(ev.overall_score)||0)}%`;
+      `Audited: ${dateVal || "—"} · By ${assessor || "TILERSHUB"}`;
 
-    // metrics
-    const barsRoot = document.getElementById("evalBars");
-    const ordered = [
-      ["workmanship","Workmanship"],
-      ["waterproofing","Waterproofing"],
-      ["adhesive_usage","Adhesive Usage"],
-      ["tile_alignment","Tile Alignment"],
-      ["grout_finish","Grout Finish"],
-      ["safety","Safety"],
-      ["site_cleanliness","Site Cleanliness"],
-      ["timeliness","Timeliness"],
-      ["communication","Communication"],
-      ["pricing_fairness","Pricing Fairness"]
-    ];
-    barsRoot.innerHTML = ordered.map(([k,label]) => metricHTML(label, ev.metrics?.[k] ?? 0)).join("");
-    requestAnimationFrame(() => {
-      barsRoot.querySelectorAll(".bar > span").forEach((span, i)=>{
-        const key = ordered[i][0];
-        const pct = clampPct(ev.metrics?.[key] ?? 0);
-        span.style.width = pct + "%";
-      });
-    });
+    // Overall line from Final Scoring (if present)
+    const fs = nget("Final Scoring Framework");
+    let overall = "";
+    if (fs && typeof fs === "object") {
+      const keyMap = {};
+      for(const k of Object.keys(fs)) keyMap[normKey(k)] = k;
+      const totalKey = keyMap[normKey("TOTAL SCORE")];
+      if (totalKey) overall = `${fs[totalKey]}%`;
+    }
+    document.getElementById("evalOverall").textContent = `Overall: ${overall || "—"}`;
 
-    // checks
+    // Container roots
+    const barsRoot   = document.getElementById("evalBars");
     const checksRoot = document.getElementById("evalChecks");
-    checksRoot.innerHTML = "";
-    (ev.checks||[]).forEach(c => checksRoot.insertAdjacentHTML("beforeend", checkHTML(c.label, !!c.pass)));
+    const notesWrap  = document.getElementById("evalNotes");
+    const notesBody  = notesWrap.querySelector(".notes-body");
 
-    // notes
-    const notesWrap = document.getElementById("evalNotes");
-    const notesBody = notesWrap.querySelector(".notes-body");
-    if(ev.notes){
-      notesBody.textContent = ev.notes;
+    // We will use evalBars area to render the exact sections (not just bars)
+    barsRoot.innerHTML = "";
+
+    // Render helper: a titled block listing every sub-key with its raw mark
+    function renderSectionBlock(titleWanted){
+      const section = nget(titleWanted);
+      const displayTitleKey = section ? findOriginalKey(pdfRaw, titleWanted) : null;
+
+      if (!section || typeof section !== "object") return;
+      const block = document.createElement("div");
+      block.className = "metric"; // reuse card-ish styling
+      const title = escapeHtml(displayTitleKey || titleWanted);
+      const items = Object.keys(section).map(k => ({
+        label: k,
+        value: section[k]
+      }));
+
+      // Build markup: title + list of rows with score and tiny bar
+      const inner = [
+        `<div class="row" style="margin-bottom:8px"><strong>${title}</strong></div>`,
+        `<div role="list" style="display:grid;gap:8px">`
+      ];
+
+      items.forEach(({label, value}) => {
+        const vNum = Number(value);
+        const pct = Number.isFinite(vNum) ? clampPct(vNum * 20) : 0; // assume 0–5 scale → %
+        inner.push(`
+          <div role="listitem" aria-label="${escapeHtml(label)} ${escapeHtml(String(value))}/5">
+            <div class="row">
+              <span>${escapeHtml(label)}</span>
+              <strong>${escapeHtml(String(value))}${Number.isFinite(vNum) ? " / 5" : ""}</strong>
+            </div>
+            ${Number.isFinite(vNum) ? `<div class="bar" aria-hidden="true"><span style="width:${pct}%"></span></div>` : ``}
+          </div>
+        `);
+      });
+
+      inner.push(`</div>`);
+      block.innerHTML = inner.join("");
+      barsRoot.appendChild(block);
+    }
+
+    // Order of sections as in the PDF
+    const SECTION_TITLES = [
+      "Customer Service – 10 Points",
+      "Work Quality – 50 Points",
+      "Tools & Technology – 10 Points",
+      "Safety Equipment – 10 Points",
+      "Knowledge & Theory Test – 10 Points",
+      "Customer Feedback – 10 Points"
+    ];
+
+    // Header fields block (simple facts)
+    const headerFacts = [];
+    pushFact(headerFacts, "Project Address", nget("Project Address") || nget("Project Address:"));
+    pushFact(headerFacts, "Certification Level Applied (CT/ACT/MT)", levelApplied);
+    pushFact(headerFacts, "Certification Level", levelFinal);
+    const highlights = nget("Key Highlights / Specializations (Tick applicable)");
+    if (Array.isArray(highlights) && highlights.length){
+      headerFacts.push(`<div><strong>Key Highlights:</strong><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${highlights.map(h=>`<span class="pill">${escapeHtml(h)}</span>`).join("")}</div></div>`);
+    }
+    if (headerFacts.length){
+      const hdr = document.createElement("div");
+      hdr.className = "metric";
+      hdr.innerHTML = `<div class="row" style="margin-bottom:8px"><strong>Evaluation Details</strong></div>${headerFacts.join("")}`;
+      barsRoot.appendChild(hdr);
+    }
+
+    // Each scored section exactly as provided
+    SECTION_TITLES.forEach(renderSectionBlock);
+
+    // Final Scoring Framework (all fields verbatim)
+    if (fs && typeof fs === "object") {
+      const fsBlock = document.createElement("div");
+      fsBlock.className = "metric";
+      fsBlock.innerHTML = `<div class="row" style="margin-bottom:8px"><strong>${escapeHtml(findOriginalKey(pdfRaw,"Final Scoring Framework") || "Final Scoring Framework")}</strong></div>`;
+      const list = document.createElement("div");
+      list.setAttribute("role","list");
+      list.style.display = "grid";
+      list.style.gap = "8px";
+      Object.keys(fs).forEach(k=>{
+        const val = fs[k];
+        const isNum = Number.isFinite(Number(val));
+        const pct   = isNum ? clampPct(Number(val)) : null; // TOTAL SCORE is already in %
+        const row = document.createElement("div");
+        row.setAttribute("role","listitem");
+        row.innerHTML = `
+          <div class="row">
+            <span>${escapeHtml(k)}</span>
+            <strong>${escapeHtml(String(val))}${/TOTAL SCORE/i.test(k) && isNum ? "%" : ""}</strong>
+          </div>
+          ${(/TOTAL SCORE/i.test(k) && isNum) ? `<div class="bar" aria-hidden="true"><span style="width:${pct}%"></span></div>` : ``}
+        `;
+        list.appendChild(row);
+      });
+      fsBlock.appendChild(list);
+      barsRoot.appendChild(fsBlock);
+    }
+
+    // Notes
+    if (comments) {
+      notesBody.textContent = String(comments);
       notesWrap.style.display = "";
-    }else{
+    } else {
       notesWrap.style.display = "none";
     }
+
+    // Checks area (optional; keep minimal to avoid changing your data model)
+    checksRoot.innerHTML = "";
   }
 
-  function metricHTML(label, score){
-    const pct = clampPct(score);
-    return `
-      <div class="metric" role="listitem" aria-label="${escapeHtml(label)} ${pct}%">
-        <div class="row"><span>${escapeHtml(label)}</span><strong>${pct}%</strong></div>
-        <div class="bar" aria-hidden="true"><span style="width:0%"></span></div>
-      </div>
-    `;
+  // Helpers for exact renderer
+  function findOriginalKey(obj, desired){
+    const n = normKey(desired);
+    for (const k of Object.keys(obj||{})) if (normKey(k) === n) return k;
+    return null;
   }
-  function checkHTML(label, pass){
-    return `
-      <div class="check ${pass ? "pass" : "fail"}">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
-          ${pass
-            ? '<path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/>'
-            : '<path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/>'}
-        </svg>
-        <div>${escapeHtml(label)}</div>
+  function pushFact(arr, label, val){
+    if(!val) return;
+    arr.push(`
+      <div class="row">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(String(val))}</strong>
       </div>
-    `;
+    `);
   }
   function clampPct(n){ return Math.max(0, Math.min(100, Number(n)||0)); }
-  function avgPercent(values, toPct){
-    const nums = (values||[]).map(v => toPct(v)).filter(n => Number.isFinite(n));
-    if (!nums.length) return 0;
-    return Math.round(nums.reduce((a,b)=>a+b,0)/nums.length);
-  }
 
   // Tiny debug helper (toggle view of loaded raw JSON)
   function attachEvalDebug(ev, sourceNote){
@@ -364,7 +374,7 @@ async function initPage(){
     };
   }
 
-  // --- REVIEWS LOAD/RENDER ---
+  /* ==================== REVIEWS (unchanged) ==================== */
   async function loadReviews(){
     if(!tilerId){ renderEmptySummary(); return; }
     const { data, error } = await supabase
