@@ -3,16 +3,16 @@ document.addEventListener("DOMContentLoaded", () => { initPage(); });
 
 async function initPage(){
   // --- CONFIG ---
-  const SUPABASE_URL = "https://adahhlymilegcvesthtu.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkYWhobHltaWxlZ2N2ZXN0aHR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0NDU0ODgsImV4cCI6MjA3MTAyMTQ4OH0.gK4GK0V2NbGKRNJ4kGT1hIt3nUJ9yuVyJB5xVCSEtAU";
+  const SUPABASE_URL = "https://todzlrbaovbqdwxdlcxs.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHpscmJhb3ZicWR3eGRsY3hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUxNzM1MjIsImV4cCI6MjA3MDc0OTUyMn0.zsE2fHxF8QUPpiOfYXKz4oe8wVccN76ewDd56u2F6FY";
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  const MODERATED = false; // if you use `approved` field in reviews
+  const MODERATED = false;
 
   const urlParams = new URLSearchParams(location.search);
   const tilerId = urlParams.get("id");
 
   // --- UTIL ---
-  const $  = s=>document.querySelector(s);
+  const $ = s=>document.querySelector(s);
   const $$ = s=>document.querySelectorAll(s);
   function escapeHtml(str){ return String(str||"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;","&gt;":"&gt;","\"":"&quot;","'":"&#39;"}[s])); }
   function percentFrom5(avg){ return Math.round((avg/5)*100) + "%"; }
@@ -101,9 +101,9 @@ async function initPage(){
   // Robust key/id helpers
   function normKey(s){
     return String(s||"")
-      .replace(/\u2013|\u2014/g, "-")
-      .replace(/\s+/g, " ")
-      .replace(/\s*:\s*$/, "")
+      .replace(/\u2013|\u2014/g, "-") // en/em dash → hyphen
+      .replace(/\s+/g, " ")           // collapse spaces
+      .replace(/\s*:\s*$/, "")        // drop trailing colon
       .trim()
       .toLowerCase();
   }
@@ -120,13 +120,16 @@ async function initPage(){
     for(const k of Object.keys(obj)) table[normKey(k)] = obj[k];
     return table[normKey(key)];
   }
+  function getSection(obj, title){
+    return byNorm(obj, title) || byNorm(obj, title.replace(/–/g,"-"));
+  }
 
   async function loadEvaluation(tiler){
     const id = String(tiler.id);
     const name = String(tiler.name||"");
     const variants = [id, name, slugifyId(name), slugifyId(id)];
     const card = document.getElementById("evaluationCard");
-    let ev = null;
+    let ev = null, sourceNote = "";
 
     try {
       const r = await fetch("/tilers/evaluation-result.json", { cache: "no-cache" });
@@ -137,13 +140,17 @@ async function initPage(){
         if (data && typeof data === "object" && !Array.isArray(data)) {
           const keyMap = {};
           for (const k of Object.keys(data)) keyMap[normKey(k)] = data[k];
-          for (const v of variants) { if (ev) break; ev = keyMap[normKey(v)]; }
+          for (const v of variants) {
+            if (ev) break;
+            ev = keyMap[normKey(v)];
+            if (ev) sourceNote = `found by key "${v}"`;
+          }
           if (!ev) {
             // fallback: match by "Tiler Name"
             for (const k of Object.keys(data)) {
               const rec = data[k];
               const recName = rec["Tiler Name"] || rec["Tiler Name:"] || rec.name;
-              if (recName && normKey(recName) === normKey(name)) { ev = rec; break; }
+              if (recName && normKey(recName) === normKey(name)) { ev = rec; sourceNote = `matched by "Tiler Name"`; break; }
             }
           }
         }
@@ -155,6 +162,7 @@ async function initPage(){
             normKey(rec["Tiler Name"]||"") === normKey(name) ||
             normKey(slugifyId(rec["Tiler Name"]||"")) === normKey(slugifyId(name))
           );
+          if (ev) sourceNote = "found in array";
         }
       }
     } catch (e) {
@@ -163,13 +171,13 @@ async function initPage(){
 
     if (!ev) { card.style.display = "none"; return; }
 
-    renderExactEvaluation(ev);
+    renderExactEvaluation(ev);  // <<< exact, no summarization
     card.style.display = "";
   }
 
   // ---------- EXACT RENDERER ----------
   function renderExactEvaluation(pdfRaw){
-    // Normalize a shallow lookup, but display ORIGINAL labels verbatim.
+    // Normalize a shallow lookup, but we will display the ORIGINAL labels verbatim.
     const nget = (key) => {
       const map = {};
       for(const k of Object.keys(pdfRaw||{})) map[normKey(k)] = k;
@@ -184,7 +192,7 @@ async function initPage(){
     const levelFinal   = nget("Certification Level") || nget("Certification Level:");
     const comments     = nget("Assessor Comments") || nget("Assessor Comments:");
 
-    // Level pill + meta
+    // Display level pill + meta
     const levelText = levelFinal || levelApplied || "Verified";
     const levelEl = document.getElementById("evalLevel");
     levelEl.textContent = levelText;
@@ -205,32 +213,38 @@ async function initPage(){
     }
     document.getElementById("evalOverall").textContent = `Overall: ${overall || "—"}`;
 
+    // Container roots
     const barsRoot   = document.getElementById("evalBars");
+    const checksRoot = document.getElementById("evalChecks");
     const notesWrap  = document.getElementById("evalNotes");
     const notesBody  = notesWrap.querySelector(".notes-body");
+
+    // We will use evalBars area to render the exact sections (not just bars)
     barsRoot.innerHTML = "";
 
     // Render helper: a titled block listing every sub-key with its raw mark
     function renderSectionBlock(titleWanted){
-      const map = {}; for(const k of Object.keys(pdfRaw||{})) map[normKey(k)] = k;
-      const titleKey = map[normKey(titleWanted)];
-      const section  = titleKey ? pdfRaw[titleKey] : undefined;
+      const section = nget(titleWanted);
+      const displayTitleKey = section ? findOriginalKey(pdfRaw, titleWanted) : null;
 
       if (!section || typeof section !== "object") return;
-
       const block = document.createElement("div");
-      block.className = "metric";
-      const title = escapeHtml(titleKey || titleWanted);
+      block.className = "metric"; // reuse card-ish styling
+      const title = escapeHtml(displayTitleKey || titleWanted);
+      const items = Object.keys(section).map(k => ({
+        label: k,
+        value: section[k]
+      }));
 
+      // Build markup: title + list of rows with score and tiny bar
       const inner = [
         `<div class="row" style="margin-bottom:8px"><strong>${title}</strong></div>`,
         `<div role="list" style="display:grid;gap:8px">`
       ];
 
-      Object.keys(section).forEach(label => {
-        const value = section[label];
+      items.forEach(({label, value}) => {
         const vNum = Number(value);
-        const pct = Number.isFinite(vNum) ? Math.max(0, Math.min(100, vNum * 20)) : 0; // 0–5 scale → %
+        const pct = Number.isFinite(vNum) ? clampPct(vNum * 20) : 0; // assume 0–5 scale → %
         inner.push(`
           <div role="listitem" aria-label="${escapeHtml(label)} ${escapeHtml(String(value))}/5">
             <div class="row">
@@ -247,7 +261,7 @@ async function initPage(){
       barsRoot.appendChild(block);
     }
 
-    // Order of sections as in the form
+    // Order of sections as in the PDF
     const SECTION_TITLES = [
       "Customer Service – 10 Points",
       "Work Quality – 50 Points",
@@ -257,10 +271,11 @@ async function initPage(){
       "Customer Feedback – 10 Points"
     ];
 
-    // Evaluation details (header facts)
+    // Header fields block (simple facts)
     const headerFacts = [];
-    if (levelApplied) headerFacts.push(row("Certification Level Applied (CT/ACT/MT)", levelApplied));
-    if (levelFinal)   headerFacts.push(row("Certification Level", levelFinal));
+    pushFact(headerFacts, "Project Address", nget("Project Address") || nget("Project Address:"));
+    pushFact(headerFacts, "Certification Level Applied (CT/ACT/MT)", levelApplied);
+    pushFact(headerFacts, "Certification Level", levelFinal);
     const highlights = nget("Key Highlights / Specializations (Tick applicable)");
     if (Array.isArray(highlights) && highlights.length){
       headerFacts.push(`<div><strong>Key Highlights:</strong><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${highlights.map(h=>`<span class="pill">${escapeHtml(h)}</span>`).join("")}</div></div>`);
@@ -275,11 +290,11 @@ async function initPage(){
     // Each scored section exactly as provided
     SECTION_TITLES.forEach(renderSectionBlock);
 
-    // Final Scoring Framework (verbatim)
+    // Final Scoring Framework (all fields verbatim)
     if (fs && typeof fs === "object") {
       const fsBlock = document.createElement("div");
       fsBlock.className = "metric";
-      fsBlock.innerHTML = `<div class="row" style="margin-bottom:8px"><strong>Final Scoring Framework</strong></div>`;
+      fsBlock.innerHTML = `<div class="row" style="margin-bottom:8px"><strong>${escapeHtml(findOriginalKey(pdfRaw,"Final Scoring Framework") || "Final Scoring Framework")}</strong></div>`;
       const list = document.createElement("div");
       list.setAttribute("role","list");
       list.style.display = "grid";
@@ -287,26 +302,23 @@ async function initPage(){
       Object.keys(fs).forEach(k=>{
         const val = fs[k];
         const isNum = Number.isFinite(Number(val));
-        const pct   = isNum ? Math.max(0, Math.min(100, Number(val))) : null; // TOTAL is % already
-        const rowDiv = document.createElement("div");
-        rowDiv.setAttribute("role","listitem");
-        rowDiv.innerHTML = `
+        const pct   = isNum ? clampPct(Number(val)) : null; // TOTAL SCORE is already in %
+        const row = document.createElement("div");
+        row.setAttribute("role","listitem");
+        row.innerHTML = `
           <div class="row">
             <span>${escapeHtml(k)}</span>
             <strong>${escapeHtml(String(val))}${/TOTAL SCORE/i.test(k) && isNum ? "%" : ""}</strong>
           </div>
           ${(/TOTAL SCORE/i.test(k) && isNum) ? `<div class="bar" aria-hidden="true"><span style="width:${pct}%"></span></div>` : ``}
         `;
-        list.appendChild(rowDiv);
+        list.appendChild(row);
       });
       fsBlock.appendChild(list);
       barsRoot.appendChild(fsBlock);
     }
 
     // Notes
-    const comments = nget("Assessor Comments") || nget("Assessor Comments:");
-    const notesWrap  = document.getElementById("evalNotes");
-    const notesBody  = notesWrap.querySelector(".notes-body");
     if (comments) {
       notesBody.textContent = String(comments);
       notesWrap.style.display = "";
@@ -314,22 +326,39 @@ async function initPage(){
       notesWrap.style.display = "none";
     }
 
-    function row(label, val){
-      return `<div class="row"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(val))}</strong></div>`;
-    }
+    // Checks area (optional; keep minimal to avoid changing your data model)
+    checksRoot.innerHTML = "";
   }
 
-  /* ==================== REVIEWS (separate) ==================== */
+  // Helpers for exact renderer
+  function findOriginalKey(obj, desired){
+    const n = normKey(desired);
+    for (const k of Object.keys(obj||{})) if (normKey(k) === n) return k;
+    return null;
+  }
+  function pushFact(arr, label, val){
+    if(!val) return;
+    arr.push(`
+      <div class="row">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(String(val))}</strong>
+      </div>
+    `);
+  }
+  function clampPct(n){ return Math.max(0, Math.min(100, Number(n)||0)); }
+
+  
+  /* ==================== REVIEWS (unchanged) ==================== */
   async function loadReviews(){
     if(!tilerId){ renderEmptySummary(); return; }
-
-    // Build query with optional moderation flag
-    let query = supabase.from("reviews").select("*").eq("tiler_id", tilerId).order("created_at", { ascending:false });
-    if (MODERATED) query = query.eq("approved", true);
-
-    const { data, error } = await query;
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("*")
+      .eq("tiler_id", tilerId)
+      .eq("approved", true)
+      .order("created_at", { ascending:false });
     if(error){ console.error(error); renderEmptySummary(); renderReviews([]); return; }
-    renderSummary(data||[]); renderReviews(data||[]);
+    renderSummary(data); renderReviews(data);
   }
   function renderEmptySummary(){
     $("#summaryGrid").innerHTML =
@@ -352,14 +381,14 @@ async function initPage(){
     list.querySelectorAll(".review-card").forEach(n=>n.remove());
     rows.forEach(r=>{
       const avg = Math.round((((r.quality||0)+(r.service||0)+(r.timeline||0)+(r.pricing||0)+(r.cleanliness||0))/5));
-      const created = r.created_at ? new Date(r.created_at).toISOString().split("T")[0] : "";
+      const created = new Date(r.created_at).toISOString().split("T")[0];
       const phone = r.phone ? escapeHtml(r.phone) : "N/A";
       const email = r.email ? escapeHtml(r.email) : "N/A";
       const comment = escapeHtml(r.comment||"");
       const name = escapeHtml(r.name||"Anonymous");
       list.insertAdjacentHTML("beforeend", `
         <div class="review-card" style="border-top:1px solid #eee;margin-top:10px;padding-top:10px">
-          <strong>${name}</strong> ${created ? `<small>– ${created}</small>` : ``}
+          <strong>${name}</strong> <small>– ${created}</small>
           <div class="stars" aria-label="Review average">${"★".repeat(avg)}${"☆".repeat(5-avg)}</div>
           ${comment ? `<p style="margin:.4rem 0 .2rem">${comment}</p>` : ``}
           ${(r.phone||r.email)?`<p class="muted"><small>Phone: ${phone} &nbsp;|&nbsp; Email: ${email}</small></p>`:''}
@@ -367,93 +396,103 @@ async function initPage(){
     });
   }
 
-  // --- SUBMIT REVIEW (robust + clear errors) ---
-  window.submitReview = async function submitReview(){
-    try{
-      const tilerId = new URLSearchParams(location.search).get("id");
-      if(!tilerId){
-        alert("Missing tiler id in URL (e.g. ?id=saman-anurudda).");
-        return;
-      }
-
-      const btn = document.getElementById("submitBtn");
-      if (btn) btn.disabled = true;
-
-      // Honeypot (bot trap)
-      if (document.getElementById("website")?.value.trim()){
-        if (btn) btn.disabled = false;
-        return;
-      }
-
-      // Collect fields
-      const name        = document.getElementById("name").value.trim() || "Anonymous";
-      const phone       = document.getElementById("phone").value.trim() || null;
-      const email       = document.getElementById("email").value.trim() || null;
-      const quality     = parseInt(document.getElementById("quality").value,10);
-      const service     = parseInt(document.getElementById("service").value,10);
-      const timeline    = parseInt(document.getElementById("timeline").value,10);
-      const pricing     = parseInt(document.getElementById("pricing").value,10);
-      const cleanliness = parseInt(document.getElementById("cleanliness").value,10);
-      const comment     = document.getElementById("comment").value.trim() || null;
-
-      // Basic validation
-      const scores = [quality, service, timeline, pricing, cleanliness];
-      if (!scores.every(v => Number.isInteger(v) && v >= 1 && v <= 5)) {
-        if (btn) btn.disabled = false;
-        alert("Please select valid ratings (1–5) for all categories.");
-        return;
-      }
-
-      // Extra: basic email sanity if provided
-      if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
-        if (btn) btn.disabled = false;
-        alert("Please enter a valid email or leave it blank.");
-        return;
-      }
-
-      const payload = {
-        tiler_id: tilerId,
-        name, phone, email,
-        quality, service, timeline, pricing, cleanliness,
-        comment
-      };
-
-      if (!window.supabase || !window.supabase.from) {
-        if (btn) btn.disabled = false;
-        alert("Supabase client not available. Check the script tag for @supabase/supabase-js.");
-        return;
-      }
-
-      const { error } = await supabase.from("reviews").insert([payload]);
-
-      if (error) {
-        console.error("Supabase insert error:", error);
-        const msg =
-          (error.message || "Unknown error") +
-          "\n\nCommon fixes:\n• Table/columns must match payload.\n• RLS must allow INSERT for anon role (or use auth).\n• If using moderation, ensure a boolean `approved` column exists.";
-        alert("Could not submit review:\n" + msg);
-        if (btn) btn.disabled = false;
-        return;
-      }
-
-      // Success: clear form + refresh list
-      ["name","phone","email","comment"].forEach(id=>{ const el=document.getElementById(id); if (el) el.value=""; });
-      ["quality","service","timeline","pricing","cleanliness"].forEach(id=>{ const el=document.getElementById(id); if (el) el.value="5"; });
-      await loadReviews();
-      alert("Review submitted. Thank you!");
-      if (btn) btn.disabled = false;
-    }catch(err){
-      console.error(err);
-      alert("Unexpected error submitting review. See console for details.");
-      const btn = document.getElementById("submitBtn");
-      if (btn) btn.disabled = false;
+// --- SUBMIT REVIEW (robust + clear errors) ---
+window.submitReview = async function submitReview(){
+  try{
+    const tilerId = new URLSearchParams(location.search).get("id");
+    if(!tilerId){
+      alert("Missing tiler id in URL (e.g. ?id=saman-anurudda).");
+      return;
     }
-  };
+
+    const btn = document.getElementById("submitBtn");
+    if (btn) btn.disabled = true;
+
+    // Honeypot (bot trap)
+    if (document.getElementById("website")?.value.trim()){
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    // Collect fields
+    const name        = document.getElementById("name").value.trim() || "Anonymous";
+    const phone       = document.getElementById("phone").value.trim() || null;
+    const email       = document.getElementById("email").value.trim() || null;
+    const quality     = parseInt(document.getElementById("quality").value,10);
+    const service     = parseInt(document.getElementById("service").value,10);
+    const timeline    = parseInt(document.getElementById("timeline").value,10);
+    const pricing     = parseInt(document.getElementById("pricing").value,10);
+    const cleanliness = parseInt(document.getElementById("cleanliness").value,10);
+    const comment     = document.getElementById("comment").value.trim() || null;
+
+    // Basic validation
+    const scores = [quality, service, timeline, pricing, cleanliness];
+    if (!scores.every(v => Number.isInteger(v) && v >= 1 && v <= 5)) {
+      if (btn) btn.disabled = false;
+      alert("Please select valid ratings (1–5) for all categories.");
+      return;
+    }
+
+    // Extra: basic email sanity if provided
+    if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+      if (btn) btn.disabled = false;
+      alert("Please enter a valid email or leave it blank.");
+      return;
+    }
+
+    const payload = {
+      tiler_id: tilerId,
+      name,
+      phone,
+      email,
+      quality,
+      service,
+      timeline,
+      pricing,
+      cleanliness,
+      comment
+    };
+
+    // Ensure Supabase client exists
+    if (!window.supabase || !window.supabase.from) {
+      if (btn) btn.disabled = false;
+      alert("Supabase client not available. Check the script tag for @supabase/supabase-js.");
+      return;
+    }
+
+    // Insert
+    const { data, error } = await supabase.from("reviews").insert([payload]).select();
+
+    if (error) {
+      console.error("Supabase insert error:", error);
+      // Show helpful message for common causes
+      const msg =
+        (error.message || "Unknown error") +
+        "\n\nCommon fixes:\n• Table name/columns must match the payload.\n• RLS policy must allow INSERT for anon role.\n• Your Supabase project must accept requests from this domain.";
+      alert("Could not submit review:\n" + msg);
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    // Success: clear form + refresh list
+    ["name","phone","email","comment"].forEach(id=>{ const el=document.getElementById(id); if (el) el.value=""; });
+    ["quality","service","timeline","pricing","cleanliness"].forEach(id=>{ const el=document.getElementById(id); if (el) el.value="5"; });
+    await loadReviews();
+    alert("Review submitted. Thank you!");
+
+    if (btn) btn.disabled = false;
+  }catch(err){
+    console.error(err);
+    alert("Unexpected error submitting review. See console for details.");
+    const btn = document.getElementById("submitBtn");
+    if (btn) btn.disabled = false;
+  }
+};
 
   // Kickoff
   await loadTilerProfile();
   await loadReviews();
 
-  // If include.js later dispatches a custom event, refresh again
+  // If include.js later dispatches a custom event, refresh again (harmless if already loaded)
   document.addEventListener("includes:ready", async () => { await loadTilerProfile(); await loadReviews(); });
 }
