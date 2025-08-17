@@ -16,6 +16,9 @@
   /* Backward-compat with your old vars */
   --primary-color: var(--m-primary);
   --text-color: var(--m-on-surface);
+
+  /* Header height for anchor offset */
+  --appbar-h: 56px;
 }
 
 /* ========= Page Container ========= */
@@ -48,6 +51,7 @@ body {
   justify-content: space-between;
   min-height: 56px;
   padding: 8px 4px;
+  gap: 6px; /* added: space between burger & logo */
 }
 
 /* Logo + name */
@@ -79,10 +83,17 @@ body {
   color: inherit;
   display: inline-grid;
   place-items: center;
+  -webkit-tap-highlight-color: transparent; /* nicer mobile taps */
 }
 .icon-btn .material-symbols-rounded {
   font-size: 24px;
   line-height: 1;
+}
+
+/* Show hamburger only on mobile */
+.menu-toggle { display: inline-grid; }
+@media (min-width: 769px) {
+  .menu-toggle { display: none; }
 }
 
 /* Nav menu */
@@ -114,6 +125,14 @@ body {
   .nav-menu.active {
     display: flex;
   }
+}
+
+/* When nav is open on mobile, give surface & subtle shadow */
+.nav-menu.active {
+  background: var(--m-surface);
+  border-top: 1px solid var(--m-outline);
+  box-shadow: var(--elev-1);
+  padding-top: 10px;
 }
 
 /* ========= Footer ========= */
@@ -193,6 +212,9 @@ body {
   background-size: 220% 220%;
   opacity: 1;
 }
+
+/* ========= Anchor offset so sticky header doesn't cover content ========= */
+[id] { scroll-margin-top: calc(var(--appbar-h) + 10px); }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
