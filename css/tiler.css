@@ -1,0 +1,141 @@
+:root{
+  --primary:#0052cc; --accent:#f8b400; --light-bg:#fafafa; --text:#222; --muted:#666; --border:#e6e6e6;
+  --radius:12px; --radius-sm:10px; --shadow:0 6px 16px rgba(0,0,0,.06);
+}
+
+/* Base */
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:var(--light-bg);color:var(--text);line-height:1.45}
+header,footer{padding:12px 16px;text-align:center}
+
+/* Top visuals */
+.cover{
+  height:180px;background-size:cover;background-position:center;
+  border-bottom:1px solid var(--border);
+}
+.profile-pic{
+  width:112px;height:112px;border-radius:50%;border:4px solid #fff;margin:-56px auto 8px;
+  background-size:cover;background-position:center;box-shadow:var(--shadow)
+}
+
+/* Info */
+.profile-info{padding:0 16px;text-align:center}
+.profile-info h2{margin:6px 0 2px;font-size:clamp(20px,3.8vw,26px)}
+.profile-info p{margin:0;color:var(--muted);font-size:clamp(13px,3.4vw,15px)}
+.stars{color:var(--accent);font-size:clamp(18px,4.4vw,22px);letter-spacing:1px;margin:6px 0}
+.bio{font-size:clamp(13px,3.6vw,15px);color:#444;margin:6px auto 4px;max-width:680px}
+#highlightTags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+.highlight-tag{
+  background:var(--accent);color:#fff;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600
+}
+
+/* Layout */
+.container{padding:16px;max-width:820px;margin:0 auto}
+.card{
+  background:#fff;padding:14px;border-radius:var(--radius);box-shadow:var(--shadow);
+  border:1px solid var(--border);margin-bottom:14px
+}
+.card h3{margin:0 0 8px;font-size:clamp(16px,4vw,18px)}
+.muted{color:var(--muted);font-size:13px}
+small{color:#888}
+
+/* Grid for summary */
+.rating-grid{
+  display:grid;gap:10px;grid-template-columns:repeat(2,minmax(0,1fr));
+  margin-top:8px
+}
+.rating-grid div{
+  background:#f3f5f8;padding:10px;border-radius:var(--radius-sm);text-align:center;font-weight:600;font-size:13px
+}
+@media (min-width:600px){
+  .rating-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+/* Form */
+label{display:block;margin:10px 0 6px;font-weight:600;font-size:14px}
+input, select, textarea{
+  width:100%;padding:12px 12px;border-radius:10px;border:1px solid var(--border);font-size:15px;background:#fff
+}
+textarea{resize:vertical}
+button{
+  background:var(--primary);color:#fff;border:none;padding:14px 16px;width:100%;
+  border-radius:10px;font-size:16px;font-weight:700;margin-top:10px;cursor:pointer
+}
+button:active{filter:brightness(.95)}
+
+/* Action buttons (default inline + mobile sticky option) */
+.action-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:820px;margin:12px auto 0;padding:0 16px
+}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px;border-radius:12px;text-decoration:none;font-weight:800;border:1px solid transparent;font-size:15px
+}
+.btn .ico{width:18px;height:18px;fill:currentColor}
+.btn-wa{background:#25D366;color:#fff}
+.btn-fb{background:#1877F2;color:#fff}
+.btn:active{transform:translateY(1px)}
+
+/* Optional sticky action bar on phones */
+.action-row--sticky{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(140%) blur(6px);border-top:1px solid var(--border)
+}
+.with-sticky-padding{padding-bottom:84px} /* prevent overlap when sticky is used */
+
+/* Small screens */
+@media (max-width:420px){
+  .cover{height:140px}
+  .profile-pic{width:96px;height:96px;margin-top:-48px}
+}
+
+/* Motion/accessibility */
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
+/* ===== Evaluation styles ===== */
+.pill{
+  display:inline-block; padding:6px 10px; border-radius:999px;
+  font-size:12px; font-weight:800; letter-spacing:.2px; border:1px solid var(--border);
+  background:#f7f9fc; color:#222;
+}
+.eval-header{ display:flex; gap:10px; align-items:center; margin:6px 0 10px; flex-wrap:wrap; }
+.overall-score{
+  font-weight:800; font-size:15px; padding:8px 10px; border-radius:10px;
+  background:#f3f5f8; display:inline-block; margin-bottom:8px;
+}
+.eval-grid{
+  display:grid; gap:10px; grid-template-columns:1fr; margin:8px 0;
+}
+@media (min-width:600px){
+  .eval-grid{ grid-template-columns:1fr 1fr; }
+}
+.metric{
+  background:#f9fafb; border:1px solid var(--border); border-radius:10px; padding:10px;
+}
+.metric .row{ display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px; }
+.bar{
+  height:10px; border-radius:999px; background:#eef2f7; overflow:hidden; border:1px solid #e1e6ee;
+}
+.bar > span{
+  display:block; height:100%; width:0%;
+  background:linear-gradient(90deg, var(--primary), #2b7cff);
+  transition:width .4s ease;
+}
+.eval-checks{ margin-top:8px; display:grid; gap:8px; }
+.check{
+  display:flex; align-items:flex-start; gap:8px; font-size:14px;
+  background:#f9fafb; border:1px solid var(--border); border-radius:10px; padding:10px;
+}
+.check .ico{ width:18px; height:18px; margin-top:1px }
+.check.pass .ico{ color:#1a9e4b }
+.check.fail .ico{ color:#cc3333 }
+.eval-notes .notes-body{
+  white-space:pre-wrap; background:#fff; border:1px solid var(--border); border-radius:10px; padding:10px; font-size:14px;
+}
+.pill.master{ background:#e9f5ff; border-color:#cfe8ff; color:#084a99 }
+.pill.pro{ background:#e9fff3; border-color:#ccf3df; color:#0b6e3b }
+.pill.verified{ background:#fff7e6; border-color:#ffe4b8; color:#875c00 }
