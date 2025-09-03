@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TILERSHUB - Professional Tile Cost Estimator</title>
+    <title>TilersHub - Professional Tile Cost Estimator</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -738,20 +738,30 @@
 
     // Initialize application
     function init() {
+        console.log('Initializing TilersHub estimator...'); // Debug log
         loadTileSizes();
         setupEventListeners();
         setupAnimations();
+        console.log('Initialization complete!'); // Debug log
     }
 
     function loadTileSizes() {
         const tileSizeSelect = document.getElementById('tileSize');
         
+        // Clear existing options except the first one
+        while (tileSizeSelect.children.length > 1) {
+            tileSizeSelect.removeChild(tileSizeSelect.lastChild);
+        }
+        
+        // Add all tile sizes
         tileSizes.forEach(size => {
             const option = document.createElement('option');
             option.value = size.value;
             option.textContent = size.label;
             tileSizeSelect.appendChild(option);
         });
+        
+        console.log('Loaded', tileSizes.length, 'tile sizes'); // Debug log
     }
 
     function setupEventListeners() {
@@ -867,6 +877,308 @@
             skirtingLaborMin = skirting * settings.laborMin;
             skirtingLaborMax = skirting * settings.laborMax;
             laborMin = floorLaborMin + skirtingLaborMin;
-            laborMax = floorLaborMax +
+            laborMax = floorLaborMax + skirtingLaborMax;
+        } else {
+            floorLaborMin = floorLaborMax = area * userLaborRate;
+            skirtingLaborMin = skirtingLaborMax = skirting * userLaborRate;
+            laborMin = laborMax = floorLaborMin + skirtingLaborMin;
+        }
+
+        // Total costs
+        const materialMin = tileCost + cementCostMin + sandCostMin + adhesiveCostMin + clipsCost + groutCost;
+        const materialMax = tileCost + cementCostMax + sandCostMax + adhesiveCostMax + clipsCost + groutCost;
+        const totalMin = materialMin + laborMin;
+        const totalMax = materialMax + laborMax;
+
+        // Display results
+        displayResults({
+            area, skirting, tileSize: settings.label,
+            floorTiles, skirtingTiles, totalTiles, tileCost,
+            cementMin, cementMax, cementCostMin, cementCostMax,
+            sandMin, sandMax, sandCostMin, sandCostMax,
+            adhesiveMin, adhesiveMax, adhesiveCostMin, adhesiveCostMax,
+            clips, grout, clipsCost, groutCost,
+            floorLaborMin, floorLaborMax, skirtingLaborMin, skirtingLaborMax,
+            laborMin, laborMax, materialMin, materialMax, totalMin, totalMax
+        });
+
+        showNotification("Estimate calculated successfully!", "success");
+    }
+
+    function displayResults(data) {
+        const resultsCard = document.getElementById('resultsCard');
+        const resultsContent = document.getElementById('resultsContent');
+
+        resultsContent.innerHTML = `
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="value">${data.area}</div>
+                    <div class="label">Area (sq ft)</div>
+                </div>
+                <div class="summary-item">
+                    <div class="value">${data.skirting}</div>
+                    <div class="label">Skirting (ft)</div>
+                </div>
+                <div class="summary-item">
+                    <div class="value">${data.totalTiles}</div>
+                    <div class="label">Total Tiles</div>
+                </div>
+                <div class="summary-item">
+                    <div class="value">${data.tileSize}</div>
+                    <div class="label">Tile Size</div>
+                </div>
+            </div>
+
+            <div class="estimate-section">
+                <h3><i class="fas fa-layer-group"></i> Floor Bed Materials</h3>
+                <table class="estimate-table">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Quantity</th>
+                            <th>Cost (LKR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cement (50kg bags)</td>
+                            <td>${data.cementMin} – ${data.cementMax}</td>
+                            <td>${formatCurrency(data.cementCostMin)} – ${formatCurrency(data.cementCostMax)}</td>
+                        </tr>
+                        <tr>
+                            <td>Sand (cube)</td>
+                            <td>${data.sandMin} – ${data.sandMax}</td>
+                            <td>${formatCurrency(data.sandCostMin)} – ${formatCurrency(data.sandCostMax)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="estimate-section">
+                <h3><i class="fas fa-th-large"></i> Tiling Materials</h3>
+                <table class="estimate-table">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Quantity</th>
+                            <th>Cost (LKR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Floor Tiles</td>
+                            <td>${data.floorTiles}</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Skirting Tiles</td>
+                            <td>${data.skirtingTiles}</td>
+                            <td>-</td>
+                        </tr>
+                        <tr style="font-weight: 700; background: rgba(255, 255, 255, 0.1);">
+                            <td>Total Tiles (5% wastage)</td>
+                            <td>${data.totalTiles}</td>
+                            <td>${formatCurrency(data.tileCost)}</td>
+                        </tr>
+                        <tr>
+                            <td>Adhesive (25kg bags)</td>
+                            <td>${data.adhesiveMin} – ${data.adhesiveMax}</td>
+                            <td>${formatCurrency(data.adhesiveCostMin)} – ${formatCurrency(data.adhesiveCostMax)}</td>
+                        </tr>
+                        <tr>
+                            <td>Clips (100 pcs packs)</td>
+                            <td>${data.clips}</td>
+                            <td>${formatCurrency(data.clipsCost)}</td>
+                        </tr>
+                        <tr>
+                            <td>Grout (1kg)</td>
+                            <td>${data.grout}</td>
+                            <td>${formatCurrency(data.groutCost)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="estimate-section">
+                <h3><i class="fas fa-hard-hat"></i> Labor Costs</h3>
+                <table class="estimate-table">
+                    <thead>
+                        <tr>
+                            <th>Work Type</th>
+                            <th>Min Cost (LKR)</th>
+                            <th>Max Cost (LKR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Floor Tiling</td>
+                            <td>${formatCurrency(data.floorLaborMin)}</td>
+                            <td>${formatCurrency(data.floorLaborMax)}</td>
+                        </tr>
+                        <tr>
+                            <td>Skirting Work</td>
+                            <td>${formatCurrency(data.skirtingLaborMin)}</td>
+                            <td>${formatCurrency(data.skirtingLaborMax)}</td>
+                        </tr>
+                        <tr style="font-weight: 700; background: rgba(255, 255, 255, 0.1);">
+                            <td>Total Labor</td>
+                            <td>${formatCurrency(data.laborMin)}</td>
+                            <td>${formatCurrency(data.laborMax)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="total-cost">
+                <div class="total-cost-content">
+                    <h3><i class="fas fa-calculator"></i> Total Project Cost</h3>
+                    <div class="amount">${formatCurrency(data.totalMin)} – ${formatCurrency(data.totalMax)}</div>
+                    <p style="margin-top: 1rem; opacity: 0.9; font-size: 1rem;">
+                        <strong>Materials:</strong> ${formatCurrency(data.materialMin)} – ${formatCurrency(data.materialMax)}
+                    </p>
+                    <p style="opacity: 0.9; font-size: 1rem;">
+                        <strong>Labor:</strong> ${formatCurrency(data.laborMin)} – ${formatCurrency(data.laborMax)}
+                    </p>
+                </div>
+            </div>
+        `;
+
+        resultsCard.classList.add('show');
+        
+        // Smooth scroll to results
+        setTimeout(() => {
+            resultsCard.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+            });
+        }, 100);
+    }
+
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('en-LK', {
+            style: 'decimal',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(Math.round(amount));
+    }
+
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        // Add notification styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                border-left: 4px solid;
+                animation: slideInNotification 0.3s ease-out;
+                max-width: 400px;
+            }
+            
+            .notification-success { border-left-color: #10b981; }
+            .notification-error { border-left-color: #ef4444; }
+            .notification-info { border-left-color: #6366f1; }
+            
+            .notification-content {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                color: #1e293b;
+                font-weight: 500;
+            }
+            
+            .notification i {
+                font-size: 1.25rem;
+            }
+            
+            .notification-success i { color: #10b981; }
+            .notification-error i { color: #ef4444; }
+            .notification-info i { color: #6366f1; }
+            
+            @keyframes slideInNotification {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        
+        document.head.appendChild(style);
+        document.body.appendChild(notification);
+
+        // Remove notification after 4 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideInNotification 0.3s ease-out reverse';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+                if (style.parentNode) {
+                    style.parentNode.removeChild(style);
+                }
+            }, 300);
+        }, 4000);
+    }
+
+    // Initialize app when DOM is loaded
+    document.addEventListener('DOMContentLoaded', init);
+
+    // Add some interactive micro-animations
+    document.addEventListener('mousemove', (e) => {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+            } else {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+            }
+        });
+    });
+
+    // Performance optimization: Debounced resize handler
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            // Recalculate any size-dependent elements if needed
+            const summaryItems = document.querySelectorAll('.summary-item');
+            summaryItems.forEach(item => {
+                item.style.transition = 'all 0.3s ease';
+            });
+        }, 250);
+    });
+</script>
 ```
-<antArtifact identifier=“tilershub_modern_estimator”
+
+</body>
+</html>
