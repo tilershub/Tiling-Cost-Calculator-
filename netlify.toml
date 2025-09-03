@@ -1,9 +1,0 @@
-# netlify.toml
-[build]
-  publish = "."     # or "." if you're not using Eleventy
-  
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
