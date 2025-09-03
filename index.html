@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FXFORECAST - Professional Funded Trading Framework</title>
+    <title>TilersHub - Professional Tile Cost Estimator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,801 +15,1168 @@
         }
 
 ```
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #8b5cf6;
+        --secondary: #64748b;
+        --accent: #f59e0b;
+        --success: #10b981;
+        --danger: #ef4444;
+        --warning: #f59e0b;
+        
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8fafc;
+        --bg-dark: #0f172a;
+        --bg-card: #ffffff;
+        --bg-glass: rgba(255, 255, 255, 0.1);
+        
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --text-muted: #94a3b8;
+        --text-white: #ffffff;
+        
+        --border: #e2e8f0;
+        --border-light: #f1f5f9;
+        --border-dark: #334155;
+        
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --radius-xl: 24px;
+        
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    }
+
     body {
-        font-family: 'Arial', sans-serif;
-        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-        color: #fff;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
+        color: var(--text-primary);
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+
+    /* Animated Background */
+    .bg-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    .bg-animation::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: float 20s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        33% { transform: translate(30px, -30px) rotate(120deg); }
+        66% { transform: translate(-20px, 20px) rotate(240deg); }
     }
 
     .container {
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 0 1rem;
     }
 
+    /* Header */
     .header {
+        padding: 2rem 0;
         text-align: center;
-        margin-bottom: 40px;
-        padding: 20px 0;
+        position: relative;
     }
 
-    .logo {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #fff;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        margin-bottom: 10px;
+    .header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--gradient-glass);
+        backdrop-filter: blur(10px);
+        border-radius: var(--radius-xl);
+        margin: 1rem;
     }
 
-    .tagline {
-        font-size: 1.2rem;
-        opacity: 0.9;
-        margin-bottom: 20px;
+    .header-content {
+        position: relative;
+        z-index: 2;
     }
 
-    .ftmo-cta {
-        text-align: center;
-        margin: 30px 0;
-        padding: 30px;
-        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+    .header h1 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 800;
+        color: var(--text-white);
+        margin-bottom: 0.5rem;
+        text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        animation: slideInDown 1s ease-out;
     }
 
-    .ftmo-btn {
-        background: #fff;
-        color: #ff6b35;
-        padding: 20px 40px;
-        font-size: 1.3rem;
-        font-weight: bold;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-block;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    .header .subtitle {
+        font-size: clamp(1rem, 3vw, 1.25rem);
+        color: rgba(255,255,255,0.9);
+        font-weight: 300;
+        animation: slideInUp 1s ease-out 0.2s both;
     }
 
-    .ftmo-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    @keyframes slideInDown {
+        from { transform: translateY(-30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
 
-    .dashboard {
+    @keyframes slideInUp {
+        from { transform: translateY(30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Main Layout */
+    .main {
+        padding: 2rem 0 4rem;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        margin-bottom: 40px;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: start;
     }
 
+    /* Glass morphism cards */
     .card {
-        background: rgba(20, 30, 48, 0.4);
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(0, 255, 157, 0.2);
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 8px 32px rgba(0, 255, 157, 0.15);
-        transition: transform 0.3s ease;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+        border-radius: var(--radius-lg);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: var(--shadow-xl);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.8s ease-out;
     }
 
     .card:hover {
         transform: translateY(-5px);
-        border-color: rgba(0, 255, 157, 0.4);
-        box-shadow: 0 12px 40px rgba(0, 255, 157, 0.25);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
 
-    .card-title {
-        font-size: 1.3rem;
-        font-weight: bold;
-        margin-bottom: 20px;
-        color: #fff;
+    @keyframes fadeInUp {
+        from { transform: translateY(30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
 
-    .metric {
+    .card-header {
+        background: var(--gradient-glass);
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card-header h2 {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 15px;
-        padding: 10px;
-        background: rgba(0, 255, 157, 0.1);
-        border: 1px solid rgba(0, 255, 157, 0.2);
-        border-radius: 8px;
+        gap: 0.75rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-white);
     }
 
-    .metric-label {
-        font-size: 0.9rem;
-        opacity: 0.8;
+    .card-header i {
+        font-size: 1.5rem;
+        background: var(--gradient-accent);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
-    .metric-value {
-        font-size: 1.2rem;
-        font-weight: bold;
+    .card-body {
+        padding: 2rem;
     }
 
-    .progress-ring {
-        width: 120px;
-        height: 120px;
-        margin: 20px auto;
+    /* Form Styles */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-white);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .input-wrapper {
         position: relative;
     }
 
-    .progress-ring svg {
+    input, select {
         width: 100%;
-        height: 100%;
-        transform: rotate(-90deg);
-    }
-
-    .progress-ring-circle {
-        fill: transparent;
-        stroke: rgba(255, 255, 255, 0.3);
-        stroke-width: 8;
-        stroke-linecap: round;
-    }
-
-    .progress-ring-progress {
-        fill: transparent;
-        stroke: #00ff9d;
-        stroke-width: 8;
-        stroke-linecap: round;
-        transition: stroke-dashoffset 0.5s ease;
-    }
-
-    .progress-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #fff;
-    }
-
-    .status-indicator {
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        margin-right: 8px;
-    }
-
-    .status-safe { background-color: #00ff9d; }
-    .status-warning { background-color: #ffb700; }
-    .status-danger { background-color: #ff3838; }
-
-    .calculator {
-        background: rgba(20, 30, 48, 0.3);
-        border: 1px solid rgba(0, 255, 157, 0.2);
-        border-radius: 15px;
-        padding: 30px;
-        margin-bottom: 30px;
-    }
-
-    .input-group {
-        margin-bottom: 20px;
-    }
-
-    .input-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-        opacity: 0.9;
-    }
-
-    .input-group input, .input-group select {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid rgba(0, 255, 157, 0.3);
-        border-radius: 8px;
-        background: rgba(20, 30, 48, 0.6);
-        color: #fff;
+        padding: 1rem 3rem 1rem 1rem;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: var(--radius-sm);
         font-size: 1rem;
-        transition: border-color 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-white);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
     }
 
-    .input-group input:focus, .input-group select:focus {
-        outline: none;
-        border-color: #00ff9d;
-        box-shadow: 0 0 0 2px rgba(0, 255, 157, 0.2);
-    }
-
-    .input-group input::placeholder {
+    input::placeholder {
         color: rgba(255, 255, 255, 0.6);
     }
 
-    .btn {
-        background: linear-gradient(45deg, #00ff9d, #00d4ff);
-        color: #0f0f23;
+    input:focus, select:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, 0.6);
+        pointer-events: none;
+    }
+
+    .help-text {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin-top: 0.5rem;
+        font-weight: 400;
+    }
+
+    /* Enhanced Button */
+    .btn-calculate {
+        width: 100%;
+        background: var(--gradient-secondary);
+        color: white;
         border: none;
-        padding: 15px 30px;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: bold;
+        padding: 1.25rem 1.5rem;
+        border-radius: var(--radius-sm);
+        font-size: 1.1rem;
+        font-weight: 700;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.4);
+        box-shadow: var(--shadow-lg);
+        margin-top: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
-    .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 255, 157, 0.6);
+    .btn-calculate::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s;
     }
 
-    .alert {
-        padding: 15px;
-        border-radius: 8px;
-        margin: 10px 0;
-        font-weight: bold;
+    .btn-calculate:hover::before {
+        left: 100%;
     }
 
-    .alert-success { background: rgba(0, 255, 157, 0.2); border: 1px solid #00ff9d; }
-    .alert-warning { background: rgba(255, 183, 0, 0.2); border: 1px solid #ffb700; }
-    .alert-danger { background: rgba(255, 56, 56, 0.2); border: 1px solid #ff3838; }
+    .btn-calculate:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
 
-    .metric-grid {
+    .btn-calculate:active {
+        transform: translateY(-1px);
+    }
+
+    .btn-calculate.loading {
+        pointer-events: none;
+        opacity: 0.8;
+    }
+
+    /* Results Card */
+    .results-card {
+        display: none;
+        animation: slideInRight 0.8s ease-out;
+    }
+
+    .results-card.show {
+        display: block;
+    }
+
+    @keyframes slideInRight {
+        from { transform: translateX(30px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Enhanced Summary Grid */
+    .summary-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        margin-top: 15px;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
     }
 
-    .rules-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        margin-top: 30px;
-    }
-
-    .rule-card {
-        background: rgba(20, 30, 48, 0.4);
-        border: 1px solid rgba(0, 255, 157, 0.2);
-        border-radius: 10px;
-        padding: 20px;
+    .summary-item {
+        background: var(--gradient-glass);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem;
+        border-radius: var(--radius-sm);
         text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
         transition: all 0.3s ease;
     }
 
-    .rule-card:hover {
-        border-color: rgba(0, 255, 157, 0.4);
-        background: rgba(20, 30, 48, 0.6);
+    .summary-item:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.2);
     }
 
-    .rule-icon {
-        font-size: 2rem;
-        margin-bottom: 10px;
+    .summary-item .value {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text-white);
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .summary-item .label {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+    }
+
+    /* Enhanced Tables */
+    .estimate-section {
+        margin-bottom: 2rem;
+    }
+
+    .estimate-section h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-white);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .estimate-section h3 i {
+        font-size: 1rem;
+        background: var(--gradient-accent);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .estimate-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .estimate-table th {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 1rem;
+        text-align: left;
+        font-weight: 700;
+        color: var(--text-white);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+    }
+
+    .estimate-table td {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-white);
+        font-weight: 500;
+    }
+
+    .estimate-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .estimate-table tr:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Total Cost Card */
+    .total-cost {
+        background: var(--gradient-secondary);
+        color: white;
+        padding: 2rem;
+        border-radius: var(--radius-sm);
+        text-align: center;
+        margin-top: 2rem;
+        box-shadow: var(--shadow-xl);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .total-cost::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .total-cost-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .total-cost h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+    }
+
+    .total-cost .amount {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 900;
+        text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        margin-bottom: 1rem;
+    }
+
+    /* Loading Animation */
+    .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+        margin-left: 10px;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .main {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
     }
 
     @media (max-width: 768px) {
-        .dashboard {
-            grid-template-columns: 1fr;
-        }
-        
-        .logo {
-            font-size: 2rem;
-        }
-        
         .container {
-            padding: 10px;
+            padding: 0 0.5rem;
         }
 
-        .metric-grid {
+        .header {
+            padding: 1.5rem 0;
+        }
+
+        .main {
+            padding: 1.5rem 0 3rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-header {
+            padding: 1.25rem 1.5rem;
+        }
+
+        .form-row {
             grid-template-columns: 1fr;
         }
+
+        .summary-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .summary-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .estimate-table th,
+        .estimate-table td {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+        }
+    }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+
+    /* Focus styles for accessibility */
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.8);
+        outline-offset: 2px;
     }
 </style>
 ```
 
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="logo">FXFORECAST</div>
-            <div class="tagline">Professional Funded Trading Risk Framework</div>
-            <div style="font-size: 0.9rem; opacity: 0.8;">Discipline • Consistency • Profitability</div>
-        </header>
+    <div class="bg-animation"></div>
 
 ```
-    <div class="ftmo-cta">
-        <h2 style="margin-bottom: 15px; font-size: 1.8rem;">Ready to Get Funded?</h2>
-        <p style="margin-bottom: 25px; font-size: 1.1rem;">Start your FTMO Challenge today with up to $200,000 funding!</p>
-        <a href="https://ftmo.com" class="ftmo-btn" target="_blank">
-            Start FTMO Challenge Now
-        </a>
-    </div>
-
-    <div class="dashboard">
-        <div class="card">
-            <h3 class="card-title">Account Status</h3>
-            <div class="metric">
-                <span class="metric-label">Starting Capital</span>
-                <span class="metric-value">$<span id="startingCapital">10,000</span></span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Current Equity</span>
-                <span class="metric-value">$<span id="currentEquity">10,000</span></span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Daily P&L</span>
-                <span class="metric-value" id="dailyPnL">+$0.00</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Max Drawdown</span>
-                <span class="metric-value" id="drawdownPercent">0.00%</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3 class="card-title">Daily Target Progress</h3>
-            <div class="progress-ring">
-                <svg>
-                    <circle class="progress-ring-circle" cx="60" cy="60" r="50"></circle>
-                    <circle class="progress-ring-progress" cx="60" cy="60" r="50" 
-                            stroke-dasharray="314.159" stroke-dashoffset="314.159" id="targetProgress"></circle>
-                </svg>
-                <div class="progress-text" id="targetText">0%</div>
-            </div>
-            <div style="text-align: center;">
-                <div style="font-size: 0.9rem; opacity: 0.8;">Target: 1% Daily Gain</div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3 class="card-title">Risk Monitor</h3>
-            <div class="metric">
-                <span class="metric-label">
-                    <span class="status-indicator" id="marginStatus"></span>
-                    Margin Usage
-                </span>
-                <span class="metric-value" id="marginUsage">0%</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">
-                    <span class="status-indicator" id="riskStatus"></span>
-                    Risk Per Trade
-                </span>
-                <span class="metric-value" id="riskPerTrade">0%</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">
-                    <span class="status-indicator" id="sessionStatus"></span>
-                    Session Active
-                </span>
-                <span class="metric-value" id="sessionActive">No</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3 class="card-title">Trade Statistics</h3>
-            <div class="metric">
-                <span class="metric-label">Trades Today</span>
-                <span class="metric-value" id="tradesCount">0</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Win Rate</span>
-                <span class="metric-value" id="winRate">0%</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Current Pair</span>
-                <span class="metric-value" id="currentPair">None</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Days Since Break</span>
-                <span class="metric-value" id="daysSinceBreak">0</span>
-            </div>
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <h1> TILERSHUB</h1>
+            <p class="subtitle">Professional Tile Cost Estimator - Get accurate quotes instantly</p>
         </div>
     </div>
+</header>
 
-    <div class="calculator">
-        <h3 style="margin-bottom: 20px; font-size: 1.5rem;">Position Size Calculator</h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-            <div class="input-group">
-                <label for="accountSize">Account Size ($)</label>
-                <input type="number" id="accountSize" placeholder="10000" value="10000">
-            </div>
-            <div class="input-group">
-                <label for="riskPercent">Risk Per Trade (%)</label>
-                <input type="number" id="riskPercent" placeholder="0.5" value="0.5" max="0.5" step="0.1">
-            </div>
-            <div class="input-group">
-                <label for="entryPrice">Entry Price</label>
-                <input type="number" id="entryPrice" placeholder="1.1000" step="0.0001" value="1.1650">
-            </div>
-            <div class="input-group">
-                <label for="exitPrice">Stop Loss Price</label>
-                <input type="number" id="exitPrice" placeholder="1.0980" step="0.0001" value="1.1600">
-            </div>
-            <div class="input-group">
-                <label for="leverage">Leverage (1:X)</label>
-                <select id="leverage">
-                    <option value="30">1:30</option>
-                    <option value="50">1:50</option>
-                    <option value="100" selected>1:100</option>
-                    <option value="200">1:200</option>
-                    <option value="500">1:500</option>
-                    <option value="1000">1:1000</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label for="currencyPair">Currency Pair</label>
-                <select id="currencyPair">
-                    <optgroup label="Major Pairs">
-                        <option value="EURUSD" selected>EUR/USD</option>
-                        <option value="GBPUSD">GBP/USD</option>
-                        <option value="USDJPY">USD/JPY</option>
-                        <option value="USDCHF">USD/CHF</option>
-                        <option value="AUDUSD">AUD/USD</option>
-                        <option value="NZDUSD">NZD/USD</option>
-                        <option value="USDCAD">USD/CAD</option>
-                    </optgroup>
-                    <optgroup label="Minor Pairs">
-                        <option value="EURGBP">EUR/GBP</option>
-                        <option value="EURJPY">EUR/JPY</option>
-                        <option value="EURCHF">EUR/CHF</option>
-                        <option value="GBPJPY">GBP/JPY</option>
-                        <option value="GBPCHF">GBP/CHF</option>
-                        <option value="AUDJPY">AUD/JPY</option>
-                        <option value="AUDCHF">AUD/CHF</option>
-                        <option value="NZDJPY">NZD/JPY</option>
-                        <option value="NZDCHF">NZD/CHF</option>
-                        <option value="CHFJPY">CHF/JPY</option>
-                    </optgroup>
-                    <optgroup label="Commodities">
-                        <option value="XAUUSD">Gold (XAU/USD)</option>
-                        <option value="XAGUSD">Silver (XAG/USD)</option>
-                        <option value="USOIL">US Oil</option>
-                        <option value="UKOIL">UK Oil</option>
-                    </optgroup>
-                    <optgroup label="Indices">
-                        <option value="US30">Dow Jones</option>
-                        <option value="US500">S&P 500</option>
-                        <option value="NAS100">Nasdaq 100</option>
-                        <option value="UK100">FTSE 100</option>
-                        <option value="GER40">DAX 40</option>
-                    </optgroup>
-                    <optgroup label="Cryptocurrencies">
-                        <option value="BTCUSD">Bitcoin</option>
-                        <option value="ETHUSD">Ethereum</option>
-                        <option value="ADAUSD">Cardano</option>
-                        <option value="SOLUSD">Solana</option>
-                        <option value="DOTUSD">Polkadot</option>
-                    </optgroup>
-                </select>
-            </div>
+<main class="container main">
+    <div class="card calculator-card">
+        <div class="card-header">
+            <h2><i class="fas fa-calculator"></i> Project Calculator</h2>
         </div>
-        <button class="btn" onclick="calculatePosition()" style="margin-top: 20px;">Calculate Position Size</button>
-        <div id="calculationResult" style="margin-top: 20px;"></div>
-    </div>
-
-    <div class="ftmo-cta" style="margin: 40px 0;">
-        <h2 style="margin-bottom: 15px; font-size: 1.6rem;">💰 Ready to Scale Your Trading?</h2>
-        <p style="margin-bottom: 20px; font-size: 1rem; opacity: 0.9;">
-            Join thousands of successful traders who got funded through FTMO
-        </p>
-        <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
-            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; min-width: 120px; text-align: center;">
-                <div style="font-size: 1.4rem; font-weight: bold; color: #00ff9d;">$200K</div>
-                <div style="font-size: 0.9rem;">Max Funding</div>
-            </div>
-            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; min-width: 120px; text-align: center;">
-                <div style="font-size: 1.4rem; font-weight: bold; color: #00ff9d;">80%</div>
-                <div style="font-size: 0.9rem;">Profit Split</div>
-            </div>
-            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; min-width: 120px; text-align: center;">
-                <div style="font-size: 1.4rem; font-weight: bold; color: #00ff9d;">No</div>
-                <div style="font-size: 0.9rem;">Time Limits</div>
-            </div>
-        </div>
-        <a href="https://ftmo.com" class="ftmo-btn" target="_blank" style="font-size: 1.1rem; padding: 18px 35px;">
-            🚀 Get Funded Today - Start Challenge
-        </a>
-        <div style="margin-top: 15px; font-size: 0.85rem; opacity: 0.8;">
-            ✅ No hidden fees • ✅ Instant payouts • ✅ Professional support
-        </div>
-    </div>
-
-    <div class="rules-grid">
-        <div class="rule-card">
-            <div class="rule-icon">📏</div>
-            <h4>Max Margin 20%</h4>
-            <p>Never exceed 20% margin usage per trade idea</p>
-        </div>
-        <div class="rule-card">
-            <div class="rule-icon">🛡️</div>
-            <h4>Max Loss 0.5%</h4>
-            <p>Risk only 0.5% of account per trade</p>
-        </div>
-        <div class="rule-card">
-            <div class="rule-icon">🎯</div>
-            <h4>Daily Target 1%</h4>
-            <p>Aim for 1% daily equity gain or acceptable drawdown</p>
-        </div>
-        <div class="rule-card">
-            <div class="rule-icon">⚖️</div>
-            <h4>Fixed RRR 1:1</h4>
-            <p>Maintain consistent 1:1 risk-reward ratio</p>
-        </div>
-        <div class="rule-card">
-            <div class="rule-icon">👥</div>
-            <h4>One Pair Only</h4>
-            <p>Focus on single currency pair mastery</p>
-        </div>
-        <div class="rule-card">
-            <div class="rule-icon">⏰</div>
-            <h4>One Session</h4>
-            <p>Trade during one market session only</p>
-        </div>
-        <div class="rule-card">
-            <div class="rule-icon">🚪</div>
-            <h4>Exit at 1%</h4>
-            <p>Close all positions when 1% target is hit</p>
-        </div>
-        <div class="rule-card">
-            <div class="rule-icon">⏸️</div>
-            <h4>5% Break Rule</h4>
-            <p>Take minimum 1-week break at 5% drawdown</p>
-        </div>
-    </div>
-
-    <div style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 15px;">
-        <h3 style="margin-bottom: 20px;">Demo Controls</h3>
-        <button class="btn" onclick="simulateTrade(true)" style="margin: 0 10px;">Simulate Winning Trade</button>
-        <button class="btn" onclick="simulateTrade(false)" style="margin: 0 10px;">Simulate Losing Trade</button>
-        <button class="btn" onclick="resetAccount()" style="margin: 0 10px;">Reset Account</button>
-    </div>
-</div>
-
-<script>
-    let tradingState = {
-        startingCapital: 10000,
-        currentEquity: 10000,
-        dailyStartEquity: 10000,
-        tradesCount: 0,
-        winCount: 0,
-        currentPair: 'None',
-        sessionActive: false,
-        daysSinceBreak: 0
-    };
-
-    function updateDisplay() {
-        const dailyPnL = tradingState.currentEquity - tradingState.dailyStartEquity;
-        const dailyPnLPercent = (dailyPnL / tradingState.dailyStartEquity) * 100;
-        const drawdownPercent = Math.max(0, ((tradingState.startingCapital - tradingState.currentEquity) / tradingState.startingCapital) * 100);
-        const winRate = tradingState.tradesCount > 0 ? (tradingState.winCount / tradingState.tradesCount) * 100 : 0;
-        const targetProgress = Math.min(Math.max(dailyPnLPercent, 0), 100);
-
-        document.getElementById('startingCapital').textContent = tradingState.startingCapital.toLocaleString();
-        document.getElementById('currentEquity').textContent = tradingState.currentEquity.toLocaleString();
-        document.getElementById('dailyPnL').textContent = (dailyPnL >= 0 ? '+' : '') + '$' + dailyPnL.toFixed(2);
-        document.getElementById('dailyPnL').style.color = dailyPnL >= 0 ? '#00ff9d' : '#ff3838';
-        document.getElementById('drawdownPercent').textContent = drawdownPercent.toFixed(2) + '%';
-        document.getElementById('drawdownPercent').style.color = drawdownPercent > 3 ? '#ff3838' : '#00ff9d';
-
-        const circumference = 2 * Math.PI * 50;
-        const offset = circumference - (targetProgress / 100) * circumference;
-        document.getElementById('targetProgress').style.strokeDashoffset = offset;
-        document.getElementById('targetText').textContent = targetProgress.toFixed(0) + '%';
-
-        updateStatusIndicators();
-        
-        document.getElementById('tradesCount').textContent = tradingState.tradesCount;
-        document.getElementById('winRate').textContent = winRate.toFixed(1) + '%';
-        document.getElementById('currentPair').textContent = tradingState.currentPair;
-        document.getElementById('sessionActive').textContent = tradingState.sessionActive ? 'Yes' : 'No';
-        document.getElementById('daysSinceBreak').textContent = tradingState.daysSinceBreak;
-
-        checkAlerts(drawdownPercent, dailyPnLPercent);
-    }
-
-    function updateStatusIndicators() {
-        const marginStatus = document.getElementById('marginStatus');
-        const riskStatus = document.getElementById('riskStatus');
-        const sessionStatus = document.getElementById('sessionStatus');
-
-        marginStatus.className = 'status-indicator status-safe';
-        document.getElementById('marginUsage').textContent = '15%';
-
-        riskStatus.className = 'status-indicator status-safe';
-        document.getElementById('riskPerTrade').textContent = '0.5%';
-
-        sessionStatus.className = `status-indicator ${tradingState.sessionActive ? 'status-safe' : 'status-warning'}`;
-    }
-
-    function checkAlerts(drawdownPercent, dailyPnLPercent) {
-        const resultDiv = document.getElementById('calculationResult');
-        const existingAlerts = resultDiv.querySelectorAll('.alert');
-        existingAlerts.forEach(alert => {
-            if (alert.textContent.includes('MANDATORY') || alert.textContent.includes('WARNING') || alert.textContent.includes('TARGET')) {
-                alert.remove();
-            }
-        });
-
-        if (drawdownPercent >= 5) {
-            showResult('danger', 'MANDATORY BREAK: 5% drawdown reached. Take minimum 1-week break!');
-        } else if (drawdownPercent >= 3) {
-            showResult('warning', 'WARNING: Approaching 5% drawdown limit');
-        }
-
-        if (dailyPnLPercent >= 1) {
-            showResult('success', 'TARGET ACHIEVED: 1% daily target reached. Consider exiting market!');
-        }
-    }
-
-    function showResult(type, message) {
-        const resultDiv = document.getElementById('calculationResult');
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type}`;
-        alertDiv.textContent = message;
-        resultDiv.appendChild(alertDiv);
-    }
-
-    function calculatePosition() {
-        const accountSize = parseFloat(document.getElementById('accountSize').value) || 10000;
-        const riskPercent = parseFloat(document.getElementById('riskPercent').value) || 0.5;
-        const entryPrice = parseFloat(document.getElementById('entryPrice').value) || 1.1650;
-        const stopLoss = parseFloat(document.getElementById('exitPrice').value) || 1.1600;
-        const currencyPair = document.getElementById('currencyPair').value;
-        const leverage = parseFloat(document.getElementById('leverage').value) || 100;
-
-        const resultDiv = document.getElementById('calculationResult');
-        const existingResults = resultDiv.querySelectorAll('.calculation-result');
-        existingResults.forEach(el => el.remove());
-
-        if (entryPrice <= 0 || stopLoss <= 0) {
-            showResult('danger', 'Please enter valid entry and stop loss prices');
-            return;
-        }
-
-        if (entryPrice === stopLoss) {
-            showResult('danger', 'Entry price and stop loss price cannot be the same');
-            return;
-        }
-
-        if (riskPercent > 0.5) {
-            showResult('warning', 'Risk exceeds maximum 0.5% per trade rule');
-        }
-
-        const riskAmount = (riskPercent / 100) * accountSize;
-        const priceDifference = Math.abs(entryPrice - stopLoss);
-        const isLong = entryPrice > stopLoss;
-
-        let lotSize, marginRequired, pipsAtRisk, potentialProfit, profitPrice;
-
-        if (currencyPair.includes('JPY')) {
-            pipsAtRisk = priceDifference / 0.01;
-            lotSize = riskAmount / (pipsAtRisk * 10);
-            marginRequired = (lotSize * 100000 * entryPrice) / leverage;
-        } else if (currencyPair.startsWith('XAU') || currencyPair.startsWith('XAG')) {
-            pipsAtRisk = priceDifference;
-            lotSize = riskAmount / (pipsAtRisk * 100);
-            marginRequired = (lotSize * 100 * entryPrice) / leverage;
-        } else if (currencyPair.includes('BTC') || currencyPair.includes('ETH')) {
-            pipsAtRisk = priceDifference;
-            lotSize = riskAmount / priceDifference;
-            marginRequired = (lotSize * entryPrice) / leverage;
-        } else if (currencyPair.startsWith('US') || currencyPair.startsWith('UK')) {
-            pipsAtRisk = priceDifference;
-            lotSize = riskAmount / priceDifference;
-            marginRequired = (lotSize * entryPrice) / leverage;
-        } else {
-            pipsAtRisk = priceDifference / 0.0001;
-            lotSize = riskAmount / (pipsAtRisk * 10);
-            marginRequired = (lotSize * 100000 * entryPrice) / leverage;
-        }
-
-        const marginPercent = (marginRequired / accountSize) * 100;
-        potentialProfit = riskAmount;
-        profitPrice = isLong ? entryPrice + priceDifference : entryPrice - priceDifference;
-
-        if (marginPercent > 20) {
-            showResult('danger', 'MARGIN VIOLATION: Exceeds 20% maximum margin rule!');
-        }
-
-        const resultsHTML = `
-            <div class="calculation-result" style="background: rgba(0, 255, 157, 0.1); border: 1px solid rgba(0, 255, 157, 0.3); border-radius: 10px; padding: 20px; margin-top: 15px;">
-                <h4 style="color: #00ff9d; margin-bottom: 15px;">Position Calculation Results</h4>
-                <div class="metric-grid">
-                    <div class="metric">
-                        <span class="metric-label">Position Size</span>
-                        <span class="metric-value">${lotSize.toFixed(2)} lots</span>
+        <div class="card-body">
+            <form id="calculatorForm">
+                <div class="form-group">
+                    <label for="area">Area to be Tiled (sq ft)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="area" step="0.1" min="1" required placeholder="Enter area in sq ft">
+                        <i class="fas fa-ruler-combined input-icon"></i>
                     </div>
-                    <div class="metric">
-                        <span class="metric-label">Risk Amount</span>
-                        <span class="metric-value">$${riskAmount.toFixed(2)}</span>
+                    <div class="help-text">Enter the total floor area in square feet</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tileSize">Tile Size</label>
+                        <div class="input-wrapper">
+                            <select id="tileSize" required>
+                                <option value="">Select tile size</option>
+                            </select>
+                            <i class="fas fa-th-large input-icon"></i>
+                        </div>
                     </div>
-                    <div class="metric">
-                        <span class="metric-label">Margin Required</span>
-                        <span class="metric-value">$${marginRequired.toFixed(2)}</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Margin %</span>
-                        <span class="metric-value" style="color: ${marginPercent > 20 ? '#ff3838' : '#00ff9d'}">${marginPercent.toFixed(2)}%</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Potential Profit</span>
-                        <span class="metric-value">$${potentialProfit.toFixed(2)}</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Take Profit Price</span>
-                        <span class="metric-value">${profitPrice.toFixed(4)}</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Pips at Risk</span>
-                        <span class="metric-value">${pipsAtRisk.toFixed(1)}</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Direction</span>
-                        <span class="metric-value">${isLong ? 'LONG' : 'SHORT'}</span>
+
+                    <div class="form-group">
+                        <label for="tilePrice">Tile Price (LKR per piece)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="tilePrice" step="0.01" min="1" required placeholder="Price per tile">
+                            <i class="fas fa-tag input-icon"></i>
+                        </div>
                     </div>
                 </div>
-                <div style="margin-top: 20px; padding: 15px; background: rgba(0, 255, 157, 0.05); border-radius: 8px;">
-                    <h5 style="color: #00ff9d; margin-bottom: 10px;">Trade Summary</h5>
-                    <p style="margin-bottom: 5px; font-size: 0.9rem;">
-                        ${isLong ? 'BUY' : 'SELL'} ${lotSize.toFixed(2)} lots of ${currencyPair} at ${entryPrice.toFixed(4)}
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="skirting">Skirting Length (ft)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="skirting" step="0.1" min="0" placeholder="Optional">
+                            <i class="fas fa-arrows-alt-h input-icon"></i>
+                        </div>
+                        <div class="help-text">Leave empty for auto-calculation (20% of area)</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="laborRate">Custom Labor Rate (LKR/sq ft)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="laborRate" step="1" min="0" placeholder="Optional">
+                            <i class="fas fa-hard-hat input-icon"></i>
+                        </div>
+                        <div class="help-text">Leave empty for standard rates</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-calculate">
+                    <i class="fas fa-calculator"></i> Calculate Estimate
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card results-card" id="resultsCard">
+        <div class="card-header">
+            <h2><i class="fas fa-chart-line"></i> Cost Estimate</h2>
+        </div>
+        <div class="card-body">
+            <div id="resultsContent">
+                <!-- Results will be populated here -->
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Tile sizes data
+    const tileSizes = [
+        {
+            "label": "300x300 mm",
+            "value": "300x300",
+            "width": 11.81,
+            "height": 11.81,
+            "sqft": 0.96,
+            "laborMin": 80,
+            "laborMax": 120,
+            "skirtingCoverage": 3
+        },
+        {
+            "label": "300x600 mm",
+            "value": "300x600",
+            "width": 11.81,
+            "height": 23.62,
+            "sqft": 1.94,
+            "laborMin": 80,
+            "laborMax": 120,
+            "skirtingCoverage": 6
+        },
+        {
+            "label": "600x600 mm",
+            "value": "600x600",
+            "width": 23.62,
+            "height": 23.62,
+            "sqft": 3.87,
+            "laborMin": 80,
+            "laborMax": 120,
+            "skirtingCoverage": 12
+        },
+        {
+            "label": "600x1200 mm",
+            "value": "600x1200",
+            "width": 23.62,
+            "height": 47.24,
+            "sqft": 7.75,
+            "laborMin": 110,
+            "laborMax": 150,
+            "skirtingCoverage": 24
+        },
+        {
+            "label": "800x800 mm",
+            "value": "800x800",
+            "width": 31.5,
+            "height": 31.5,
+            "sqft": 6.89,
+            "laborMin": 110,
+            "laborMax": 150,
+            "skirtingCoverage": 20
+        },
+        {
+            "label": "1200x1200 mm",
+            "value": "1200x1200",
+            "width": 47.24,
+            "height": 47.24,
+            "sqft": 12.9,
+            "laborMin": 150,
+            "laborMax": 250,
+            "skirtingCoverage": 48
+        },
+        {
+            "label": "800x1800 mm",
+            "value": "800x1800",
+            "width": 31.5,
+            "height": 70.87,
+            "sqft": 15.3,
+            "laborMin": 150,
+            "laborMax": 250,
+            "skirtingCoverage": 48
+        }
+    ];
+
+    // Initialize application
+    function init() {
+        console.log('Initializing TilersHub estimator...'); // Debug log
+        loadTileSizes();
+        setupEventListeners();
+        setupAnimations();
+        console.log('Initialization complete!'); // Debug log
+    }
+
+    function loadTileSizes() {
+        const tileSizeSelect = document.getElementById('tileSize');
+        
+        // Clear existing options except the first one
+        while (tileSizeSelect.children.length > 1) {
+            tileSizeSelect.removeChild(tileSizeSelect.lastChild);
+        }
+        
+        // Add all tile sizes
+        tileSizes.forEach(size => {
+            const option = document.createElement('option');
+            option.value = size.value;
+            option.textContent = size.label;
+            tileSizeSelect.appendChild(option);
+        });
+        
+        console.log('Loaded', tileSizes.length, 'tile sizes'); // Debug log
+    }
+
+    function setupEventListeners() {
+        document.getElementById('calculatorForm').addEventListener('submit', handleSubmit);
+        
+        // Add input animations
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    }
+
+    function setupAnimations() {
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.card').forEach(card => {
+            observer.observe(card);
+        });
+    }
+
+    function getTileSettings(value) {
+        return tileSizes.find(t => t.value === value);
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        
+        const btn = document.querySelector('.btn-calculate');
+        btn.classList.add('loading');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
+
+        // Add realistic loading delay
+        await new Promise(resolve => setTimeout(resolve, 1200));
+
+        try {
+            calculateEstimate();
+        } finally {
+            btn.classList.remove('loading');
+            btn.innerHTML = '<i class="fas fa-calculator"></i> Calculate Estimate';
+        }
+    }
+
+    function calculateEstimate() {
+        // Get form values
+        const area = parseFloat(document.getElementById('area').value);
+        const tileSize = document.getElementById('tileSize').value;
+        const tilePrice = parseFloat(document.getElementById('tilePrice').value);
+        const userSkirting = parseFloat(document.getElementById('skirting').value);
+        const userLaborRate = parseFloat(document.getElementById('laborRate').value);
+
+        // Validation with better UX
+        if (!area || !tileSize || !tilePrice) {
+            showNotification("Please fill in all required fields", "error");
+            return;
+        }
+
+        const settings = getTileSettings(tileSize);
+        if (!settings) {
+            showNotification("Invalid tile size selected", "error");
+            return;
+        }
+
+        // Calculate values using the provided logic
+        const skirting = isNaN(userSkirting) || userSkirting <= 0 ? Math.ceil(area * 0.2) : userSkirting;
+        const useDefaultLabor = isNaN(userLaborRate) || userLaborRate <= 0;
+
+        // Tile calculations
+        const floorTiles = Math.ceil(area / settings.sqft);
+        const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
+        const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
+
+        // Floor bed materials
+        const cementMin = Math.ceil(8 * area / 800);
+        const cementMax = Math.ceil(8 * area / 600);
+        const sandMin = Math.round((area / 800) * 4) / 4;
+        const sandMax = Math.round((area / 600) * 4) / 4;
+        const cementCostMin = cementMin * 1900;
+        const cementCostMax = cementMax * 1900;
+        const sandCostMin = sandMin * 25000;
+        const sandCostMax = sandMax * 25000;
+
+        // Tiling materials
+        const adhesiveMin = Math.ceil(area / 40);
+        const adhesiveMax = Math.ceil(area / 30);
+        const adhesiveCostMin = adhesiveMin * 2200;
+        const adhesiveCostMax = adhesiveMax * 2200;
+        const clips = Math.ceil(area / 100);
+        const grout = Math.ceil(area / 175);
+        const clipsCost = clips * 1500;
+        const groutCost = grout * 300;
+        const tileCost = totalTiles * tilePrice;
+
+        // Labor calculations
+        let floorLaborMin, floorLaborMax, skirtingLaborMin, skirtingLaborMax, laborMin, laborMax;
+
+        if (useDefaultLabor) {
+            floorLaborMin = area * settings.laborMin;
+            floorLaborMax = area * settings.laborMax;
+            skirtingLaborMin = skirting * settings.laborMin;
+            skirtingLaborMax = skirting * settings.laborMax;
+            laborMin = floorLaborMin + skirtingLaborMin;
+            laborMax = floorLaborMax + skirtingLaborMax;
+        } else {
+            floorLaborMin = floorLaborMax = area * userLaborRate;
+            skirtingLaborMin = skirtingLaborMax = skirting * userLaborRate;
+            laborMin = laborMax = floorLaborMin + skirtingLaborMin;
+        }
+
+        // Total costs
+        const materialMin = tileCost + cementCostMin + sandCostMin + adhesiveCostMin + clipsCost + groutCost;
+        const materialMax = tileCost + cementCostMax + sandCostMax + adhesiveCostMax + clipsCost + groutCost;
+        const totalMin = materialMin + laborMin;
+        const totalMax = materialMax + laborMax;
+
+        // Display results
+        displayResults({
+            area, skirting, tileSize: settings.label,
+            floorTiles, skirtingTiles, totalTiles, tileCost,
+            cementMin, cementMax, cementCostMin, cementCostMax,
+            sandMin, sandMax, sandCostMin, sandCostMax,
+            adhesiveMin, adhesiveMax, adhesiveCostMin, adhesiveCostMax,
+            clips, grout, clipsCost, groutCost,
+            floorLaborMin, floorLaborMax, skirtingLaborMin, skirtingLaborMax,
+            laborMin, laborMax, materialMin, materialMax, totalMin, totalMax
+        });
+
+        showNotification("Estimate calculated successfully!", "success");
+    }
+
+    function displayResults(data) {
+        const resultsCard = document.getElementById('resultsCard');
+        const resultsContent = document.getElementById('resultsContent');
+
+        resultsContent.innerHTML = `
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="value">${data.area}</div>
+                    <div class="label">Area (sq ft)</div>
+                </div>
+                <div class="summary-item">
+                    <div class="value">${data.skirting}</div>
+                    <div class="label">Skirting (ft)</div>
+                </div>
+                <div class="summary-item">
+                    <div class="value">${data.totalTiles}</div>
+                    <div class="label">Total Tiles</div>
+                </div>
+                <div class="summary-item">
+                    <div class="value">${data.tileSize}</div>
+                    <div class="label">Tile Size</div>
+                </div>
+            </div>
+
+            <div class="estimate-section">
+                <h3><i class="fas fa-layer-group"></i> Floor Bed Materials</h3>
+                <table class="estimate-table">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Quantity</th>
+                            <th>Cost (LKR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cement (50kg bags)</td>
+                            <td>${data.cementMin} – ${data.cementMax}</td>
+                            <td>${formatCurrency(data.cementCostMin)} – ${formatCurrency(data.cementCostMax)}</td>
+                        </tr>
+                        <tr>
+                            <td>Sand (cube)</td>
+                            <td>${data.sandMin} – ${data.sandMax}</td>
+                            <td>${formatCurrency(data.sandCostMin)} – ${formatCurrency(data.sandCostMax)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="estimate-section">
+                <h3><i class="fas fa-th-large"></i> Tiling Materials</h3>
+                <table class="estimate-table">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Quantity</th>
+                            <th>Cost (LKR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Floor Tiles</td>
+                            <td>${data.floorTiles}</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Skirting Tiles</td>
+                            <td>${data.skirtingTiles}</td>
+                            <td>-</td>
+                        </tr>
+                        <tr style="font-weight: 700; background: rgba(255, 255, 255, 0.1);">
+                            <td>Total Tiles (5% wastage)</td>
+                            <td>${data.totalTiles}</td>
+                            <td>${formatCurrency(data.tileCost)}</td>
+                        </tr>
+                        <tr>
+                            <td>Adhesive (25kg bags)</td>
+                            <td>${data.adhesiveMin} – ${data.adhesiveMax}</td>
+                            <td>${formatCurrency(data.adhesiveCostMin)} – ${formatCurrency(data.adhesiveCostMax)}</td>
+                        </tr>
+                        <tr>
+                            <td>Clips (100 pcs packs)</td>
+                            <td>${data.clips}</td>
+                            <td>${formatCurrency(data.clipsCost)}</td>
+                        </tr>
+                        <tr>
+                            <td>Grout (1kg)</td>
+                            <td>${data.grout}</td>
+                            <td>${formatCurrency(data.groutCost)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="estimate-section">
+                <h3><i class="fas fa-hard-hat"></i> Labor Costs</h3>
+                <table class="estimate-table">
+                    <thead>
+                        <tr>
+                            <th>Work Type</th>
+                            <th>Min Cost (LKR)</th>
+                            <th>Max Cost (LKR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Floor Tiling</td>
+                            <td>${formatCurrency(data.floorLaborMin)}</td>
+                            <td>${formatCurrency(data.floorLaborMax)}</td>
+                        </tr>
+                        <tr>
+                            <td>Skirting Work</td>
+                            <td>${formatCurrency(data.skirtingLaborMin)}</td>
+                            <td>${formatCurrency(data.skirtingLaborMax)}</td>
+                        </tr>
+                        <tr style="font-weight: 700; background: rgba(255, 255, 255, 0.1);">
+                            <td>Total Labor</td>
+                            <td>${formatCurrency(data.laborMin)}</td>
+                            <td>${formatCurrency(data.laborMax)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="total-cost">
+                <div class="total-cost-content">
+                    <h3><i class="fas fa-calculator"></i> Total Project Cost</h3>
+                    <div class="amount">${formatCurrency(data.totalMin)} – ${formatCurrency(data.totalMax)}</div>
+                    <p style="margin-top: 1rem; opacity: 0.9; font-size: 1rem;">
+                        <strong>Materials:</strong> ${formatCurrency(data.materialMin)} – ${formatCurrency(data.materialMax)}
                     </p>
-                    <p style="margin-bottom: 5px; font-size: 0.9rem;">
-                        Stop Loss: ${stopLoss.toFixed(4)} | Take Profit: ${profitPrice.toFixed(4)}
-                    </p>
-                    <p style="font-size: 0.9rem;">
-                        Risk/Reward: $${riskAmount.toFixed(2)} / $${potentialProfit.toFixed(2)} (1:1 ratio)
+                    <p style="opacity: 0.9; font-size: 1rem;">
+                        <strong>Labor:</strong> ${formatCurrency(data.laborMin)} – ${formatCurrency(data.laborMax)}
                     </p>
                 </div>
             </div>
         `;
 
-        resultDiv.insertAdjacentHTML('beforeend', resultsHTML);
+        resultsCard.classList.add('show');
+        
+        // Smooth scroll to results
+        setTimeout(() => {
+            resultsCard.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+            });
+        }, 100);
     }
 
-    function simulateTrade(isWin) {
-        const riskAmount = 50; // $50 per trade simulation
-        
-        tradingState.tradesCount++;
-        tradingState.sessionActive = true;
-        tradingState.currentPair = 'EUR/USD';
-        
-        if (isWin) {
-            tradingState.currentEquity += riskAmount;
-            tradingState.winCount++;
-            showResult('success', `Winning trade simulated: +$${riskAmount.toFixed(2)}`);
-        } else {
-            tradingState.currentEquity -= riskAmount;
-            showResult('danger', `Losing trade simulated: -$${riskAmount.toFixed(2)}`);
-        }
-        
-        updateDisplay();
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('en-LK', {
+            style: 'decimal',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(Math.round(amount));
     }
 
-    function resetAccount() {
-        tradingState = {
-            startingCapital: 10000,
-            currentEquity: 10000,
-            dailyStartEquity: 10000,
-            tradesCount: 0,
-            winCount: 0,
-            currentPair: 'None',
-            sessionActive: false,
-            daysSinceBreak: 0
-        };
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        // Add notification styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                border-left: 4px solid;
+                animation: slideInNotification 0.3s ease-out;
+                max-width: 400px;
+            }
+            
+            .notification-success { border-left-color: #10b981; }
+            .notification-error { border-left-color: #ef4444; }
+            .notification-info { border-left-color: #6366f1; }
+            
+            .notification-content {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                color: #1e293b;
+                font-weight: 500;
+            }
+            
+            .notification i {
+                font-size: 1.25rem;
+            }
+            
+            .notification-success i { color: #10b981; }
+            .notification-error i { color: #ef4444; }
+            .notification-info i { color: #6366f1; }
+            
+            @keyframes slideInNotification {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
         
-        const resultDiv = document.getElementById('calculationResult');
-        resultDiv.innerHTML = '';
-        
-        updateDisplay();
-        showResult('success', 'Account reset to starting values');
+        document.head.appendChild(style);
+        document.body.appendChild(notification);
+
+        // Remove notification after 4 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideInNotification 0.3s ease-out reverse';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+                if (style.parentNode) {
+                    style.parentNode.removeChild(style);
+                }
+            }, 300);
+        }, 4000);
     }
 
-    // Initialize display on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        updateDisplay();
+    // Initialize app when DOM is loaded
+    document.addEventListener('DOMContentLoaded', init);
+
+    // Add some interactive micro-animations
+    document.addEventListener('mousemove', (e) => {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+            } else {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+            }
+        });
     });
 
-    // Auto-calculate on input change
-    document.getElementById('accountSize').addEventListener('input', calculatePosition);
-    document.getElementById('riskPercent').addEventListener('input', calculatePosition);
-    document.getElementById('entryPrice').addEventListener('input', calculatePosition);
-    document.getElementById('exitPrice').addEventListener('input', calculatePosition);
-    document.getElementById('leverage').addEventListener('change', calculatePosition);
-    document.getElementById('currencyPair').addEventListener('change', calculatePosition);
+    // Performance optimization: Debounced resize handler
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            // Recalculate any size-dependent elements if needed
+            const summaryItems = document.querySelectorAll('.summary-item');
+            summaryItems.forEach(item => {
+                item.style.transition = 'all 0.3s ease';
+            });
+        }, 250);
+    });
 </script>
 ```
 
