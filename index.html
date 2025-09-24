@@ -1,1323 +1,705 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TILERSHUB - Sri Lanka's #1 Tiling & Bathroom Service Platform | Certified Tilers</title>
-    <meta name="description" content="TILERSHUB offers professional tiling and bathroom renovation services in Sri Lanka. Certified tilers, transparent rates, 1-year warranty. Get your free quote today!">
-    <meta name="keywords" content="tiling Sri Lanka, bathroom renovation Sri Lanka, certified tilers, floor tiling, bathroom tiling, pantry tiling, staircase tiling, skirting">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Schema Markup for SEO -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": "TILERSHUB",
-        "description": "Sri Lanka's #1 tiling and bathroom service platform. Certified tilers, transparent rates, 1-year warranty.",
-        "url": "https://tilershub.lk",
-        "telephone": "+94774503744",
-        "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "Sri Lanka"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "7.8731",
-            "longitude": "80.7718"
-        },
-        "openingHours": "Mo-Su 08:00-20:00",
-        "priceRange": "Rs. 120 - Rs. 3000",
-        "serviceArea": {
-            "@type": "Country",
-            "name": "Sri Lanka"
-        },
-        "services": [
-            "Floor Tiling",
-            "Bathroom Renovation",
-            "Pantry Tiling",
-            "Staircase Tiling",
-            "Waterproofing",
-            "Skirting Installation"
-        ],
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "reviewCount": "150"
-        }
-    }
-    </script>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TILERSHUB - Sri Lanka's #1 Tiling & Bathroom Service Platform | Certified Tilers</title>
+  <meta name="description" content="TILERSHUB offers professional tiling and bathroom renovation services in Sri Lanka. Certified tilers, transparent rates, 1-year warranty. Get your free quote today!">
+  <link rel="canonical" href="https://tilershub.lk/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-```
+  <!-- Open Graph -->
+  <meta property="og:title" content="TILERSHUB – Tiling & Bathroom Experts">
+  <meta property="og:description" content="Certified Tilers, Transparent Rates, 1 Year Warranty. Get a free quote today.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tilershub.lk/">
+
+  <!-- Schema Markup for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://tilershub.lk/#business",
+    "name": "TILERSHUB",
+    "description": "Sri Lanka's #1 tiling and bathroom service platform. Certified tilers, transparent rates, 1-year warranty.",
+    "url": "https://tilershub.lk",
+    "telephone": "+94774503744",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "LK"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 7.8731,
+      "longitude": 80.7718
+    },
+    "openingHours": "Mo-Su 08:00-20:00",
+    "priceRange": "Rs. 120 - Rs. 3000",
+    "serviceArea": {
+      "@type": "Country",
+      "name": "Sri Lanka"
+    },
+    "sameAs": ["https://wa.me/94774503744"],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "150"
+    }
+  }
+  </script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     :root {
-        --navy: #1e3a8a;
-        --gold: #f59e0b;
-        --light-navy: #3b82f6;
-        --dark-navy: #1e40af;
-        --white: #ffffff;
-        --light-gray: #f8fafc;
-        --text-gray: #64748b;
-        --border-gray: #e2e8f0;
+      --navy: #1e3a8a;
+      --gold: #f59e0b;
+      --light-navy: #3b82f6;
+      --dark-navy: #1e40af;
+      --white: #ffffff;
+      --light-gray: #f8fafc;
+      --text-gray: #64748b;
+      --border-gray: #e2e8f0;
     }
 
     body {
-        font-family: 'Inter', sans-serif;
-        line-height: 1.6;
-        color: #1e293b;
-        scroll-behavior: smooth;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #1e293b;
+      scroll-behavior: smooth;
+      background: #fff;
     }
 
     /* Header */
     .header {
-        background: var(--white);
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
+      background: var(--white);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
     }
-
     .nav {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 1rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-
     .logo {
-        font-size: 1.8rem;
-        font-weight: 800;
-        color: var(--navy);
-        text-decoration: none;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--navy);
+      text-decoration: none;
     }
-
-    .logo span {
-        color: var(--gold);
-    }
-
+    .logo span { color: var(--gold); }
     .nav-links {
-        display: flex;
-        list-style: none;
-        gap: 2rem;
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+      align-items: center;
     }
-
     .nav-links a {
-        text-decoration: none;
-        color: var(--navy);
-        font-weight: 500;
-        transition: color 0.3s;
+      text-decoration: none;
+      color: var(--navy);
+      font-weight: 500;
+      transition: color 0.2s ease;
     }
-
-    .nav-links a:hover {
-        color: var(--gold);
-    }
-
+    .nav-links a:hover { color: var(--gold); }
     .whatsapp-btn {
-        background: #25d366;
-        color: white;
-        padding: 0.7rem 1.5rem;
-        border-radius: 50px;
-        text-decoration: none;
-        font-weight: 600;
-        transition: transform 0.3s;
+      background: #25d366;
+      color: white;
+      padding: 0.7rem 1.2rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s ease;
     }
-
-    .whatsapp-btn:hover {
-        transform: translateY(-2px);
-    }
+    .whatsapp-btn:hover { transform: translateY(-2px); }
 
     /* Mobile Menu */
-    .mobile-toggle {
-        display: none;
-        flex-direction: column;
-        cursor: pointer;
-    }
-
+    .mobile-toggle { display: none; flex-direction: column; cursor: pointer; }
     .mobile-toggle span {
-        width: 25px;
-        height: 3px;
-        background: var(--navy);
-        margin: 3px 0;
-        transition: 0.3s;
+      width: 25px; height: 3px; background: var(--navy);
+      margin: 3px 0; transition: 0.2s;
     }
 
-    /* Hero Section */
+    /* Hero */
     .hero {
-        background: linear-gradient(135deg, var(--navy) 0%, var(--light-navy) 100%);
-        color: white;
-        padding: 120px 2rem 80px;
-        text-align: center;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--light-navy) 100%);
+      color: white;
+      padding: 120px 2rem 80px;
+      text-align: center;
     }
-
-    .hero-content {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-
-    .hero h1 {
-        font-size: 3.5rem;
-        font-weight: 800;
-        margin-bottom: 1rem;
-        line-height: 1.2;
-    }
-
-    .hero-subtitle {
-        font-size: 1.3rem;
-        margin-bottom: 2rem;
-        color: #e2e8f0;
-    }
-
+    .hero-content { max-width: 800px; margin: 0 auto; }
+    .hero h1 { font-size: 3.2rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2; }
+    .hero-subtitle { font-size: 1.25rem; margin-bottom: 2rem; color: #e2e8f0; }
     .cta-btn {
-        background: var(--gold);
-        color: var(--navy);
-        padding: 1rem 2rem;
-        border: none;
-        border-radius: 50px;
-        font-size: 1.1rem;
-        font-weight: 700;
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-block;
-        transition: transform 0.3s;
+      background: var(--gold); color: var(--navy);
+      padding: 1rem 2rem; border: none; border-radius: 999px;
+      font-size: 1.05rem; font-weight: 700; cursor: pointer;
+      text-decoration: none; display: inline-block; transition: transform 0.2s ease;
     }
-
-    .cta-btn:hover {
-        transform: translateY(-3px);
-    }
-
+    .cta-btn:hover { transform: translateY(-3px); }
     .hero-features {
-        display: flex;
-        justify-content: center;
-        gap: 3rem;
-        margin-top: 3rem;
-        flex-wrap: wrap;
+      display: flex; justify-content: center; gap: 2rem; margin-top: 2.2rem; flex-wrap: wrap;
     }
-
-    .feature {
-        text-align: center;
-    }
-
+    .feature { text-align: center; max-width: 200px; }
     .feature-icon {
-        width: 60px;
-        height: 60px;
-        background: var(--gold);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1rem;
-        font-size: 1.5rem;
-        color: var(--navy);
+      width: 60px; height: 60px; background: var(--gold); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem;
+      font-size: 1.5rem; color: var(--navy);
     }
 
-    /* Services Section */
-    .services {
-        padding: 80px 2rem;
-        background: var(--light-gray);
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .section-title {
-        text-align: center;
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: var(--navy);
-        margin-bottom: 3rem;
-    }
+    /* Sections */
+    .services { padding: 80px 2rem; background: var(--light-gray); }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-title { text-align: center; font-size: 2.2rem; font-weight: 700; color: var(--navy); margin-bottom: 2.2rem; }
 
     .service-category {
-        background: white;
-        border-radius: 15px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      background: white; border-radius: 14px; padding: 1.6rem; margin-bottom: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+      opacity: 0; transform: translateY(24px);
     }
-
     .category-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--navy);
-        margin-bottom: 1rem;
-        border-left: 4px solid var(--gold);
-        padding-left: 1rem;
+      font-size: 1.25rem; font-weight: 700; color: var(--navy);
+      margin-bottom: 0.8rem; border-left: 4px solid var(--gold); padding-left: 0.8rem;
     }
-
-    .rate-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 1rem;
+    .rate-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+    .rate-table th, .rate-table td {
+      padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border-gray);
     }
+    .rate-table th { background: var(--navy); color: white; font-weight: 600; }
+    .rate-table tr:hover { background: var(--light-gray); }
+    .price { font-weight: 700; color: var(--gold); }
 
-    .rate-table th,
-    .rate-table td {
-        padding: 0.8rem;
-        text-align: left;
-        border-bottom: 1px solid var(--border-gray);
-    }
-
-    .rate-table th {
-        background: var(--navy);
-        color: white;
-        font-weight: 600;
-    }
-
-    .rate-table tr:hover {
-        background: var(--light-gray);
-    }
-
-    .price {
-        font-weight: 600;
-        color: var(--gold);
-    }
-
-    /* Quotation Section */
-    .quotation {
-        padding: 80px 2rem;
-        background: white;
-    }
-
+    /* Quotation */
+    .quotation { padding: 80px 2rem; background: white; }
     .quote-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-        margin-top: 2rem;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem; margin-top: 1rem;
     }
-
     .quote-card {
-        background: var(--light-gray);
-        border-radius: 15px;
-        padding: 2rem;
-        text-align: center;
-        border: 3px solid transparent;
-        transition: all 0.3s;
+      background: var(--light-gray); border-radius: 14px; padding: 1.6rem; text-align: center;
+      border: 3px solid transparent; transition: all 0.2s ease;
+      opacity: 0; transform: translateY(24px);
     }
-
-    .quote-card:hover {
-        border-color: var(--gold);
-        transform: translateY(-5px);
-    }
-
-    .quote-card.premium {
-        background: linear-gradient(135deg, var(--navy), var(--light-navy));
-        color: white;
-    }
-
-    .quote-price {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--gold);
-        margin-bottom: 1rem;
-    }
-
+    .quote-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+    .quote-card.premium { background: linear-gradient(135deg, var(--navy), var(--light-navy)); color: white; }
+    .quote-price { font-size: 1.8rem; font-weight: 800; color: var(--gold); margin-bottom: 0.6rem; }
     .warranty {
-        background: var(--gold);
-        color: var(--navy);
-        padding: 1rem;
-        border-radius: 10px;
-        margin-top: 2rem;
-        text-align: center;
-        font-weight: 600;
+      background: var(--gold); color: var(--navy); padding: 1rem; border-radius: 10px;
+      margin-top: 1.2rem; text-align: center; font-weight: 700;
     }
 
-    /* Contact Section */
-    .contact {
-        padding: 80px 2rem;
-        background: var(--light-gray);
-    }
-
+    /* Contact */
+    .contact { padding: 80px 2rem; background: var(--light-gray); }
     .contact-form {
-        max-width: 600px;
-        margin: 0 auto;
-        background: white;
-        padding: 2rem;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      max-width: 600px; margin: 0 auto; background: white; padding: 2rem;
+      border-radius: 14px; box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+      opacity: 0; transform: translateY(24px);
     }
-
-    .form-group {
-        margin-bottom: 1.5rem;
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; margin-bottom: 0.4rem; font-weight: 700; color: var(--navy); }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 0.8rem; border: 2px solid var(--border-gray);
+      border-radius: 8px; font-family: inherit; transition: border-color 0.2s ease;
     }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-        color: var(--navy);
-    }
-
-    .form-group input,
-    .form-group textarea {
-        width: 100%;
-        padding: 0.8rem;
-        border: 2px solid var(--border-gray);
-        border-radius: 8px;
-        font-family: inherit;
-        transition: border-color 0.3s;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus {
-        outline: none;
-        border-color: var(--gold);
-    }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
 
     /* Footer */
-    .footer {
-        background: var(--navy);
-        color: white;
-        padding: 3rem 2rem 1rem;
-    }
-
+    .footer { background: var(--navy); color: white; padding: 3rem 2rem 1rem; }
     .footer-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.4rem;
     }
-
-    .footer-section h3 {
-        color: var(--gold);
-        margin-bottom: 1rem;
-    }
-
+    .footer-section h3 { color: var(--gold); margin-bottom: 0.8rem; }
     .footer-section a {
-        color: #e2e8f0;
-        text-decoration: none;
-        display: block;
-        margin-bottom: 0.5rem;
-        transition: color 0.3s;
+      color: #e2e8f0; text-decoration: none; display: block; margin-bottom: 0.45rem; transition: color 0.2s ease;
     }
-
-    .footer-section a:hover {
-        color: var(--gold);
-    }
-
-    .social-links {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1rem;
-    }
-
+    .footer-section a:hover { color: var(--gold); }
+    .social-links { display: flex; gap: 0.6rem; margin-top: 0.6rem; }
     .social-links a {
-        width: 40px;
-        height: 40px;
-        background: var(--gold);
-        color: var(--navy);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        text-decoration: none;
-        transition: transform 0.3s;
+      width: 40px; height: 40px; background: var(--gold); color: var(--navy);
+      display: flex; align-items: center; justify-content: center; border-radius: 50%; text-decoration: none;
+      transition: transform 0.2s ease;
     }
+    .social-links a:hover { transform: translateY(-3px); }
+    .footer-bottom { text-align: center; margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--light-navy); color: #cbd5e1; }
 
-    .social-links a:hover {
-        transform: translateY(-3px);
-    }
-
-    .footer-bottom {
-        text-align: center;
-        margin-top: 2rem;
-        padding-top: 2rem;
-        border-top: 1px solid var(--light-navy);
-        color: #94a3b8;
-    }
-
-    /* Quick Calculator Styles */
+    /* Quick Calculator */
     .quick-calculator {
-        background: linear-gradient(135deg, var(--gold), #fbbf24);
-        color: var(--navy);
-        padding: 2rem;
-        border-radius: 15px;
-        margin: 2rem 0;
-        text-align: center;
+      background: linear-gradient(135deg, var(--gold), #fbbf24);
+      color: var(--navy); padding: 1.6rem; border-radius: 14px; margin: 1.2rem 0; text-align: center;
     }
-
-    .calc-inputs {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        margin: 1rem 0;
-        flex-wrap: wrap;
-    }
-
-    .calc-input {
-        padding: 0.8rem;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        width: 120px;
-        text-align: center;
-    }
-
+    .calc-inputs { display: flex; gap: 0.8rem; justify-content: center; margin: 0.8rem 0; flex-wrap: wrap; }
+    .calc-input { padding: 0.8rem; border: none; border-radius: 8px; font-weight: 600; width: 130px; text-align: center; }
     .calc-btn {
-        background: var(--navy);
-        color: white;
-        border: none;
-        padding: 0.8rem 2rem;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: transform 0.3s;
+      background: var(--navy); color: white; border: none; padding: 0.8rem 1.4rem; border-radius: 8px; font-weight: 700;
+      cursor: pointer; transition: transform 0.2s ease;
     }
-
-    .calc-btn:hover {
-        transform: translateY(-2px);
-    }
-
+    .calc-btn:hover { transform: translateY(-2px); }
     .calc-result {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-top: 1rem;
-        padding: 1rem;
-        background: rgba(255,255,255,0.2);
-        border-radius: 8px;
-        display: none;
-    }
-
-    /* Testimonials */
-    .testimonials {
-        background: white;
-        padding: 80px 2rem;
-    }
-
-    .testimonial-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-        margin-top: 2rem;
-    }
-
-    .testimonial {
-        background: var(--light-gray);
-        padding: 2rem;
-        border-radius: 15px;
-        text-align: center;
-        position: relative;
-    }
-
-    .testimonial::before {
-        content: '"';
-        font-size: 4rem;
-        color: var(--gold);
-        position: absolute;
-        top: -10px;
-        left: 20px;
-        font-family: serif;
-    }
-
-    .testimonial-text {
-        font-style: italic;
-        margin-bottom: 1rem;
-        color: var(--text-gray);
-    }
-
-    .testimonial-author {
-        font-weight: 600;
-        color: var(--navy);
-    }
-
-    .stars {
-        color: var(--gold);
-        font-size: 1.2rem;
-        margin: 0.5rem 0;
-    }
-    @media (max-width: 768px) {
-        .nav-links {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: white;
-            flex-direction: column;
-            padding: 1rem 2rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .nav-links.active {
-            display: flex;
-        }
-
-        .mobile-toggle {
-            display: flex;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-        }
-
-        .hero-subtitle {
-            font-size: 1.1rem;
-        }
-
-        .hero-features {
-            gap: 2rem;
-        }
-
-        .rate-table {
-            font-size: 0.9rem;
-        }
-
-        .rate-table th,
-        .rate-table td {
-            padding: 0.5rem;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .nav {
-            padding: 1rem;
-        }
-
-        .hero {
-            padding: 100px 1rem 60px;
-        }
-
-        .hero h1 {
-            font-size: 2rem;
-        }
-
-        .services,
-        .quotation,
-        .contact {
-            padding: 60px 1rem;
-        }
-
-        .service-category {
-            padding: 1.5rem;
-        }
+      font-size: 1.2rem; font-weight: 800; margin-top: 0.6rem; padding: 0.8rem; background: rgba(255,255,255,0.25);
+      border-radius: 8px; display: none;
     }
 
     /* Animations */
     @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
+    .fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
 
-    .fade-in-up {
-        animation: fadeInUp 0.6s ease-out;
-    }
-
-    /* WhatsApp Float Button */
+    /* WhatsApp Float */
     .whatsapp-float {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #25d366;
-        color: white;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        font-size: 1.5rem;
-        box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
-        z-index: 1000;
-        transition: transform 0.3s;
+      position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white;
+      width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      text-decoration: none; font-size: 1.5rem; box-shadow: 0 5px 15px rgba(37,211,102,0.4);
+      z-index: 1000; transition: transform 0.2s ease;
+    }
+    .whatsapp-float:hover { transform: scale(1.06); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; width: 100%; background: white;
+        flex-direction: column; padding: 1rem 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      }
+      .nav-links.active { display: flex; }
+      .mobile-toggle { display: flex; }
+      .hero h1 { font-size: 2.4rem; }
+      .hero-subtitle { font-size: 1.05rem; }
     }
 
-    .whatsapp-float:hover {
-        transform: scale(1.1);
+    @media (max-width: 480px) {
+      .nav { padding: 1rem; }
+      .hero { padding: 100px 1rem 60px; }
+      .hero h1 { font-size: 2rem; }
+      .services, .quotation, .contact { padding: 60px 1rem; }
     }
-</style>
-```
-
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <nav class="nav">
-            <a href="#home" class="logo">TILERS<span>HUB</span></a>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#quotation">Quotation</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <a href="https://wa.me/94774503744" class="whatsapp-btn">WhatsApp</a>
-            <div class="mobile-toggle" id="mobileToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </nav>
-    </header>
+  <!-- Header -->
+  <header class="header">
+    <nav class="nav" aria-label="Main">
+      <a href="#home" class="logo">TILERS<span>HUB</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#quotation">Quotation</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="https://wa.me/94774503744" class="whatsapp-btn" target="_blank" rel="noopener">WhatsApp</a>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu" aria-controls="navLinks" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
 
-```
-<!-- Hero Section -->
-<section class="hero" id="home">
+  <!-- Hero -->
+  <section class="hero" id="home" aria-label="Hero">
     <div class="hero-content">
-        <h1 class="fade-in-up">TILERSHUB – Tiling & Bathroom Experts</h1>
-        <p class="hero-subtitle fade-in-up">Certified Tilers, Transparent Rates, 1 Year Warranty</p>
-        <a href="#contact" class="cta-btn fade-in-up">Get a Free Quote</a>
-        
-        <div class="hero-features fade-in-up">
-            <div class="feature">
-                <div class="feature-icon">⚡</div>
-                <h3>Fast Service</h3>
-                <p>Quick turnaround times</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">✓</div>
-                <h3>Certified Tilers</h3>
-                <p>Professional & experienced</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🛡️</div>
-                <h3>Payment Guarantee</h3>
-                <p>Secure & protected</p>
-            </div>
-        </div>
-    </div>
-</section>
+      <h1 class="fade-in-up">TILERSHUB – Tiling &amp; Bathroom Experts</h1>
+      <p class="hero-subtitle fade-in-up">Certified Tilers, Transparent Rates, 1 Year Warranty</p>
+      <a href="#contact" class="cta-btn fade-in-up">Get a Free Quote</a>
 
-<!-- Services Section -->
-<section class="services" id="services">
+      <div class="hero-features fade-in-up" aria-label="Key features">
+        <div class="feature">
+          <div class="feature-icon" aria-hidden="true">⚡</div>
+          <h3>Fast Service</h3>
+          <p>Quick turnaround times</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon" aria-hidden="true">✓</div>
+          <h3>Certified Tilers</h3>
+          <p>Professional &amp; experienced</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon" aria-hidden="true">🛡️</div>
+          <h3>Payment Guarantee</h3>
+          <p>Secure &amp; protected</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="services" id="services" aria-label="Services">
     <div class="container">
-        <h2 class="section-title">Our Services & Rates</h2>
-        
-        <!-- Floor Tiling -->
-        <div class="service-category fade-in-up">
-            <h3 class="category-title">Floor Tiling (minimum 500 sq.ft; smaller jobs may have higher rates)</h3>
-            <table class="rate-table">
-                <thead>
-                    <tr>
-                        <th>Tile Size</th>
-                        <th>Rate per sq.ft</th>
-                        <th>Example Cost</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>600x600</td>
-                        <td class="price">Rs. 120</td>
-                        <td>500 sq.ft × 600×600 = Rs. 60,000</td>
-                    </tr>
-                    <tr>
-                        <td>600x1200</td>
-                        <td class="price">Rs. 150</td>
-                        <td>Rs. 75,000 (500 sq.ft)</td>
-                    </tr>
-                    <tr>
-                        <td>Large tiles</td>
-                        <td class="price">From Rs. 200</td>
-                        <td>Rs. 100,000+ (500 sq.ft)</td>
-                    </tr>
-                    <tr>
-                        <td>Mosaic</td>
-                        <td class="price">Rs. 450</td>
-                        <td>Rs. 225,000 (500 sq.ft)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <h2 class="section-title">Our Services &amp; Rates</h2>
 
-        <!-- Skirting -->
-        <div class="service-category fade-in-up">
-            <h3 class="category-title">Skirting</h3>
-            <table class="rate-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Rate</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Skirting Installation</td>
-                        <td class="price">Same as floor tiling (per Lin.ft)</td>
-                        <td>Each additional floor +10% on floor tiling</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <!-- Floor Tiling -->
+      <div class="service-category">
+        <h3 class="category-title">Floor Tiling (minimum 500 sq.ft; smaller jobs may have higher rates)</h3>
+        <table class="rate-table">
+          <thead>
+            <tr><th>Tile Size</th><th>Rate per sq.ft</th><th>Example Cost</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>600x600</td><td class="price">Rs. 120</td><td>500 sq.ft × 120 = Rs. 60,000</td></tr>
+            <tr><td>600x1200</td><td class="price">Rs. 150</td><td>500 sq.ft × 150 = Rs. 75,000</td></tr>
+            <tr><td>Large tiles</td><td class="price">From Rs. 200</td><td>500 sq.ft × 200 = Rs. 100,000+</td></tr>
+            <tr><td>Mosaic</td><td class="price">Rs. 450</td><td>500 sq.ft × 450 = Rs. 225,000</td></tr>
+          </tbody>
+        </table>
+      </div>
 
-        <!-- Staircase Tiling -->
-        <div class="service-category fade-in-up">
-            <h3 class="category-title">Staircase Tiling</h3>
-            <table class="rate-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Rate</th>
-                        <th>Example</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Staircase Tiling</td>
-                        <td class="price">Rs. 1,000 / Lin.ft</td>
-                        <td>20 steps × 3 ft = 60 Lin.ft → Rs. 60,000 + Rs. 30,000 = Rs. 90,000</td>
-                    </tr>
-                    <tr>
-                        <td>Nosing</td>
-                        <td class="price">Rs. 500 / Lin.ft</td>
-                        <td>Included in above calculation</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <!-- Skirting -->
+      <div class="service-category">
+        <h3 class="category-title">Skirting</h3>
+        <table class="rate-table">
+          <thead><tr><th>Service</th><th>Rate</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Skirting Installation</td><td class="price">Same as floor tiling (per Lin.ft)</td><td>Each additional floor +10% on floor tiling</td></tr>
+          </tbody>
+        </table>
+      </div>
 
-        <!-- Pantry Tiling -->
-        <div class="service-category fade-in-up">
-            <h3 class="category-title">Pantry Tiling</h3>
-            <table class="rate-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Rate</th>
-                        <th>Example</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Pantry Tiling</td>
-                        <td class="price">Rs. 3,000 / Lin.ft</td>
-                        <td>10 ft pantry = Rs. 30,000</td>
-                    </tr>
-                    <tr>
-                        <td>Includes</td>
-                        <td>Edge finishing – router/taper, 600mm wall & top</td>
-                        <td>Complete package</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <!-- Staircase -->
+      <div class="service-category">
+        <h3 class="category-title">Staircase Tiling</h3>
+        <table class="rate-table">
+          <thead><tr><th>Service</th><th>Rate</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>Staircase Tiling</td><td class="price">Rs. 1,000 / Lin.ft</td><td>20 steps × 3 ft = 60 Lin.ft → Rs. 60,000</td></tr>
+            <tr><td>Nosing</td><td class="price">Rs. 500 / Lin.ft</td><td>+ Rs. 30,000 (60 × 500). Total Rs. 90,000</td></tr>
+          </tbody>
+        </table>
+      </div>
 
-        <!-- Bathroom Rates -->
-        <div class="service-category fade-in-up">
-            <h3 class="category-title">Complete Bathroom Renovation</h3>
-            <table class="rate-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Rate</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Plumbing</td>
-                        <td class="price">Rs. 20,000</td>
-                        <td>Basic hot & cold, includes pressure test up to 10 Bars - higher for complex work</td>
-                    </tr>
-                    <tr>
-                        <td>Wall Niche</td>
-                        <td class="price">Rs. 15,000 each</td>
-                        <td>Built-in storage niches</td>
-                    </tr>
-                    <tr>
-                        <td>Vanity Top</td>
-                        <td class="price">Rs. 10,000</td>
-                        <td>Custom vanity installation</td>
-                    </tr>
-                    <tr>
-                        <td>Wiring</td>
-                        <td class="price">Rs. 25,000</td>
-                        <td>Includes wiring & fixing lights</td>
-                    </tr>
-                    <tr>
-                        <td>Waterproofing</td>
-                        <td class="price">Rs. 100 / sq.ft</td>
-                        <td>Professional waterproofing</td>
-                    </tr>
-                    <tr>
-                        <td>Tiling & Grouting</td>
-                        <td class="price">Rs. 300 / sq.ft</td>
-                        <td>Complete tiling service</td>
-                    </tr>
-                    <tr>
-                        <td>Fixture Installation</td>
-                        <td class="price">Rs. 20,000</td>
-                        <td>Toilet, basin, faucets installation</td>
-                    </tr>
-                    <tr>
-                        <td>Ceiling</td>
-                        <td class="price">From Rs. 500 / sq.ft</td>
-                        <td>PVC/Gypsum ceiling work</td>
-                    </tr>
-                    <tr>
-                        <td>Shower Cubicle</td>
-                        <td class="price">Starting from Rs. 50,000</td>
-                        <td>Glass shower enclosure</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="margin-top: 1rem; padding: 1rem; background: #fef3c7; border-left: 4px solid var(--gold); border-radius: 5px;">
-                <p><strong>Note:</strong> If any other works are required (e.g., demolition, masonry), additional charges may apply.</p>
-            </div>
+      <!-- Pantry -->
+      <div class="service-category">
+        <h3 class="category-title">Pantry Tiling</h3>
+        <table class="rate-table">
+          <thead><tr><th>Service</th><th>Rate</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>Pantry Tiling</td><td class="price">Rs. 3,000 / Lin.ft</td><td>10 ft pantry = Rs. 30,000</td></tr>
+            <tr><td>Includes</td><td>Edge finishing – router/taper, 600mm wall &amp; top</td><td>Complete package</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Bathroom -->
+      <div class="service-category">
+        <h3 class="category-title">Complete Bathroom Renovation</h3>
+        <table class="rate-table">
+          <thead><tr><th>Service</th><th>Rate</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Plumbing</td><td class="price">Rs. 20,000</td><td>Basic hot &amp; cold; pressure test up to 10 Bars (higher for complex work)</td></tr>
+            <tr><td>Wall Niche</td><td class="price">Rs. 15,000 each</td><td>Built-in storage niches</td></tr>
+            <tr><td>Vanity Top</td><td class="price">Rs. 10,000</td><td>Custom vanity installation</td></tr>
+            <tr><td>Wiring</td><td class="price">Rs. 25,000</td><td>Includes wiring &amp; fixing lights</td></tr>
+            <tr><td>Waterproofing</td><td class="price">Rs. 100 / sq.ft</td><td>Professional waterproofing</td></tr>
+            <tr><td>Tiling &amp; Grouting</td><td class="price">Rs. 300 / sq.ft</td><td>Complete tiling service</td></tr>
+            <tr><td>Fixture Installation</td><td class="price">Rs. 20,000</td><td>Toilet, basin, faucets installation</td></tr>
+            <tr><td>Ceiling</td><td class="price">From Rs. 500 / sq.ft</td><td>PVC/Gypsum ceiling work</td></tr>
+            <tr><td>Shower Cubicle</td><td class="price">Starting from Rs. 50,000</td><td>Glass shower enclosure</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 0.8rem; padding: 0.9rem; background: #fef3c7; border-left: 4px solid var(--gold); border-radius: 6px;">
+          <p><strong>Note:</strong> If any other works are required (e.g., demolition, masonry), additional charges may apply.</p>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Quotation Section -->
-<section class="quotation" id="quotation">
+  <!-- Quotation -->
+  <section class="quotation" id="quotation" aria-label="Quotation">
     <div class="container">
-        <h2 class="section-title">Get Your Quote</h2>
-        <div class="quote-cards">
-            <div class="quote-card fade-in-up">
-                <h3>Basic Quotation</h3>
-                <div class="quote-price">FREE</div>
-                <p>Initial cost estimate based on your requirements</p>
-                <ul style="text-align: left; margin-top: 1rem;">
-                    <li>Phone consultation</li>
-                    <li>Basic rate calculation</li>
-                    <li>Service overview</li>
-                </ul>
-            </div>
-            
-            <div class="quote-card premium fade-in-up">
-                <h3>Site Inspection & Detailed Quote</h3>
-                <div class="quote-price">Rs. 5,000</div>
-                <p>Comprehensive on-site assessment and detailed quotation</p>
-                <ul style="text-align: left; margin-top: 1rem;">
-                    <li>Professional site visit</li>
-                    <li>Detailed measurements</li>
-                    <li>Material recommendations</li>
-                    <li>Timeline estimation</li>
-                    <li>Written quotation</li>
-                </ul>
-            </div>
+      <h2 class="section-title">Get Your Quote</h2>
+      <div class="quote-cards">
+        <div class="quote-card">
+          <h3>Basic Quotation</h3>
+          <div class="quote-price">FREE</div>
+          <p>Initial cost estimate based on your requirements</p>
+          <ul style="text-align: left; margin-top: 0.6rem;">
+            <li>Phone consultation</li>
+            <li>Basic rate calculation</li>
+            <li>Service overview</li>
+          </ul>
         </div>
-        
-        <div class="warranty">
-            🛡️ All works come with TILERSHUB 1 Year Warranty & Payment Guarantee
+        <div class="quote-card premium">
+          <h3>Site Inspection &amp; Detailed Quote</h3>
+          <div class="quote-price">Rs. 5,000</div>
+          <p>Comprehensive on-site assessment and detailed quotation</p>
+          <ul style="text-align: left; margin-top: 0.6rem;">
+            <li>Professional site visit</li>
+            <li>Detailed measurements</li>
+            <li>Material recommendations</li>
+            <li>Timeline estimation</li>
+            <li>Written quotation</li>
+          </ul>
         </div>
+      </div>
 
-        <!-- Quick Cost Calculator -->
-        <div class="quick-calculator">
-            <h3>🧮 Quick Cost Calculator</h3>
-            <p>Get an instant estimate for your floor tiling project</p>
-            <div class="calc-inputs">
-                <select class="calc-input" id="tileType">
-                    <option value="">Select Tile Type</option>
-                    <option value="120">600x600 (Rs.120/sq.ft)</option>
-                    <option value="150">600x1200 (Rs.150/sq.ft)</option>
-                    <option value="200">Large tiles (Rs.200/sq.ft)</option>
-                    <option value="450">Mosaic (Rs.450/sq.ft)</option>
-                </select>
-                <input type="number" class="calc-input" id="areaInput" placeholder="Area (sq.ft)">
-                <button class="calc-btn" onclick="calculateCost()">Calculate</button>
-            </div>
-            <div class="calc-result" id="calcResult"></div>
+      <div class="warranty">🛡️ All works come with TILERSHUB 1 Year Warranty &amp; Payment Guarantee</div>
+
+      <!-- Quick Cost Calculator -->
+      <div class="quick-calculator" aria-label="Quick calculator">
+        <h3>🧮 Quick Cost Calculator</h3>
+        <p>Get an instant estimate for your floor tiling project</p>
+        <div class="calc-inputs">
+          <select class="calc-input" id="tileType" aria-label="Tile Type">
+            <option value="">Select Tile Type</option>
+            <option value="120">600x600 (Rs.120/sq.ft)</option>
+            <option value="150">600x1200 (Rs.150/sq.ft)</option>
+            <option value="200">Large tiles (Rs.200/sq.ft)</option>
+            <option value="450">Mosaic (Rs.450/sq.ft)</option>
+          </select>
+          <input type="number" class="calc-input" id="areaInput" placeholder="Area (sq.ft)" min="1" inputmode="numeric" aria-label="Area in square feet">
+          <button class="calc-btn" id="calcBtn" type="button">Calculate</button>
         </div>
+        <div class="calc-result" id="calcResult" role="status" aria-live="polite"></div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Testimonials Section -->
-<section class="testimonials">
+  <!-- Testimonials -->
+  <section class="testimonials" aria-label="Testimonials">
     <div class="container">
-        <h2 class="section-title">What Our Customers Say</h2>
-        <div class="testimonial-grid">
-            <div class="testimonial fade-in-up">
-                <div class="testimonial-text">
-                    "TILERSHUB did an amazing job renovating our bathroom. Professional work, fair pricing, and completed on time. Highly recommended!"
-                </div>
-                <div class="stars">★★★★★</div>
-                <div class="testimonial-author">- Priya S., Colombo</div>
-            </div>
-            
-            <div class="testimonial fade-in-up">
-                <div class="testimonial-text">
-                    "Excellent floor tiling service for our new house. The team was skilled and the rates were very reasonable. Quality work with warranty!"
-                </div>
-                <div class="stars">★★★★★</div>
-                <div class="testimonial-author">- Kamal R., Kandy</div>
-            </div>
-            
-            <div class="testimonial fade-in-up">
-                <div class="testimonial-text">
-                    "From quotation to completion, everything was transparent and professional. Our pantry looks fantastic. Thank you TILERSHUB!"
-                </div>
-                <div class="stars">★★★★★</div>
-                <div class="testimonial-author">- Nuwan P., Galle</div>
-            </div>
+      <h2 class="section-title">What Our Customers Say</h2>
+      <div class="testimonial-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:1rem;">
+        <div class="testimonial" style="background:var(--light-gray);padding:1.4rem;border-radius:14px;position:relative;">
+          <div class="testimonial-text" style="font-style:italic;margin-bottom:0.6rem;color:var(--text-gray);">
+            "TILERSHUB did an amazing job renovating our bathroom. Professional work, fair pricing, and completed on time. Highly recommended!"
+          </div>
+          <div class="stars">★★★★★</div>
+          <div class="testimonial-author">- Priya S., Colombo</div>
         </div>
+        <div class="testimonial" style="background:var(--light-gray);padding:1.4rem;border-radius:14px;position:relative;">
+          <div class="testimonial-text" style="font-style:italic;margin-bottom:0.6rem;color:var(--text-gray);">
+            "Excellent floor tiling service for our new house. The team was skilled and the rates were very reasonable. Quality work with warranty!"
+          </div>
+          <div class="stars">★★★★★</div>
+          <div class="testimonial-author">- Kamal R., Kandy</div>
+        </div>
+        <div class="testimonial" style="background:var(--light-gray);padding:1.4rem;border-radius:14px;position:relative;">
+          <div class="testimonial-text" style="font-style:italic;margin-bottom:0.6rem;color:var(--text-gray);">
+            "From quotation to completion, everything was transparent and professional. Our pantry looks fantastic. Thank you TILERSHUB!"
+          </div>
+          <div class="stars">★★★★★</div>
+          <div class="testimonial-author">- Nuwan P., Galle</div>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Contact Section -->
-<section class="contact" id="contact">
+  <!-- Contact -->
+  <section class="contact" id="contact" aria-label="Contact">
     <div class="container">
-        <h2 class="section-title">Contact Us</h2>
-        <div class="contact-form fade-in-up">
-            <form>
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" required>
-                </div>
-                <div class="form-group">
-                    <label for="location">Location</label>
-                    <input type="text" id="location" name="location" required>
-                </div>
-                <div class="form-group">
-                    <label for="details">Job Details</label>
-                    <textarea id="details" name="details" rows="5" placeholder="Describe your tiling or bathroom renovation requirements..."></textarea>
-                </div>
-                <button type="button" class="cta-btn" onclick="sendWhatsApp()">Send via WhatsApp</button>
-            </form>
-        </div>
+      <h2 class="section-title">Contact Us</h2>
+      <div class="contact-form">
+        <form id="contactForm" novalidate>
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required inputmode="tel" pattern="\d{10,12}" placeholder="07XXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" required autocomplete="address-level2">
+          </div>
+          <div class="form-group">
+            <label for="details">Job Details</label>
+            <textarea id="details" name="details" rows="5" placeholder="Describe your tiling or bathroom renovation requirements..."></textarea>
+          </div>
+          <button type="button" class="cta-btn" id="sendBtn">Send via WhatsApp</button>
+        </form>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Footer -->
-<footer class="footer">
+  <!-- Footer -->
+  <footer class="footer">
     <div class="footer-content">
-        <div class="footer-section">
-            <h3>TILERSHUB</h3>
-            <p>Sri Lanka's #1 tiling and bathroom service platform. Professional, reliable, and affordable.</p>
-            <div class="social-links">
-                <a href="#" aria-label="Facebook">📘</a>
-                <a href="#" aria-label="TikTok">🎵</a>
-                <a href="https://wa.me/94774503744" aria-label="WhatsApp">💬</a>
-            </div>
+      <div class="footer-section">
+        <h3>TILERSHUB</h3>
+        <p>Sri Lanka's #1 tiling and bathroom service platform. Professional, reliable, and affordable.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook" rel="noopener">📘</a>
+          <a href="#" aria-label="TikTok" rel="noopener">🎵</a>
+          <a href="https://wa.me/94774503744" aria-label="WhatsApp" target="_blank" rel="noopener">💬</a>
         </div>
-        <div class="footer-section">
-            <h3>Services</h3>
-            <a href="#services">Floor Tiling</a>
-            <a href="#services">Bathroom Renovation</a>
-            <a href="#services">Pantry Tiling</a>
-            <a href="#services">Staircase Tiling</a>
-            <a href="#services">Waterproofing</a>
-        </div>
-        <div class="footer-section">
-            <h3>Company</h3>
-            <a href="#home">About Us</a>
-            <a href="#quotation">Get Quote</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#contact">Contact</a>
-        </div>
-        <div class="footer-section">
-            <h3>Contact Info</h3>
-            <p>📱 WhatsApp: <span onclick="copyPhoneNumber()" style="cursor: pointer; color: var(--gold); text-decoration: underline;">0774503744</span></p>
-            <p>🕒 Available: 8:00 AM - 8:00 PM</p>
-            <p>🗓️ Monday - Sunday</p>
-            <p>🌍 Serving all of Sri Lanka</p>
-        </div>
+      </div>
+      <div class="footer-section">
+        <h3>Services</h3>
+        <a href="#services">Floor Tiling</a>
+        <a href="#services">Bathroom Renovation</a>
+        <a href="#services">Pantry Tiling</a>
+        <a href="#services">Staircase Tiling</a>
+        <a href="#services">Waterproofing</a>
+      </div>
+      <div class="footer-section">
+        <h3>Company</h3>
+        <a href="#home">About Us</a>
+        <a href="#quotation">Get Quote</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-section">
+        <h3>Contact Info</h3>
+        <p>📱 WhatsApp: <button type="button" onclick="copyPhoneNumber()" style="cursor:pointer;color:var(--gold);text-decoration:underline;background:none;border:none;padding:0;">0774503744</button></p>
+        <p>🕒 Available: 8:00 AM - 8:00 PM</p>
+        <p>🗓️ Monday - Sunday</p>
+        <p>🌍 Serving all of Sri Lanka</p>
+      </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; 2024 TILERSHUB. All rights reserved. | Designed for excellence in tiling services.</p>
+      <p>&copy; 2025 TILERSHUB. All rights reserved. | Designed for excellence in tiling services.</p>
     </div>
-</footer>
+  </footer>
 
-<!-- WhatsApp Float Button -->
-<a href="https://wa.me/94774503744" class="whatsapp-float" aria-label="WhatsApp">💬</a>
+  <!-- WhatsApp Float Button -->
+  <a href="https://wa.me/94774503744" class="whatsapp-float" aria-label="Open WhatsApp" target="_blank" rel="noopener">💬</a>
 
-<script>
+  <script>
     // Mobile menu toggle
     const mobileToggle = document.getElementById('mobileToggle');
     const navLinks = document.getElementById('navLinks');
-
-    mobileToggle.addEventListener('click', () => {
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', () => {
+        const expanded = mobileToggle.getAttribute('aria-expanded') === 'true';
+        mobileToggle.setAttribute('aria-expanded', String(!expanded));
         navLinks.classList.toggle('active');
-    });
-
-    // Close mobile menu when clicking on a link
+      });
+    }
+    // Close mobile menu when clicking a link
     navLinks.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') {
-            navLinks.classList.remove('active');
-        }
+      if (e.target.tagName === 'A') {
+        navLinks.classList.remove('active');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+      }
     });
 
-    // Smooth scroll for navigation links
+    // Smooth scroll for internal links only
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-
-    // Send WhatsApp message with form data
-    function sendWhatsApp() {
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-        const location = document.getElementById('location').value;
-        const details = document.getElementById('details').value;
-
-        if (!name || !phone) {
-            alert('Please fill in your name and phone number');
-            return;
+      anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-
-        const message = `Hi TILERSHUB! 👋
-```
-
-I’m interested in your tiling services.
-
-📋 My Details:
-Name: ${name}
-Phone: ${phone}
-Location: ${location || ‘Not specified’}
-
-🔧 Job Details:
-${details || ‘Please contact me for more details’}
-
-I’d like to get a quote for my project. Thank you!`;
-
-```
-        const whatsappUrl = `https://wa.me/94774503744?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
-    }
-
-    // Fade in animation on scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-up');
-            }
-        });
-    }, observerOptions);
-
-    // Observe all service categories
-    document.querySelectorAll('.service-category, .quote-card, .contact-form').forEach(el => {
-        observer.observe(el);
+      });
     });
 
-    // Header scroll effect
-    let lastScrollY = window.scrollY;
-    const header = document.querySelector('.header');
-
-    window.addEventListener('scroll', () => {
-        const currentScrollY = window.scrollY;
-        
-        if (currentScrollY > 100) {
-            header.style.background = 'rgba(255, 255, 255, 0.95)';
-            header.style.backdropFilter = 'blur(10px)';
-        } else {
-            header.style.background = 'var(--white)';
-            header.style.backdropFilter = 'none';
-        }
-        
-        lastScrollY = currentScrollY;
-    });
-
-    // Auto-calculate estimates
-    function calculateEstimate(service, area) {
-        const rates = {
-            '600x600': 120,
-            '600x1200': 150,
-            'large': 200,
-            'mosaic': 450,
-            'bathroom_tiling': 300,
-            'waterproofing': 100
-        };
-        
-        return area * (rates[service] || 0);
-    }
-
-    // Enhanced form validation
+    // Form validation
     function validateForm() {
-        const name = document.getElementById('name');
-        const phone = document.getElementById('phone');
-        
-        // Reset previous validation styles
-        [name, phone].forEach(field => {
-            field.style.borderColor = 'var(--border-gray)';
-        });
-        
-        let isValid = true;
-        
-        if (!name.value.trim()) {
-            name.style.borderColor = '#ef4444';
-            isValid = false;
-        }
-        
-        if (!phone.value.trim() || phone.value.length < 10) {
-            phone.style.borderColor = '#ef4444';
-            isValid = false;
-        }
-        
-        return isValid;
+      const name = document.getElementById('name');
+      const phone = document.getElementById('phone');
+      let isValid = true;
+      [name, phone].forEach(field => field.style.borderColor = 'var(--border-gray)');
+
+      if (!name.value.trim()) { name.style.borderColor = '#ef4444'; isValid = false; }
+      const phoneOk = /^\d{10,12}$/.test(phone.value.trim());
+      if (!phoneOk) { phone.style.borderColor = '#ef4444'; isValid = false; }
+      return isValid;
     }
 
-    // Update sendWhatsApp function with validation
+    // Send WhatsApp
     function sendWhatsApp() {
-        if (!validateForm()) {
-            alert('Please fill in all required fields correctly');
-            return;
-        }
+      if (!validateForm()) {
+        alert('Please fill in all required fields correctly');
+        return;
+      }
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const location = document.getElementById('location').value.trim();
+      const details = document.getElementById('details').value.trim();
 
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-        const location = document.getElementById('location').value;
-        const details = document.getElementById('details').value;
-
-        const message = `Hi TILERSHUB! 👋
-```
+      const message = `Hi TILERSHUB! 👋
 
 I’m interested in your tiling services.
 
 📋 My Details:
 Name: ${name}
 Phone: ${phone}
-Location: ${location || ‘Not specified’}
+Location: ${location || 'Not specified'}
 
 🔧 Job Details:
-${details || ‘Please contact me for more details’}
+${details || 'Please contact me for more details'}
 
 I’d like to get a quote for my project. Thank you!`;
 
-```
-        const whatsappUrl = `https://wa.me/94774503744?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
-        
-        // Show success message
-        showSuccessMessage();
+      const whatsappUrl = \`https://wa.me/94774503744?text=\${encodeURIComponent(message)}\`;
+      window.open(whatsappUrl, '_blank', 'noopener');
+      showToast('✅ Message prepared in WhatsApp.');
     }
 
-    // Success message function
-    function showSuccessMessage() {
-        const successDiv = document.createElement('div');
-        successDiv.innerHTML = `
-            <div style="position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 1rem 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); z-index: 10000; animation: slideInRight 0.3s ease-out;">
-                ✅ Message sent! We'll contact you soon.
-            </div>
-        `;
-        document.body.appendChild(successDiv);
-        
-        setTimeout(() => {
-            successDiv.remove();
-        }, 4000);
+    // Success toast
+    function showToast(text) {
+      const wrap = document.createElement('div');
+      wrap.innerHTML = \`<div style="position:fixed;top:20px;right:20px;background:#10b981;color:#fff;padding:0.8rem 1.2rem;border-radius:10px;box-shadow:0 5px 15px rgba(16,185,129,0.3);z-index:10000;animation:slideInRight 0.25s ease-out;">\${text}</div>\`;
+      document.body.appendChild(wrap);
+      setTimeout(() => wrap.remove(), 3500);
     }
 
-    // Add CSS for success message animation
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-    `;
-    document.head.appendChild(style);
+    // Copy phone
+    function copyPhoneNumber() {
+      navigator.clipboard.writeText('0774503744').then(() => {
+        const d = document.createElement('div');
+        d.innerHTML = '<div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--navy);color:#fff;padding:0.8rem 1.2rem;border-radius:10px;box-shadow:0 5px 20px rgba(0,0,0,0.3);z-index:10000;animation:fadeInScale 0.25s ease-out;">📋 Phone number copied!</div>';
+        document.body.appendChild(d);
+        setTimeout(() => d.remove(), 1800);
+      });
+    }
 
-    // Preload critical images and optimize performance
-    const preloadImages = () => {
-        const imageUrls = [
-            // Add any critical images here if needed
-        ];
-        
-        imageUrls.forEach(url => {
-            const link = document.createElement('link');
-            link.rel = 'preload';
-            link.as = 'image';
-            link.href = url;
-            document.head.appendChild(link);
-        });
-    };
+    // Animations CSS injected
+    const animStyle = document.createElement('style');
+    animStyle.textContent = \`
+      @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+      @keyframes fadeInScale { from { transform: translate(-50%, -50%) scale(0.9); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+    \`;
+    document.head.appendChild(animStyle);
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        preloadImages();
-        
-        // Add loading animation
-        document.body.style.opacity = '0';
-        document.body.style.transition = 'opacity 0.3s ease-in';
-        
-        setTimeout(() => {
-            document.body.style.opacity = '1';
-        }, 100);
+    // Intersection Observer for fade-in
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('fade-in-up'); });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.service-category, .quote-card, .contact-form').forEach(el => io.observe(el));
+
+    // Header effect
+    const header = document.querySelector('.header');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      header.style.background = y > 100 ? 'rgba(255,255,255,0.95)' : 'var(--white)';
+      header.style.backdropFilter = y > 100 ? 'blur(10px)' : 'none';
     });
 
-    // Add copy-to-clipboard functionality for phone number
-    function copyPhoneNumber() {
-        navigator.clipboard.writeText('0774503744').then(() => {
-            showCopySuccess();
-        });
-    }
-
-    function showCopySuccess() {
-        const copyDiv = document.createElement('div');
-        copyDiv.innerHTML = `
-            <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--navy); color: white; padding: 1rem 2rem; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 10000; animation: fadeInScale 0.3s ease-out;">
-                📋 Phone number copied!
-            </div>
-        `;
-        document.body.appendChild(copyDiv);
-        
-        setTimeout(() => {
-            copyDiv.remove();
-        }, 2000);
-    }
-
-    // Add fadeInScale animation
-    const scaleStyle = document.createElement('style');
-    scaleStyle.textContent = `
-        @keyframes fadeInScale {
-            from {
-                transform: translate(-50%, -50%) scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 1;
-            }
-        }
-    `;
-    // Quick cost calculator
+    // Quick calculator
     function calculateCost() {
-        const tileType = document.getElementById('tileType').value;
-        const area = document.getElementById('areaInput').value;
-        const resultDiv = document.getElementById('calcResult');
-        
-        if (!tileType || !area || area <= 0) {
-            alert('Please select tile type and enter valid area');
-            return;
-        }
-        
-        const rate = parseInt(tileType);
-        const totalCost = rate * parseInt(area);
-        const minOrderNote = area < 500 ? ' (Note: Minimum 500 sq.ft - smaller jobs may have higher rates)' : '';
-        
-        resultDiv.innerHTML = `
-            <strong>Estimated Cost: Rs. ${totalCost.toLocaleString()}</strong>${minOrderNote}
-            <br><small>*This is a basic estimate. Contact us for detailed quotation.</small>
-        `;
-        resultDiv.style.display = 'block';
+      const tileType = document.getElementById('tileType').value;
+      const area = parseInt(document.getElementById('areaInput').value, 10);
+      const resultDiv = document.getElementById('calcResult');
+      if (!tileType || !area || area <= 0) {
+        alert('Please select tile type and enter valid area');
+        return;
+      }
+      const rate = parseInt(tileType, 10);
+      const totalCost = rate * area;
+      const minOrderNote = area < 500 ? ' (Note: Minimum 500 sq.ft - smaller jobs may have higher rates)' : '';
+      resultDiv.innerHTML = \`<strong>Estimated Cost: Rs. \${totalCost.toLocaleString()}</strong>\${minOrderNote}<br><small>*This is a basic estimate. Contact us for a detailed quotation.</small>\`;
+      resultDiv.style.display = 'block';
     }
-```
+
+    // Wire buttons
+    document.getElementById('sendBtn').addEventListener('click', sendWhatsApp);
+    document.getElementById('calcBtn').addEventListener('click', calculateCost);
+
+    // Gentle page fade-in
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.style.opacity = '0';
+      document.body.style.transition = 'opacity 0.25s ease-in';
+      requestAnimationFrame(() => { document.body.style.opacity = '1'; });
+    });
+  </script>
+</body>
+</html>
