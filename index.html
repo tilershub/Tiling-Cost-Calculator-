@@ -4,10 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TilersHub - Professional Tile Cost Estimator</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>TILERSHUB - Sri Lanka's #1 Tiling & Bathroom Service Platform | Certified Tilers</title>
+    <meta name="description" content="TILERSHUB offers professional tiling and bathroom renovation services in Sri Lanka. Certified tilers, transparent rates, 1-year warranty. Get your free quote today!">
+    <meta name="keywords" content="tiling Sri Lanka, bathroom renovation Sri Lanka, certified tilers, floor tiling, bathroom tiling, pantry tiling, staircase tiling, skirting">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
+    <!-- Schema Markup for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "TILERSHUB",
+        "description": "Sri Lanka's #1 tiling and bathroom service platform. Certified tilers, transparent rates, 1-year warranty.",
+        "url": "https://tilershub.lk",
+        "telephone": "+94774503744",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Sri Lanka"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "7.8731",
+            "longitude": "80.7718"
+        },
+        "openingHours": "Mo-Su 08:00-20:00",
+        "priceRange": "Rs. 120 - Rs. 3000",
+        "serviceArea": {
+            "@type": "Country",
+            "name": "Sri Lanka"
+        },
+        "services": [
+            "Floor Tiling",
+            "Bathroom Renovation",
+            "Pantry Tiling",
+            "Staircase Tiling",
+            "Waterproofing",
+            "Skirting Installation"
+        ],
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "150"
+        }
+    }
+    </script>
         * {
             margin: 0;
             padding: 0;
@@ -16,1169 +57,1267 @@
 
 ```
     :root {
-        --primary: #6366f1;
-        --primary-dark: #4f46e5;
-        --primary-light: #8b5cf6;
-        --secondary: #64748b;
-        --accent: #f59e0b;
-        --success: #10b981;
-        --danger: #ef4444;
-        --warning: #f59e0b;
-        
-        --bg-primary: #ffffff;
-        --bg-secondary: #f8fafc;
-        --bg-dark: #0f172a;
-        --bg-card: #ffffff;
-        --bg-glass: rgba(255, 255, 255, 0.1);
-        
-        --text-primary: #1e293b;
-        --text-secondary: #64748b;
-        --text-muted: #94a3b8;
-        --text-white: #ffffff;
-        
-        --border: #e2e8f0;
-        --border-light: #f1f5f9;
-        --border-dark: #334155;
-        
-        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        
-        --radius-sm: 8px;
-        --radius-md: 12px;
-        --radius-lg: 16px;
-        --radius-xl: 24px;
-        
-        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+        --navy: #1e3a8a;
+        --gold: #f59e0b;
+        --light-navy: #3b82f6;
+        --dark-navy: #1e40af;
+        --white: #ffffff;
+        --light-gray: #f8fafc;
+        --text-gray: #64748b;
+        --border-gray: #e2e8f0;
     }
 
     body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
         line-height: 1.6;
-        overflow-x: hidden;
-    }
-
-    /* Animated Background */
-    .bg-animation {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        overflow: hidden;
-    }
-
-    .bg-animation::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        animation: float 20s ease-in-out infinite;
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translate(0, 0) rotate(0deg); }
-        33% { transform: translate(30px, -30px) rotate(120deg); }
-        66% { transform: translate(-20px, 20px) rotate(240deg); }
-    }
-
-    .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 0 1rem;
+        color: #1e293b;
+        scroll-behavior: smooth;
     }
 
     /* Header */
     .header {
-        padding: 2rem 0;
-        text-align: center;
-        position: relative;
-    }
-
-    .header::before {
-        content: '';
-        position: absolute;
+        background: var(--white);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: fixed;
         top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: var(--gradient-glass);
-        backdrop-filter: blur(10px);
-        border-radius: var(--radius-xl);
-        margin: 1rem;
+        width: 100%;
+        z-index: 1000;
     }
 
-    .header-content {
-        position: relative;
-        z-index: 2;
+    .nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .header h1 {
-        font-size: clamp(2rem, 5vw, 3.5rem);
+    .logo {
+        font-size: 1.8rem;
         font-weight: 800;
-        color: var(--text-white);
-        margin-bottom: 0.5rem;
-        text-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        animation: slideInDown 1s ease-out;
+        color: var(--navy);
+        text-decoration: none;
     }
 
-    .header .subtitle {
-        font-size: clamp(1rem, 3vw, 1.25rem);
-        color: rgba(255,255,255,0.9);
-        font-weight: 300;
-        animation: slideInUp 1s ease-out 0.2s both;
+    .logo span {
+        color: var(--gold);
     }
 
-    @keyframes slideInDown {
-        from { transform: translateY(-30px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes slideInUp {
-        from { transform: translateY(30px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-    }
-
-    /* Main Layout */
-    .main {
-        padding: 2rem 0 4rem;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+    .nav-links {
+        display: flex;
+        list-style: none;
         gap: 2rem;
-        align-items: start;
     }
 
-    /* Glass morphism cards */
-    .card {
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(20px);
-        border-radius: var(--radius-lg);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: var(--shadow-xl);
-        overflow: hidden;
-        transition: all 0.3s ease;
-        animation: fadeInUp 0.8s ease-out;
+    .nav-links a {
+        text-decoration: none;
+        color: var(--navy);
+        font-weight: 500;
+        transition: color 0.3s;
     }
 
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    .nav-links a:hover {
+        color: var(--gold);
     }
 
-    @keyframes fadeInUp {
-        from { transform: translateY(30px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+    .whatsapp-btn {
+        background: #25d366;
+        color: white;
+        padding: 0.7rem 1.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: transform 0.3s;
     }
 
-    .card-header {
-        background: var(--gradient-glass);
-        padding: 1.5rem 2rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    .whatsapp-btn:hover {
+        transform: translateY(-2px);
     }
 
-    .card-header h2 {
+    /* Mobile Menu */
+    .mobile-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .mobile-toggle span {
+        width: 25px;
+        height: 3px;
+        background: var(--navy);
+        margin: 3px 0;
+        transition: 0.3s;
+    }
+
+    /* Hero Section */
+    .hero {
+        background: linear-gradient(135deg, var(--navy) 0%, var(--light-navy) 100%);
+        color: white;
+        padding: 120px 2rem 80px;
+        text-align: center;
+    }
+
+    .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .hero-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        color: #e2e8f0;
+    }
+
+    .cta-btn {
+        background: var(--gold);
+        color: var(--navy);
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: transform 0.3s;
+    }
+
+    .cta-btn:hover {
+        transform: translateY(-3px);
+    }
+
+    .hero-features {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        margin-top: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .feature {
+        text-align: center;
+    }
+
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: var(--gold);
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        gap: 0.75rem;
+        justify-content: center;
+        margin: 0 auto 1rem;
         font-size: 1.5rem;
+        color: var(--navy);
+    }
+
+    /* Services Section */
+    .services {
+        padding: 80px 2rem;
+        background: var(--light-gray);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
         font-weight: 700;
-        color: var(--text-white);
+        color: var(--navy);
+        margin-bottom: 3rem;
     }
 
-    .card-header i {
-        font-size: 1.5rem;
-        background: var(--gradient-accent);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .card-body {
+    .service-category {
+        background: white;
+        border-radius: 15px;
         padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
-    /* Form Styles */
+    .category-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--navy);
+        margin-bottom: 1rem;
+        border-left: 4px solid var(--gold);
+        padding-left: 1rem;
+    }
+
+    .rate-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .rate-table th,
+    .rate-table td {
+        padding: 0.8rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border-gray);
+    }
+
+    .rate-table th {
+        background: var(--navy);
+        color: white;
+        font-weight: 600;
+    }
+
+    .rate-table tr:hover {
+        background: var(--light-gray);
+    }
+
+    .price {
+        font-weight: 600;
+        color: var(--gold);
+    }
+
+    /* Quotation Section */
+    .quotation {
+        padding: 80px 2rem;
+        background: white;
+    }
+
+    .quote-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .quote-card {
+        background: var(--light-gray);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        border: 3px solid transparent;
+        transition: all 0.3s;
+    }
+
+    .quote-card:hover {
+        border-color: var(--gold);
+        transform: translateY(-5px);
+    }
+
+    .quote-card.premium {
+        background: linear-gradient(135deg, var(--navy), var(--light-navy));
+        color: white;
+    }
+
+    .quote-price {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--gold);
+        margin-bottom: 1rem;
+    }
+
+    .warranty {
+        background: var(--gold);
+        color: var(--navy);
+        padding: 1rem;
+        border-radius: 10px;
+        margin-top: 2rem;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    /* Contact Section */
+    .contact {
+        padding: 80px 2rem;
+        background: var(--light-gray);
+    }
+
+    .contact-form {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
     .form-group {
         margin-bottom: 1.5rem;
     }
 
-    .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-    }
-
-    label {
+    .form-group label {
         display: block;
-        font-weight: 600;
         margin-bottom: 0.5rem;
-        color: var(--text-white);
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        font-weight: 600;
+        color: var(--navy);
     }
 
-    .input-wrapper {
-        position: relative;
-    }
-
-    input, select {
+    .form-group input,
+    .form-group textarea {
         width: 100%;
-        padding: 1rem 3rem 1rem 1rem;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        border-radius: var(--radius-sm);
-        font-size: 1rem;
-        background: rgba(255, 255, 255, 0.1);
-        color: var(--text-white);
-        transition: all 0.3s ease;
-        backdrop-filter: blur(10px);
+        padding: 0.8rem;
+        border: 2px solid var(--border-gray);
+        border-radius: 8px;
+        font-family: inherit;
+        transition: border-color 0.3s;
     }
 
-    input::placeholder {
-        color: rgba(255, 255, 255, 0.6);
-    }
-
-    input:focus, select:focus {
+    .form-group input:focus,
+    .form-group textarea:focus {
         outline: none;
-        border-color: rgba(255, 255, 255, 0.5);
-        background: rgba(255, 255, 255, 0.2);
-        box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+        border-color: var(--gold);
+    }
+
+    /* Footer */
+    .footer {
+        background: var(--navy);
+        color: white;
+        padding: 3rem 2rem 1rem;
+    }
+
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+
+    .footer-section h3 {
+        color: var(--gold);
+        margin-bottom: 1rem;
+    }
+
+    .footer-section a {
+        color: #e2e8f0;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s;
+    }
+
+    .footer-section a:hover {
+        color: var(--gold);
+    }
+
+    .social-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .social-links a {
+        width: 40px;
+        height: 40px;
+        background: var(--gold);
+        color: var(--navy);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: transform 0.3s;
+    }
+
+    .social-links a:hover {
+        transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--light-navy);
+        color: #94a3b8;
+    }
+
+    /* Quick Calculator Styles */
+    .quick-calculator {
+        background: linear-gradient(135deg, var(--gold), #fbbf24);
+        color: var(--navy);
+        padding: 2rem;
+        border-radius: 15px;
+        margin: 2rem 0;
+        text-align: center;
+    }
+
+    .calc-inputs {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin: 1rem 0;
+        flex-wrap: wrap;
+    }
+
+    .calc-input {
+        padding: 0.8rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        width: 120px;
+        text-align: center;
+    }
+
+    .calc-btn {
+        background: var(--navy);
+        color: white;
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+
+    .calc-btn:hover {
         transform: translateY(-2px);
     }
 
-    .input-icon {
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: rgba(255, 255, 255, 0.6);
-        pointer-events: none;
-    }
-
-    .help-text {
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.7);
-        margin-top: 0.5rem;
-        font-weight: 400;
-    }
-
-    /* Enhanced Button */
-    .btn-calculate {
-        width: 100%;
-        background: var(--gradient-secondary);
-        color: white;
-        border: none;
-        padding: 1.25rem 1.5rem;
-        border-radius: var(--radius-sm);
-        font-size: 1.1rem;
+    .calc-result {
+        font-size: 1.5rem;
         font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: var(--shadow-lg);
-        margin-top: 1.5rem;
-        position: relative;
-        overflow: hidden;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .btn-calculate::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.5s;
-    }
-
-    .btn-calculate:hover::before {
-        left: 100%;
-    }
-
-    .btn-calculate:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    }
-
-    .btn-calculate:active {
-        transform: translateY(-1px);
-    }
-
-    .btn-calculate.loading {
-        pointer-events: none;
-        opacity: 0.8;
-    }
-
-    /* Results Card */
-    .results-card {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: rgba(255,255,255,0.2);
+        border-radius: 8px;
         display: none;
-        animation: slideInRight 0.8s ease-out;
     }
 
-    .results-card.show {
-        display: block;
+    /* Testimonials */
+    .testimonials {
+        background: white;
+        padding: 80px 2rem;
     }
 
-    @keyframes slideInRight {
-        from { transform: translateX(30px); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-
-    /* Enhanced Summary Grid */
-    .summary-grid {
+    .testimonial-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-
-    .summary-item {
-        background: var(--gradient-glass);
-        backdrop-filter: blur(10px);
-        padding: 1.5rem;
-        border-radius: var(--radius-sm);
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        transition: all 0.3s ease;
-    }
-
-    .summary-item:hover {
-        transform: translateY(-5px);
-        background: rgba(255, 255, 255, 0.2);
-    }
-
-    .summary-item .value {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: var(--text-white);
-        margin-bottom: 0.5rem;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .summary-item .label {
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.8);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 500;
-    }
-
-    /* Enhanced Tables */
-    .estimate-section {
-        margin-bottom: 2rem;
-    }
-
-    .estimate-section h3 {
-        font-size: 1.25rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: var(--text-white);
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .estimate-section h3 i {
-        font-size: 1rem;
-        background: var(--gradient-accent);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .estimate-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: var(--radius-sm);
-        overflow: hidden;
-        backdrop-filter: blur(10px);
-        box-shadow: var(--shadow-md);
-    }
-
-    .estimate-table th {
-        background: rgba(255, 255, 255, 0.2);
-        padding: 1rem;
-        text-align: left;
-        font-weight: 700;
-        color: var(--text-white);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 0.5px;
-    }
-
-    .estimate-table td {
-        padding: 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        color: var(--text-white);
-        font-weight: 500;
-    }
-
-    .estimate-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .estimate-table tr:hover {
-        background: rgba(255, 255, 255, 0.05);
-    }
-
-    /* Total Cost Card */
-    .total-cost {
-        background: var(--gradient-secondary);
-        color: white;
-        padding: 2rem;
-        border-radius: var(--radius-sm);
-        text-align: center;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
         margin-top: 2rem;
-        box-shadow: var(--shadow-xl);
-        position: relative;
-        overflow: hidden;
     }
 
-    .total-cost::before {
-        content: '';
+    .testimonial {
+        background: var(--light-gray);
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        position: relative;
+    }
+
+    .testimonial::before {
+        content: '"';
+        font-size: 4rem;
+        color: var(--gold);
         position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        animation: rotate 20s linear infinite;
+        top: -10px;
+        left: 20px;
+        font-family: serif;
     }
 
-    @keyframes rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-
-    .total-cost-content {
-        position: relative;
-        z-index: 2;
-    }
-
-    .total-cost h3 {
-        font-size: 1.5rem;
+    .testimonial-text {
+        font-style: italic;
         margin-bottom: 1rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        font-weight: 700;
+        color: var(--text-gray);
     }
 
-    .total-cost .amount {
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        font-weight: 900;
-        text-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        margin-bottom: 1rem;
+    .testimonial-author {
+        font-weight: 600;
+        color: var(--navy);
     }
 
-    /* Loading Animation */
-    .loading-spinner {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border: 2px solid rgba(255,255,255,0.3);
-        border-radius: 50%;
-        border-top-color: white;
-        animation: spin 1s ease-in-out infinite;
-        margin-left: 10px;
+    .stars {
+        color: var(--gold);
+        font-size: 1.2rem;
+        margin: 0.5rem 0;
     }
-
-    @keyframes spin {
-        to { transform: rotate(360deg); }
-    }
-
-    /* Responsive Design */
-    @media (max-width: 1024px) {
-        .main {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-    }
-
     @media (max-width: 768px) {
-        .container {
-            padding: 0 0.5rem;
+        .nav-links {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            flex-direction: column;
+            padding: 1rem 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        .header {
-            padding: 1.5rem 0;
+        .nav-links.active {
+            display: flex;
         }
 
-        .main {
-            padding: 1.5rem 0 3rem;
+        .mobile-toggle {
+            display: flex;
         }
 
-        .card-body {
-            padding: 1.5rem;
+        .hero h1 {
+            font-size: 2.5rem;
         }
 
-        .card-header {
-            padding: 1.25rem 1.5rem;
+        .hero-subtitle {
+            font-size: 1.1rem;
         }
 
-        .form-row {
-            grid-template-columns: 1fr;
+        .hero-features {
+            gap: 2rem;
         }
 
-        .summary-grid {
-            grid-template-columns: repeat(2, 1fr);
+        .rate-table {
+            font-size: 0.9rem;
+        }
+
+        .rate-table th,
+        .rate-table td {
+            padding: 0.5rem;
         }
     }
 
     @media (max-width: 480px) {
-        .summary-grid {
-            grid-template-columns: 1fr;
+        .nav {
+            padding: 1rem;
         }
 
-        .estimate-table th,
-        .estimate-table td {
-            padding: 0.75rem 0.5rem;
-            font-size: 0.875rem;
+        .hero {
+            padding: 100px 1rem 60px;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+        }
+
+        .services,
+        .quotation,
+        .contact {
+            padding: 60px 1rem;
+        }
+
+        .service-category {
+            padding: 1.5rem;
         }
     }
 
-    /* Accessibility */
-    @media (prefers-reduced-motion: reduce) {
-        * {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 
-    /* Focus styles for accessibility */
-    button:focus-visible,
-    input:focus-visible,
-    select:focus-visible {
-        outline: 2px solid rgba(255, 255, 255, 0.8);
-        outline-offset: 2px;
+    .fade-in-up {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    /* WhatsApp Float Button */
+    .whatsapp-float {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #25d366;
+        color: white;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-size: 1.5rem;
+        box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+        z-index: 1000;
+        transition: transform 0.3s;
+    }
+
+    .whatsapp-float:hover {
+        transform: scale(1.1);
     }
 </style>
 ```
 
 </head>
 <body>
-    <div class="bg-animation"></div>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <a href="#home" class="logo">TILERS<span>HUB</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#quotation">Quotation</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="https://wa.me/94774503744" class="whatsapp-btn">WhatsApp</a>
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
 
 ```
-<header class="header">
-    <div class="container">
-        <div class="header-content">
-            <h1> TILERSHUB</h1>
-            <p class="subtitle">Professional Tile Cost Estimator - Get accurate quotes instantly</p>
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1 class="fade-in-up">TILERSHUB – Tiling & Bathroom Experts</h1>
+        <p class="hero-subtitle fade-in-up">Certified Tilers, Transparent Rates, 1 Year Warranty</p>
+        <a href="#contact" class="cta-btn fade-in-up">Get a Free Quote</a>
+        
+        <div class="hero-features fade-in-up">
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>Fast Service</h3>
+                <p>Quick turnaround times</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">✓</div>
+                <h3>Certified Tilers</h3>
+                <p>Professional & experienced</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🛡️</div>
+                <h3>Payment Guarantee</h3>
+                <p>Secure & protected</p>
+            </div>
         </div>
     </div>
-</header>
+</section>
 
-<main class="container main">
-    <div class="card calculator-card">
-        <div class="card-header">
-            <h2><i class="fas fa-calculator"></i> Project Calculator</h2>
+<!-- Services Section -->
+<section class="services" id="services">
+    <div class="container">
+        <h2 class="section-title">Our Services & Rates</h2>
+        
+        <!-- Floor Tiling -->
+        <div class="service-category fade-in-up">
+            <h3 class="category-title">Floor Tiling (minimum 500 sq.ft; smaller jobs may have higher rates)</h3>
+            <table class="rate-table">
+                <thead>
+                    <tr>
+                        <th>Tile Size</th>
+                        <th>Rate per sq.ft</th>
+                        <th>Example Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>600x600</td>
+                        <td class="price">Rs. 120</td>
+                        <td>500 sq.ft × 600×600 = Rs. 60,000</td>
+                    </tr>
+                    <tr>
+                        <td>600x1200</td>
+                        <td class="price">Rs. 150</td>
+                        <td>Rs. 75,000 (500 sq.ft)</td>
+                    </tr>
+                    <tr>
+                        <td>Large tiles</td>
+                        <td class="price">From Rs. 200</td>
+                        <td>Rs. 100,000+ (500 sq.ft)</td>
+                    </tr>
+                    <tr>
+                        <td>Mosaic</td>
+                        <td class="price">Rs. 450</td>
+                        <td>Rs. 225,000 (500 sq.ft)</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="card-body">
-            <form id="calculatorForm">
+
+        <!-- Skirting -->
+        <div class="service-category fade-in-up">
+            <h3 class="category-title">Skirting</h3>
+            <table class="rate-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Rate</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Skirting Installation</td>
+                        <td class="price">Same as floor tiling (per Lin.ft)</td>
+                        <td>Each additional floor +10% on floor tiling</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Staircase Tiling -->
+        <div class="service-category fade-in-up">
+            <h3 class="category-title">Staircase Tiling</h3>
+            <table class="rate-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Rate</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Staircase Tiling</td>
+                        <td class="price">Rs. 1,000 / Lin.ft</td>
+                        <td>20 steps × 3 ft = 60 Lin.ft → Rs. 60,000 + Rs. 30,000 = Rs. 90,000</td>
+                    </tr>
+                    <tr>
+                        <td>Nosing</td>
+                        <td class="price">Rs. 500 / Lin.ft</td>
+                        <td>Included in above calculation</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pantry Tiling -->
+        <div class="service-category fade-in-up">
+            <h3 class="category-title">Pantry Tiling</h3>
+            <table class="rate-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Rate</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pantry Tiling</td>
+                        <td class="price">Rs. 3,000 / Lin.ft</td>
+                        <td>10 ft pantry = Rs. 30,000</td>
+                    </tr>
+                    <tr>
+                        <td>Includes</td>
+                        <td>Edge finishing – router/taper, 600mm wall & top</td>
+                        <td>Complete package</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Bathroom Rates -->
+        <div class="service-category fade-in-up">
+            <h3 class="category-title">Complete Bathroom Renovation</h3>
+            <table class="rate-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Rate</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Plumbing</td>
+                        <td class="price">Rs. 20,000</td>
+                        <td>Basic hot & cold, includes pressure test up to 10 Bars - higher for complex work</td>
+                    </tr>
+                    <tr>
+                        <td>Wall Niche</td>
+                        <td class="price">Rs. 15,000 each</td>
+                        <td>Built-in storage niches</td>
+                    </tr>
+                    <tr>
+                        <td>Vanity Top</td>
+                        <td class="price">Rs. 10,000</td>
+                        <td>Custom vanity installation</td>
+                    </tr>
+                    <tr>
+                        <td>Wiring</td>
+                        <td class="price">Rs. 25,000</td>
+                        <td>Includes wiring & fixing lights</td>
+                    </tr>
+                    <tr>
+                        <td>Waterproofing</td>
+                        <td class="price">Rs. 100 / sq.ft</td>
+                        <td>Professional waterproofing</td>
+                    </tr>
+                    <tr>
+                        <td>Tiling & Grouting</td>
+                        <td class="price">Rs. 300 / sq.ft</td>
+                        <td>Complete tiling service</td>
+                    </tr>
+                    <tr>
+                        <td>Fixture Installation</td>
+                        <td class="price">Rs. 20,000</td>
+                        <td>Toilet, basin, faucets installation</td>
+                    </tr>
+                    <tr>
+                        <td>Ceiling</td>
+                        <td class="price">From Rs. 500 / sq.ft</td>
+                        <td>PVC/Gypsum ceiling work</td>
+                    </tr>
+                    <tr>
+                        <td>Shower Cubicle</td>
+                        <td class="price">Starting from Rs. 50,000</td>
+                        <td>Glass shower enclosure</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top: 1rem; padding: 1rem; background: #fef3c7; border-left: 4px solid var(--gold); border-radius: 5px;">
+                <p><strong>Note:</strong> If any other works are required (e.g., demolition, masonry), additional charges may apply.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quotation Section -->
+<section class="quotation" id="quotation">
+    <div class="container">
+        <h2 class="section-title">Get Your Quote</h2>
+        <div class="quote-cards">
+            <div class="quote-card fade-in-up">
+                <h3>Basic Quotation</h3>
+                <div class="quote-price">FREE</div>
+                <p>Initial cost estimate based on your requirements</p>
+                <ul style="text-align: left; margin-top: 1rem;">
+                    <li>Phone consultation</li>
+                    <li>Basic rate calculation</li>
+                    <li>Service overview</li>
+                </ul>
+            </div>
+            
+            <div class="quote-card premium fade-in-up">
+                <h3>Site Inspection & Detailed Quote</h3>
+                <div class="quote-price">Rs. 5,000</div>
+                <p>Comprehensive on-site assessment and detailed quotation</p>
+                <ul style="text-align: left; margin-top: 1rem;">
+                    <li>Professional site visit</li>
+                    <li>Detailed measurements</li>
+                    <li>Material recommendations</li>
+                    <li>Timeline estimation</li>
+                    <li>Written quotation</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="warranty">
+            🛡️ All works come with TILERSHUB 1 Year Warranty & Payment Guarantee
+        </div>
+
+        <!-- Quick Cost Calculator -->
+        <div class="quick-calculator">
+            <h3>🧮 Quick Cost Calculator</h3>
+            <p>Get an instant estimate for your floor tiling project</p>
+            <div class="calc-inputs">
+                <select class="calc-input" id="tileType">
+                    <option value="">Select Tile Type</option>
+                    <option value="120">600x600 (Rs.120/sq.ft)</option>
+                    <option value="150">600x1200 (Rs.150/sq.ft)</option>
+                    <option value="200">Large tiles (Rs.200/sq.ft)</option>
+                    <option value="450">Mosaic (Rs.450/sq.ft)</option>
+                </select>
+                <input type="number" class="calc-input" id="areaInput" placeholder="Area (sq.ft)">
+                <button class="calc-btn" onclick="calculateCost()">Calculate</button>
+            </div>
+            <div class="calc-result" id="calcResult"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials">
+    <div class="container">
+        <h2 class="section-title">What Our Customers Say</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial fade-in-up">
+                <div class="testimonial-text">
+                    "TILERSHUB did an amazing job renovating our bathroom. Professional work, fair pricing, and completed on time. Highly recommended!"
+                </div>
+                <div class="stars">★★★★★</div>
+                <div class="testimonial-author">- Priya S., Colombo</div>
+            </div>
+            
+            <div class="testimonial fade-in-up">
+                <div class="testimonial-text">
+                    "Excellent floor tiling service for our new house. The team was skilled and the rates were very reasonable. Quality work with warranty!"
+                </div>
+                <div class="stars">★★★★★</div>
+                <div class="testimonial-author">- Kamal R., Kandy</div>
+            </div>
+            
+            <div class="testimonial fade-in-up">
+                <div class="testimonial-text">
+                    "From quotation to completion, everything was transparent and professional. Our pantry looks fantastic. Thank you TILERSHUB!"
+                </div>
+                <div class="stars">★★★★★</div>
+                <div class="testimonial-author">- Nuwan P., Galle</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact" id="contact">
+    <div class="container">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="contact-form fade-in-up">
+            <form>
                 <div class="form-group">
-                    <label for="area">Area to be Tiled (sq ft)</label>
-                    <div class="input-wrapper">
-                        <input type="number" id="area" step="0.1" min="1" required placeholder="Enter area in sq ft">
-                        <i class="fas fa-ruler-combined input-icon"></i>
-                    </div>
-                    <div class="help-text">Enter the total floor area in square feet</div>
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="tileSize">Tile Size</label>
-                        <div class="input-wrapper">
-                            <select id="tileSize" required>
-                                <option value="">Select tile size</option>
-                            </select>
-                            <i class="fas fa-th-large input-icon"></i>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tilePrice">Tile Price (LKR per piece)</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="tilePrice" step="0.01" min="1" required placeholder="Price per tile">
-                            <i class="fas fa-tag input-icon"></i>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="skirting">Skirting Length (ft)</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="skirting" step="0.1" min="0" placeholder="Optional">
-                            <i class="fas fa-arrows-alt-h input-icon"></i>
-                        </div>
-                        <div class="help-text">Leave empty for auto-calculation (20% of area)</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="laborRate">Custom Labor Rate (LKR/sq ft)</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="laborRate" step="1" min="0" placeholder="Optional">
-                            <i class="fas fa-hard-hat input-icon"></i>
-                        </div>
-                        <div class="help-text">Leave empty for standard rates</div>
-                    </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" required>
                 </div>
-
-                <button type="submit" class="btn-calculate">
-                    <i class="fas fa-calculator"></i> Calculate Estimate
-                </button>
+                <div class="form-group">
+                    <label for="details">Job Details</label>
+                    <textarea id="details" name="details" rows="5" placeholder="Describe your tiling or bathroom renovation requirements..."></textarea>
+                </div>
+                <button type="button" class="cta-btn" onclick="sendWhatsApp()">Send via WhatsApp</button>
             </form>
         </div>
     </div>
+</section>
 
-    <div class="card results-card" id="resultsCard">
-        <div class="card-header">
-            <h2><i class="fas fa-chart-line"></i> Cost Estimate</h2>
-        </div>
-        <div class="card-body">
-            <div id="resultsContent">
-                <!-- Results will be populated here -->
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>TILERSHUB</h3>
+            <p>Sri Lanka's #1 tiling and bathroom service platform. Professional, reliable, and affordable.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook">📘</a>
+                <a href="#" aria-label="TikTok">🎵</a>
+                <a href="https://wa.me/94774503744" aria-label="WhatsApp">💬</a>
             </div>
+        </div>
+        <div class="footer-section">
+            <h3>Services</h3>
+            <a href="#services">Floor Tiling</a>
+            <a href="#services">Bathroom Renovation</a>
+            <a href="#services">Pantry Tiling</a>
+            <a href="#services">Staircase Tiling</a>
+            <a href="#services">Waterproofing</a>
+        </div>
+        <div class="footer-section">
+            <h3>Company</h3>
+            <a href="#home">About Us</a>
+            <a href="#quotation">Get Quote</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-section">
+            <h3>Contact Info</h3>
+            <p>📱 WhatsApp: <span onclick="copyPhoneNumber()" style="cursor: pointer; color: var(--gold); text-decoration: underline;">0774503744</span></p>
+            <p>🕒 Available: 8:00 AM - 8:00 PM</p>
+            <p>🗓️ Monday - Sunday</p>
+            <p>🌍 Serving all of Sri Lanka</p>
         </div>
     </div>
-</main>
+    <div class="footer-bottom">
+        <p>&copy; 2024 TILERSHUB. All rights reserved. | Designed for excellence in tiling services.</p>
+    </div>
+</footer>
+
+<!-- WhatsApp Float Button -->
+<a href="https://wa.me/94774503744" class="whatsapp-float" aria-label="WhatsApp">💬</a>
 
 <script>
-    // Tile sizes data
-    const tileSizes = [
-        {
-            "label": "300x300 mm",
-            "value": "300x300",
-            "width": 11.81,
-            "height": 11.81,
-            "sqft": 0.96,
-            "laborMin": 80,
-            "laborMax": 120,
-            "skirtingCoverage": 3
-        },
-        {
-            "label": "300x600 mm",
-            "value": "300x600",
-            "width": 11.81,
-            "height": 23.62,
-            "sqft": 1.94,
-            "laborMin": 80,
-            "laborMax": 120,
-            "skirtingCoverage": 6
-        },
-        {
-            "label": "600x600 mm",
-            "value": "600x600",
-            "width": 23.62,
-            "height": 23.62,
-            "sqft": 3.87,
-            "laborMin": 80,
-            "laborMax": 120,
-            "skirtingCoverage": 12
-        },
-        {
-            "label": "600x1200 mm",
-            "value": "600x1200",
-            "width": 23.62,
-            "height": 47.24,
-            "sqft": 7.75,
-            "laborMin": 110,
-            "laborMax": 150,
-            "skirtingCoverage": 24
-        },
-        {
-            "label": "800x800 mm",
-            "value": "800x800",
-            "width": 31.5,
-            "height": 31.5,
-            "sqft": 6.89,
-            "laborMin": 110,
-            "laborMax": 150,
-            "skirtingCoverage": 20
-        },
-        {
-            "label": "1200x1200 mm",
-            "value": "1200x1200",
-            "width": 47.24,
-            "height": 47.24,
-            "sqft": 12.9,
-            "laborMin": 150,
-            "laborMax": 250,
-            "skirtingCoverage": 48
-        },
-        {
-            "label": "800x1800 mm",
-            "value": "800x1800",
-            "width": 31.5,
-            "height": 70.87,
-            "sqft": 15.3,
-            "laborMin": 150,
-            "laborMax": 250,
-            "skirtingCoverage": 48
+    // Mobile menu toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    mobileToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking on a link
+    navLinks.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') {
+            navLinks.classList.remove('active');
         }
-    ];
+    });
 
-    // Initialize application
-    function init() {
-        console.log('Initializing TilersHub estimator...'); // Debug log
-        loadTileSizes();
-        setupEventListeners();
-        setupAnimations();
-        console.log('Initialization complete!'); // Debug log
-    }
-
-    function loadTileSizes() {
-        const tileSizeSelect = document.getElementById('tileSize');
-        
-        // Clear existing options except the first one
-        while (tileSizeSelect.children.length > 1) {
-            tileSizeSelect.removeChild(tileSizeSelect.lastChild);
-        }
-        
-        // Add all tile sizes
-        tileSizes.forEach(size => {
-            const option = document.createElement('option');
-            option.value = size.value;
-            option.textContent = size.label;
-            tileSizeSelect.appendChild(option);
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
         });
-        
-        console.log('Loaded', tileSizes.length, 'tile sizes'); // Debug log
-    }
+    });
 
-    function setupEventListeners() {
-        document.getElementById('calculatorForm').addEventListener('submit', handleSubmit);
-        
-        // Add input animations
-        const inputs = document.querySelectorAll('input, select');
-        inputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.style.transform = 'scale(1.02)';
-            });
-            
-            input.addEventListener('blur', function() {
-                this.parentElement.style.transform = 'scale(1)';
-            });
-        });
-    }
+    // Send WhatsApp message with form data
+    function sendWhatsApp() {
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const location = document.getElementById('location').value;
+        const details = document.getElementById('details').value;
 
-    function setupAnimations() {
-        // Intersection Observer for scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        });
-
-        document.querySelectorAll('.card').forEach(card => {
-            observer.observe(card);
-        });
-    }
-
-    function getTileSettings(value) {
-        return tileSizes.find(t => t.value === value);
-    }
-
-    async function handleSubmit(e) {
-        e.preventDefault();
-        
-        const btn = document.querySelector('.btn-calculate');
-        btn.classList.add('loading');
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
-
-        // Add realistic loading delay
-        await new Promise(resolve => setTimeout(resolve, 1200));
-
-        try {
-            calculateEstimate();
-        } finally {
-            btn.classList.remove('loading');
-            btn.innerHTML = '<i class="fas fa-calculator"></i> Calculate Estimate';
-        }
-    }
-
-    function calculateEstimate() {
-        // Get form values
-        const area = parseFloat(document.getElementById('area').value);
-        const tileSize = document.getElementById('tileSize').value;
-        const tilePrice = parseFloat(document.getElementById('tilePrice').value);
-        const userSkirting = parseFloat(document.getElementById('skirting').value);
-        const userLaborRate = parseFloat(document.getElementById('laborRate').value);
-
-        // Validation with better UX
-        if (!area || !tileSize || !tilePrice) {
-            showNotification("Please fill in all required fields", "error");
+        if (!name || !phone) {
+            alert('Please fill in your name and phone number');
             return;
         }
 
-        const settings = getTileSettings(tileSize);
-        if (!settings) {
-            showNotification("Invalid tile size selected", "error");
-            return;
-        }
+        const message = `Hi TILERSHUB! 👋
+```
 
-        // Calculate values using the provided logic
-        const skirting = isNaN(userSkirting) || userSkirting <= 0 ? Math.ceil(area * 0.2) : userSkirting;
-        const useDefaultLabor = isNaN(userLaborRate) || userLaborRate <= 0;
+I’m interested in your tiling services.
 
-        // Tile calculations
-        const floorTiles = Math.ceil(area / settings.sqft);
-        const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
-        const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
+📋 My Details:
+Name: ${name}
+Phone: ${phone}
+Location: ${location || ‘Not specified’}
 
-        // Floor bed materials
-        const cementMin = Math.ceil(8 * area / 800);
-        const cementMax = Math.ceil(8 * area / 600);
-        const sandMin = Math.round((area / 800) * 4) / 4;
-        const sandMax = Math.round((area / 600) * 4) / 4;
-        const cementCostMin = cementMin * 1900;
-        const cementCostMax = cementMax * 1900;
-        const sandCostMin = sandMin * 25000;
-        const sandCostMax = sandMax * 25000;
+🔧 Job Details:
+${details || ‘Please contact me for more details’}
 
-        // Tiling materials
-        const adhesiveMin = Math.ceil(area / 40);
-        const adhesiveMax = Math.ceil(area / 30);
-        const adhesiveCostMin = adhesiveMin * 2200;
-        const adhesiveCostMax = adhesiveMax * 2200;
-        const clips = Math.ceil(area / 100);
-        const grout = Math.ceil(area / 175);
-        const clipsCost = clips * 1500;
-        const groutCost = grout * 300;
-        const tileCost = totalTiles * tilePrice;
+I’d like to get a quote for my project. Thank you!`;
 
-        // Labor calculations
-        let floorLaborMin, floorLaborMax, skirtingLaborMin, skirtingLaborMax, laborMin, laborMax;
+```
+        const whatsappUrl = `https://wa.me/94774503744?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    }
 
-        if (useDefaultLabor) {
-            floorLaborMin = area * settings.laborMin;
-            floorLaborMax = area * settings.laborMax;
-            skirtingLaborMin = skirting * settings.laborMin;
-            skirtingLaborMax = skirting * settings.laborMax;
-            laborMin = floorLaborMin + skirtingLaborMin;
-            laborMax = floorLaborMax + skirtingLaborMax;
+    // Fade in animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in-up');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all service categories
+    document.querySelectorAll('.service-category, .quote-card, .contact-form').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Header scroll effect
+    let lastScrollY = window.scrollY;
+    const header = document.querySelector('.header');
+
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY > 100) {
+            header.style.background = 'rgba(255, 255, 255, 0.95)';
+            header.style.backdropFilter = 'blur(10px)';
         } else {
-            floorLaborMin = floorLaborMax = area * userLaborRate;
-            skirtingLaborMin = skirtingLaborMax = skirting * userLaborRate;
-            laborMin = laborMax = floorLaborMin + skirtingLaborMin;
+            header.style.background = 'var(--white)';
+            header.style.backdropFilter = 'none';
+        }
+        
+        lastScrollY = currentScrollY;
+    });
+
+    // Auto-calculate estimates
+    function calculateEstimate(service, area) {
+        const rates = {
+            '600x600': 120,
+            '600x1200': 150,
+            'large': 200,
+            'mosaic': 450,
+            'bathroom_tiling': 300,
+            'waterproofing': 100
+        };
+        
+        return area * (rates[service] || 0);
+    }
+
+    // Enhanced form validation
+    function validateForm() {
+        const name = document.getElementById('name');
+        const phone = document.getElementById('phone');
+        
+        // Reset previous validation styles
+        [name, phone].forEach(field => {
+            field.style.borderColor = 'var(--border-gray)';
+        });
+        
+        let isValid = true;
+        
+        if (!name.value.trim()) {
+            name.style.borderColor = '#ef4444';
+            isValid = false;
+        }
+        
+        if (!phone.value.trim() || phone.value.length < 10) {
+            phone.style.borderColor = '#ef4444';
+            isValid = false;
+        }
+        
+        return isValid;
+    }
+
+    // Update sendWhatsApp function with validation
+    function sendWhatsApp() {
+        if (!validateForm()) {
+            alert('Please fill in all required fields correctly');
+            return;
         }
 
-        // Total costs
-        const materialMin = tileCost + cementCostMin + sandCostMin + adhesiveCostMin + clipsCost + groutCost;
-        const materialMax = tileCost + cementCostMax + sandCostMax + adhesiveCostMax + clipsCost + groutCost;
-        const totalMin = materialMin + laborMin;
-        const totalMax = materialMax + laborMax;
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const location = document.getElementById('location').value;
+        const details = document.getElementById('details').value;
 
-        // Display results
-        displayResults({
-            area, skirting, tileSize: settings.label,
-            floorTiles, skirtingTiles, totalTiles, tileCost,
-            cementMin, cementMax, cementCostMin, cementCostMax,
-            sandMin, sandMax, sandCostMin, sandCostMax,
-            adhesiveMin, adhesiveMax, adhesiveCostMin, adhesiveCostMax,
-            clips, grout, clipsCost, groutCost,
-            floorLaborMin, floorLaborMax, skirtingLaborMin, skirtingLaborMax,
-            laborMin, laborMax, materialMin, materialMax, totalMin, totalMax
-        });
+        const message = `Hi TILERSHUB! 👋
+```
 
-        showNotification("Estimate calculated successfully!", "success");
-    }
+I’m interested in your tiling services.
 
-    function displayResults(data) {
-        const resultsCard = document.getElementById('resultsCard');
-        const resultsContent = document.getElementById('resultsContent');
+📋 My Details:
+Name: ${name}
+Phone: ${phone}
+Location: ${location || ‘Not specified’}
 
-        resultsContent.innerHTML = `
-            <div class="summary-grid">
-                <div class="summary-item">
-                    <div class="value">${data.area}</div>
-                    <div class="label">Area (sq ft)</div>
-                </div>
-                <div class="summary-item">
-                    <div class="value">${data.skirting}</div>
-                    <div class="label">Skirting (ft)</div>
-                </div>
-                <div class="summary-item">
-                    <div class="value">${data.totalTiles}</div>
-                    <div class="label">Total Tiles</div>
-                </div>
-                <div class="summary-item">
-                    <div class="value">${data.tileSize}</div>
-                    <div class="label">Tile Size</div>
-                </div>
-            </div>
+🔧 Job Details:
+${details || ‘Please contact me for more details’}
 
-            <div class="estimate-section">
-                <h3><i class="fas fa-layer-group"></i> Floor Bed Materials</h3>
-                <table class="estimate-table">
-                    <thead>
-                        <tr>
-                            <th>Material</th>
-                            <th>Quantity</th>
-                            <th>Cost (LKR)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Cement (50kg bags)</td>
-                            <td>${data.cementMin} – ${data.cementMax}</td>
-                            <td>${formatCurrency(data.cementCostMin)} – ${formatCurrency(data.cementCostMax)}</td>
-                        </tr>
-                        <tr>
-                            <td>Sand (cube)</td>
-                            <td>${data.sandMin} – ${data.sandMax}</td>
-                            <td>${formatCurrency(data.sandCostMin)} – ${formatCurrency(data.sandCostMax)}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+I’d like to get a quote for my project. Thank you!`;
 
-            <div class="estimate-section">
-                <h3><i class="fas fa-th-large"></i> Tiling Materials</h3>
-                <table class="estimate-table">
-                    <thead>
-                        <tr>
-                            <th>Material</th>
-                            <th>Quantity</th>
-                            <th>Cost (LKR)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Floor Tiles</td>
-                            <td>${data.floorTiles}</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>Skirting Tiles</td>
-                            <td>${data.skirtingTiles}</td>
-                            <td>-</td>
-                        </tr>
-                        <tr style="font-weight: 700; background: rgba(255, 255, 255, 0.1);">
-                            <td>Total Tiles (5% wastage)</td>
-                            <td>${data.totalTiles}</td>
-                            <td>${formatCurrency(data.tileCost)}</td>
-                        </tr>
-                        <tr>
-                            <td>Adhesive (25kg bags)</td>
-                            <td>${data.adhesiveMin} – ${data.adhesiveMax}</td>
-                            <td>${formatCurrency(data.adhesiveCostMin)} – ${formatCurrency(data.adhesiveCostMax)}</td>
-                        </tr>
-                        <tr>
-                            <td>Clips (100 pcs packs)</td>
-                            <td>${data.clips}</td>
-                            <td>${formatCurrency(data.clipsCost)}</td>
-                        </tr>
-                        <tr>
-                            <td>Grout (1kg)</td>
-                            <td>${data.grout}</td>
-                            <td>${formatCurrency(data.groutCost)}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="estimate-section">
-                <h3><i class="fas fa-hard-hat"></i> Labor Costs</h3>
-                <table class="estimate-table">
-                    <thead>
-                        <tr>
-                            <th>Work Type</th>
-                            <th>Min Cost (LKR)</th>
-                            <th>Max Cost (LKR)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Floor Tiling</td>
-                            <td>${formatCurrency(data.floorLaborMin)}</td>
-                            <td>${formatCurrency(data.floorLaborMax)}</td>
-                        </tr>
-                        <tr>
-                            <td>Skirting Work</td>
-                            <td>${formatCurrency(data.skirtingLaborMin)}</td>
-                            <td>${formatCurrency(data.skirtingLaborMax)}</td>
-                        </tr>
-                        <tr style="font-weight: 700; background: rgba(255, 255, 255, 0.1);">
-                            <td>Total Labor</td>
-                            <td>${formatCurrency(data.laborMin)}</td>
-                            <td>${formatCurrency(data.laborMax)}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="total-cost">
-                <div class="total-cost-content">
-                    <h3><i class="fas fa-calculator"></i> Total Project Cost</h3>
-                    <div class="amount">${formatCurrency(data.totalMin)} – ${formatCurrency(data.totalMax)}</div>
-                    <p style="margin-top: 1rem; opacity: 0.9; font-size: 1rem;">
-                        <strong>Materials:</strong> ${formatCurrency(data.materialMin)} – ${formatCurrency(data.materialMax)}
-                    </p>
-                    <p style="opacity: 0.9; font-size: 1rem;">
-                        <strong>Labor:</strong> ${formatCurrency(data.laborMin)} – ${formatCurrency(data.laborMax)}
-                    </p>
-                </div>
-            </div>
-        `;
-
-        resultsCard.classList.add('show');
+```
+        const whatsappUrl = `https://wa.me/94774503744?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
         
-        // Smooth scroll to results
-        setTimeout(() => {
-            resultsCard.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start',
-                inline: 'nearest'
-            });
-        }, 100);
+        // Show success message
+        showSuccessMessage();
     }
 
-    function formatCurrency(amount) {
-        return new Intl.NumberFormat('en-LK', {
-            style: 'decimal',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-        }).format(Math.round(amount));
-    }
-
-    function showNotification(message, type = 'info') {
-        // Create notification element
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
-                <span>${message}</span>
+    // Success message function
+    function showSuccessMessage() {
+        const successDiv = document.createElement('div');
+        successDiv.innerHTML = `
+            <div style="position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 1rem 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); z-index: 10000; animation: slideInRight 0.3s ease-out;">
+                ✅ Message sent! We'll contact you soon.
             </div>
         `;
-
-        // Add notification styles
-        const style = document.createElement('style');
-        style.textContent = `
-            .notification {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                z-index: 1000;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(20px);
-                padding: 1rem 1.5rem;
-                border-radius: 12px;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-                border-left: 4px solid;
-                animation: slideInNotification 0.3s ease-out;
-                max-width: 400px;
-            }
-            
-            .notification-success { border-left-color: #10b981; }
-            .notification-error { border-left-color: #ef4444; }
-            .notification-info { border-left-color: #6366f1; }
-            
-            .notification-content {
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                color: #1e293b;
-                font-weight: 500;
-            }
-            
-            .notification i {
-                font-size: 1.25rem;
-            }
-            
-            .notification-success i { color: #10b981; }
-            .notification-error i { color: #ef4444; }
-            .notification-info i { color: #6366f1; }
-            
-            @keyframes slideInNotification {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-        `;
+        document.body.appendChild(successDiv);
         
-        document.head.appendChild(style);
-        document.body.appendChild(notification);
-
-        // Remove notification after 4 seconds
         setTimeout(() => {
-            notification.style.animation = 'slideInNotification 0.3s ease-out reverse';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-                if (style.parentNode) {
-                    style.parentNode.removeChild(style);
-                }
-            }, 300);
+            successDiv.remove();
         }, 4000);
     }
 
-    // Initialize app when DOM is loaded
-    document.addEventListener('DOMContentLoaded', init);
-
-    // Add some interactive micro-animations
-    document.addEventListener('mousemove', (e) => {
-        const cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-            } else {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+    // Add CSS for success message animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
             }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Preload critical images and optimize performance
+    const preloadImages = () => {
+        const imageUrls = [
+            // Add any critical images here if needed
+        ];
+        
+        imageUrls.forEach(url => {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'image';
+            link.href = url;
+            document.head.appendChild(link);
         });
+    };
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        preloadImages();
+        
+        // Add loading animation
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease-in';
+        
+        setTimeout(() => {
+            document.body.style.opacity = '1';
+        }, 100);
     });
 
-    // Performance optimization: Debounced resize handler
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            // Recalculate any size-dependent elements if needed
-            const summaryItems = document.querySelectorAll('.summary-item');
-            summaryItems.forEach(item => {
-                item.style.transition = 'all 0.3s ease';
-            });
-        }, 250);
-    });
-</script>
+    // Add copy-to-clipboard functionality for phone number
+    function copyPhoneNumber() {
+        navigator.clipboard.writeText('0774503744').then(() => {
+            showCopySuccess();
+        });
+    }
+
+    function showCopySuccess() {
+        const copyDiv = document.createElement('div');
+        copyDiv.innerHTML = `
+            <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--navy); color: white; padding: 1rem 2rem; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 10000; animation: fadeInScale 0.3s ease-out;">
+                📋 Phone number copied!
+            </div>
+        `;
+        document.body.appendChild(copyDiv);
+        
+        setTimeout(() => {
+            copyDiv.remove();
+        }, 2000);
+    }
+
+    // Add fadeInScale animation
+    const scaleStyle = document.createElement('style');
+    scaleStyle.textContent = `
+        @keyframes fadeInScale {
+            from {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+    `;
+    // Quick cost calculator
+    function calculateCost() {
+        const tileType = document.getElementById('tileType').value;
+        const area = document.getElementById('areaInput').value;
+        const resultDiv = document.getElementById('calcResult');
+        
+        if (!tileType || !area || area <= 0) {
+            alert('Please select tile type and enter valid area');
+            return;
+        }
+        
+        const rate = parseInt(tileType);
+        const totalCost = rate * parseInt(area);
+        const minOrderNote = area < 500 ? ' (Note: Minimum 500 sq.ft - smaller jobs may have higher rates)' : '';
+        
+        resultDiv.innerHTML = `
+            <strong>Estimated Cost: Rs. ${totalCost.toLocaleString()}</strong>${minOrderNote}
+            <br><small>*This is a basic estimate. Contact us for detailed quotation.</small>
+        `;
+        resultDiv.style.display = 'block';
+    }
 ```
-
-</body>
-</html>
