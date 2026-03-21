@@ -12,12 +12,10 @@
   // Inches sub-field (only used when unit === 'ft')
   let roomLi = $state('');
   let roomWi = $state('');
-  let tileLi = $state('');
-  let tileWi = $state('');
 
   let skirting = $state(false);
 
-  function toMM(val: number, inches: number, u: Unit): number {
+  function roomToMM(val: number, inches: number, u: Unit): number {
     if (u === 'ft') return val * 304.8 + inches * 25.4;
     if (u === 'in') return val * 25.4;
     if (u === 'cm') return val * 10;
@@ -28,11 +26,11 @@
     return Math.round(n * 100) / 100;
   }
 
-  // Dimensions in mm
-  const rlMM  = $derived(toMM(parseFloat(roomL) || 0, parseFloat(roomLi) || 0, unit));
-  const rwMM  = $derived(toMM(parseFloat(roomW) || 0, parseFloat(roomWi) || 0, unit));
-  const tlMM  = $derived(toMM(parseFloat(tileL) || 0, parseFloat(tileLi) || 0, unit));
-  const twMM  = $derived(toMM(parseFloat(tileW) || 0, parseFloat(tileWi) || 0, unit));
+  // Dimensions in mm — tile inputs are always cm
+  const rlMM  = $derived(roomToMM(parseFloat(roomL) || 0, parseFloat(roomLi) || 0, unit));
+  const rwMM  = $derived(roomToMM(parseFloat(roomW) || 0, parseFloat(roomWi) || 0, unit));
+  const tlMM  = $derived((parseFloat(tileL) || 0) * 10);
+  const twMM  = $derived((parseFloat(tileW) || 0) * 10);
 
   // Areas in m²
   const roomM2 = $derived(round2((rlMM * rwMM) / 1_000_000));
@@ -52,7 +50,7 @@
 
   function reset() {
     roomL = ''; roomW = ''; tileL = ''; tileW = '';
-    roomLi = ''; roomWi = ''; tileLi = ''; tileWi = '';
+    roomLi = ''; roomWi = '';
     skirting = false;
   }
 </script>
@@ -136,53 +134,23 @@
 
       <!-- Tile -->
       <div class="input-group">
-        <div class="group-label">Tile</div>
+        <div class="group-label">Tile <span class="group-label-note">always in cm</span></div>
         <div class="fields">
           <!-- Length -->
           <div class="field">
             <label for="tl">Length</label>
-            {#if unit === 'ft'}
-              <div class="ft-in-row">
-                <div class="ft-in-field">
-                  <input id="tl" type="number" min="0" step="1" placeholder="2" bind:value={tileL} />
-                  <span class="sub-unit">ft</span>
-                </div>
-                <div class="ft-in-field">
-                  <input id="tl-in" type="number" min="0" max="11" step="1" placeholder="0" bind:value={tileLi} />
-                  <span class="sub-unit">in</span>
-                </div>
-              </div>
-            {:else}
-              <div class="single-field">
-                <input id="tl" type="number" min="0" step="any"
-                  placeholder={unit === 'in' ? 'e.g. 24' : unit === 'cm' ? 'e.g. 60' : 'e.g. 600'}
-                  bind:value={tileL} />
-                <span class="sub-unit">{unit}</span>
-              </div>
-            {/if}
+            <div class="single-field">
+              <input id="tl" type="number" min="0" step="any" placeholder="e.g. 60" bind:value={tileL} />
+              <span class="sub-unit">cm</span>
+            </div>
           </div>
           <!-- Width -->
           <div class="field">
             <label for="tw">Width</label>
-            {#if unit === 'ft'}
-              <div class="ft-in-row">
-                <div class="ft-in-field">
-                  <input id="tw" type="number" min="0" step="1" placeholder="2" bind:value={tileW} />
-                  <span class="sub-unit">ft</span>
-                </div>
-                <div class="ft-in-field">
-                  <input id="tw-in" type="number" min="0" max="11" step="1" placeholder="0" bind:value={tileWi} />
-                  <span class="sub-unit">in</span>
-                </div>
-              </div>
-            {:else}
-              <div class="single-field">
-                <input id="tw" type="number" min="0" step="any"
-                  placeholder={unit === 'in' ? 'e.g. 24' : unit === 'cm' ? 'e.g. 60' : 'e.g. 600'}
-                  bind:value={tileW} />
-                <span class="sub-unit">{unit}</span>
-              </div>
-            {/if}
+            <div class="single-field">
+              <input id="tw" type="number" min="0" step="any" placeholder="e.g. 60" bind:value={tileW} />
+              <span class="sub-unit">cm</span>
+            </div>
           </div>
         </div>
         {#if tileM2 > 0}
@@ -332,6 +300,16 @@
     letter-spacing: .06em;
     color: #94a3b8;
     margin-bottom: .75rem;
+    display: flex;
+    align-items: baseline;
+    gap: .4rem;
+  }
+  .group-label-note {
+    font-size: .7rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #cbd5e1;
   }
   .fields { display: flex; flex-direction: column; gap: .65rem; }
 
