@@ -1,5 +1,5 @@
 <script lang="ts">
-  type Unit = 'ft' | 'in';
+  type Unit = 'ft' | 'in' | 'cm' | 'mm';
 
   let unit = $state<Unit>('ft');
   let roomL = $state('');
@@ -9,7 +9,10 @@
   let skirting = $state(false);
 
   function toMM(val: number, u: Unit): number {
-    return u === 'ft' ? val * 304.8 : val * 25.4;
+    if (u === 'ft') return val * 304.8;
+    if (u === 'in') return val * 25.4;
+    if (u === 'cm') return val * 10;
+    return val; // mm
   }
 
   function round2(n: number) {
@@ -55,12 +58,22 @@
           class="pill"
           class:active={unit === 'ft'}
           onclick={() => unit = 'ft'}
-        >Feet</button>
+        >ft</button>
         <button
           class="pill"
           class:active={unit === 'in'}
           onclick={() => unit = 'in'}
-        >Inches</button>
+        >in</button>
+        <button
+          class="pill"
+          class:active={unit === 'cm'}
+          onclick={() => unit = 'cm'}
+        >cm</button>
+        <button
+          class="pill"
+          class:active={unit === 'mm'}
+          onclick={() => unit = 'mm'}
+        >mm</button>
       </div>
     </div>
 
@@ -73,13 +86,13 @@
           <div class="field">
             <label for="rl">Length <span class="u">({unit})</span></label>
             <input id="rl" type="number" min="0" step="any"
-              placeholder={unit === 'ft' ? 'e.g. 12' : 'e.g. 144'}
+              placeholder={unit === 'ft' ? 'e.g. 12' : unit === 'in' ? 'e.g. 144' : unit === 'cm' ? 'e.g. 365' : 'e.g. 3650'}
               bind:value={roomL} />
           </div>
           <div class="field">
             <label for="rw">Width <span class="u">({unit})</span></label>
             <input id="rw" type="number" min="0" step="any"
-              placeholder={unit === 'ft' ? 'e.g. 10' : 'e.g. 120'}
+              placeholder={unit === 'ft' ? 'e.g. 10' : unit === 'in' ? 'e.g. 120' : unit === 'cm' ? 'e.g. 305' : 'e.g. 3050'}
               bind:value={roomW} />
           </div>
         </div>
@@ -95,13 +108,13 @@
           <div class="field">
             <label for="tl">Length <span class="u">({unit})</span></label>
             <input id="tl" type="number" min="0" step="any"
-              placeholder={unit === 'ft' ? 'e.g. 2' : 'e.g. 24'}
+              placeholder={unit === 'ft' ? 'e.g. 2' : unit === 'in' ? 'e.g. 24' : unit === 'cm' ? 'e.g. 60' : 'e.g. 600'}
               bind:value={tileL} />
           </div>
           <div class="field">
             <label for="tw">Width <span class="u">({unit})</span></label>
             <input id="tw" type="number" min="0" step="any"
-              placeholder={unit === 'ft' ? 'e.g. 2' : 'e.g. 24'}
+              placeholder={unit === 'ft' ? 'e.g. 2' : unit === 'in' ? 'e.g. 24' : unit === 'cm' ? 'e.g. 60' : 'e.g. 600'}
               bind:value={tileW} />
           </div>
         </div>
