@@ -1,574 +1,386 @@
 <script lang="ts">
-  // Tile size data (inlined from tile-sizes.json)
-  const tileSizes = [
-    { label: '300×300 mm', value: '300x300', sqft: 0.96, laborMin: 80, laborMax: 120, skirtingCoverage: 3 },
-    { label: '300×600 mm', value: '300x600', sqft: 1.94, laborMin: 80, laborMax: 120, skirtingCoverage: 6 },
-    { label: '600×600 mm', value: '600x600', sqft: 3.87, laborMin: 80, laborMax: 120, skirtingCoverage: 12 },
-    { label: '600×1200 mm', value: '600x1200', sqft: 7.75, laborMin: 110, laborMax: 150, skirtingCoverage: 24 },
-    { label: '800×800 mm', value: '800x800', sqft: 6.89, laborMin: 110, laborMax: 150, skirtingCoverage: 20 },
-    { label: '1200×1200 mm', value: '1200x1200', sqft: 12.9, laborMin: 150, laborMax: 250, skirtingCoverage: 48 },
-    { label: '800×1800 mm', value: '800x1800', sqft: 15.3, laborMin: 150, laborMax: 250, skirtingCoverage: 48 },
-  ];
+  type Unit = 'ft' | 'in';
 
-  // Form inputs
-  let area = $state('');
-  let tileSize = $state('');
-  let tilePrice = $state('');
-  let skirtingInput = $state('');
-  let laborRateInput = $state('');
+  let unit = $state<Unit>('ft');
+  let roomL = $state('');
+  let roomW = $state('');
+  let tileL = $state('');
+  let tileW = $state('');
+  let skirting = $state(false);
 
-  // Result state
-  let result = $state<ReturnType<typeof calculate> | null>(null);
-  let error = $state('');
-  let showResult = $state(false);
-
-  function fmt(n: number) {
-    return n.toLocaleString('en-LK', { maximumFractionDigits: 0 });
+  function toMM(val: number, u: Unit): number {
+    return u === 'ft' ? val * 304.8 : val * 25.4;
   }
 
-  function calculate() {
-    const a = parseFloat(area);
-    const tp = parseFloat(tilePrice);
-    const settings = tileSizes.find(t => t.value === tileSize);
-
-    if (!a || a <= 0 || !settings || !tp || tp <= 0) {
-      error = 'Please enter a valid area, tile size, and tile price.';
-      return null;
-    }
-    error = '';
-
-    const userSkirting = parseFloat(skirtingInput);
-    const userLaborRate = parseFloat(laborRateInput);
-    const skirting = isNaN(userSkirting) || userSkirting <= 0 ? Math.ceil(a * 0.2) : userSkirting;
-    const useDefaultLabor = isNaN(userLaborRate) || userLaborRate <= 0;
-
-    const floorTiles = Math.ceil(a / settings.sqft);
-    const skirtingTiles = Math.ceil(skirting / settings.skirtingCoverage);
-    const totalTiles = Math.ceil((floorTiles + skirtingTiles) * 1.05);
-
-    // Floor bed
-    const cementMin = Math.ceil(8 * a / 800);
-    const cementMax = Math.ceil(8 * a / 600);
-    const sandMin = Math.round((a / 800) * 4) / 4;
-    const sandMax = Math.round((a / 600) * 4) / 4;
-    const cementCostMin = cementMin * 1900;
-    const cementCostMax = cementMax * 1900;
-    const sandCostMin = sandMin * 25000;
-    const sandCostMax = sandMax * 25000;
-
-    // Tiling materials
-    const adhesiveMin = Math.ceil(a / 40);
-    const adhesiveMax = Math.ceil(a / 30);
-    const clips = Math.ceil(a / 100);
-    const grout = Math.ceil(a / 175);
-    const adhesiveCostMin = adhesiveMin * 2200;
-    const adhesiveCostMax = adhesiveMax * 2200;
-    const clipsCost = clips * 1500;
-    const groutCost = grout * 300;
-    const tileCost = totalTiles * tp;
-
-    // Labor
-    let floorLaborMin: number, floorLaborMax: number;
-    let skirtingLaborMin: number, skirtingLaborMax: number;
-
-    if (useDefaultLabor) {
-      floorLaborMin = a * settings.laborMin;
-      floorLaborMax = a * settings.laborMax;
-      skirtingLaborMin = skirting * settings.laborMin;
-      skirtingLaborMax = skirting * settings.laborMax;
-    } else {
-      floorLaborMin = floorLaborMax = a * userLaborRate;
-      skirtingLaborMin = skirtingLaborMax = skirting * userLaborRate;
-    }
-    const laborMin = floorLaborMin + skirtingLaborMin;
-    const laborMax = floorLaborMax + skirtingLaborMax;
-
-    const materialMin = tileCost + cementCostMin + sandCostMin + adhesiveCostMin + clipsCost + groutCost;
-    const materialMax = tileCost + cementCostMax + sandCostMax + adhesiveCostMax + clipsCost + groutCost;
-    const totalMin = materialMin + laborMin;
-    const totalMax = materialMax + laborMax;
-
-    return {
-      area: a, skirting, tileSize: settings.label,
-      floorTiles, skirtingTiles, totalTiles,
-      cementMin, cementMax, cementCostMin, cementCostMax,
-      sandMin, sandMax, sandCostMin, sandCostMax,
-      adhesiveMin, adhesiveMax, adhesiveCostMin, adhesiveCostMax,
-      clips, clipsCost, grout, groutCost, tileCost,
-      floorLaborMin, floorLaborMax, skirtingLaborMin, skirtingLaborMax,
-      laborMin, laborMax, materialMin, materialMax, totalMin, totalMax,
-    };
+  function round2(n: number) {
+    return Math.round(n * 100) / 100;
   }
 
-  function handleCalculate() {
-    const r = calculate();
-    if (r) {
-      result = r;
-      showResult = true;
-      setTimeout(() => {
-        document.getElementById('result-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 50);
-    } else {
-      showResult = false;
-    }
-  }
+  // Dimensions in mm
+  const rlMM  = $derived(toMM(parseFloat(roomL) || 0, unit));
+  const rwMM  = $derived(toMM(parseFloat(roomW) || 0, unit));
+  const tlMM  = $derived(toMM(parseFloat(tileL) || 0, unit));
+  const twMM  = $derived(toMM(parseFloat(tileW) || 0, unit));
 
-  function reset() {
-    area = '';
-    tileSize = '';
-    tilePrice = '';
-    skirtingInput = '';
-    laborRateInput = '';
-    result = null;
-    showResult = false;
-    error = '';
-  }
+  // Areas in m²
+  const roomM2 = $derived(round2((rlMM * rwMM) / 1_000_000));
+  const tileM2 = $derived(round2((tlMM * twMM) / 1_000_000));
+
+  // Floor tiles
+  const floorBase  = $derived(tileM2 > 0 ? Math.ceil(roomM2 / tileM2) : 0);
+  const floorTotal = $derived(Math.ceil(floorBase * 1.05));
+
+  // Skirting: perimeter = 2(L+W), each 600×600 tile → 6 pcs × 600mm = 3600mm
+  const perimeterM  = $derived(round2(2 * (rlMM + rwMM) / 1000));
+  const skirtBase   = $derived(Math.ceil((perimeterM * 1000) / 3600));
+  const skirtTotal  = $derived(Math.ceil(skirtBase * 1.05));
+
+  const grandTotal = $derived(skirting ? floorTotal + skirtTotal : floorTotal);
+  const ready      = $derived(rlMM > 0 && rwMM > 0 && tlMM > 0 && twMM > 0);
 </script>
 
-<div class="calc-wrap">
-  <div class="calc-card">
-    <h1 class="calc-title">🧮 Tiling Cost Estimator</h1>
-    <p class="calc-sub">Get an instant cost estimate for your tiling project in Sri Lanka.</p>
+<div class="wrap">
+  <div class="card">
+    <!-- Header -->
+    <div class="header">
+      <h1>Tile Quantity Calculator</h1>
+      <p>Enter dimensions to find how many tiles you need.</p>
+    </div>
 
-    <div class="form-grid">
-      <div class="field">
-        <label for="area">Total Area <span class="unit">(sq ft)</span></label>
-        <input id="area" type="number" min="1" placeholder="e.g. 200" bind:value={area} />
-      </div>
-
-      <div class="field">
-        <label for="tileSize">Tile Size</label>
-        <select id="tileSize" bind:value={tileSize}>
-          <option value="">Select size…</option>
-          {#each tileSizes as t}
-            <option value={t.value}>{t.label}</option>
-          {/each}
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="tilePrice">Tile Price <span class="unit">(LKR per tile)</span></label>
-        <input id="tilePrice" type="number" min="1" placeholder="e.g. 450" bind:value={tilePrice} />
+    <!-- Unit toggle -->
+    <div class="unit-toggle">
+      <span class="toggle-label">Units</span>
+      <div class="toggle-pills">
+        <button
+          class="pill"
+          class:active={unit === 'ft'}
+          onclick={() => unit = 'ft'}
+        >Feet</button>
+        <button
+          class="pill"
+          class:active={unit === 'in'}
+          onclick={() => unit = 'in'}
+        >Inches</button>
       </div>
     </div>
 
-    <details class="optional-section">
-      <summary>Optional inputs</summary>
-      <div class="form-grid optional-grid">
-        <div class="field">
-          <label for="skirting">Skirting Length <span class="unit">(ft, optional)</span></label>
-          <input id="skirting" type="number" min="0" placeholder="Leave blank to auto-calculate" bind:value={skirtingInput} />
+    <!-- Inputs grid -->
+    <div class="section-grid">
+      <!-- Room -->
+      <div class="input-group">
+        <div class="group-label">Room</div>
+        <div class="fields">
+          <div class="field">
+            <label for="rl">Length <span class="u">({unit})</span></label>
+            <input id="rl" type="number" min="0" step="any"
+              placeholder={unit === 'ft' ? 'e.g. 12' : 'e.g. 144'}
+              bind:value={roomL} />
+          </div>
+          <div class="field">
+            <label for="rw">Width <span class="u">({unit})</span></label>
+            <input id="rw" type="number" min="0" step="any"
+              placeholder={unit === 'ft' ? 'e.g. 10' : 'e.g. 120'}
+              bind:value={roomW} />
+          </div>
         </div>
-        <div class="field">
-          <label for="laborRate">Custom Labour Rate <span class="unit">(LKR/sq ft, optional)</span></label>
-          <input id="laborRate" type="number" min="0" placeholder="Leave blank for default range" bind:value={laborRateInput} />
-        </div>
+        {#if roomM2 > 0}
+          <div class="dim-badge">Area: {roomM2} m²</div>
+        {/if}
       </div>
-    </details>
 
-    {#if error}
-      <p class="error-msg">⚠️ {error}</p>
-    {/if}
+      <!-- Tile -->
+      <div class="input-group">
+        <div class="group-label">Tile</div>
+        <div class="fields">
+          <div class="field">
+            <label for="tl">Length <span class="u">({unit})</span></label>
+            <input id="tl" type="number" min="0" step="any"
+              placeholder={unit === 'ft' ? 'e.g. 2' : 'e.g. 24'}
+              bind:value={tileL} />
+          </div>
+          <div class="field">
+            <label for="tw">Width <span class="u">({unit})</span></label>
+            <input id="tw" type="number" min="0" step="any"
+              placeholder={unit === 'ft' ? 'e.g. 2' : 'e.g. 24'}
+              bind:value={tileW} />
+          </div>
+        </div>
+        {#if tileM2 > 0}
+          <div class="dim-badge">Tile area: {tileM2} m²</div>
+        {/if}
+      </div>
+    </div>
 
-    <button class="calc-btn" onclick={handleCalculate}>📊 Calculate Cost</button>
+    <!-- Skirting toggle -->
+    <div class="skirting-row">
+      <div class="skirting-info">
+        <span class="skirting-title">Skirting tiles?</span>
+        <span class="skirting-hint">Perimeter = 2(L+W) · Uses 600×600 tiles (6 pcs / tile = 3600 mm)</span>
+      </div>
+      <div class="yes-no">
+        <button class="yn" class:yn-active={!skirting} onclick={() => skirting = false}>No</button>
+        <button class="yn" class:yn-active={skirting}  onclick={() => skirting = true}>Yes</button>
+      </div>
+    </div>
   </div>
 
-  {#if showResult && result}
-    <div class="result-card" id="result-section">
-      <h2>Estimate Results</h2>
-
-      <div class="result-summary">
-        <div class="summary-chip">
-          <span class="label">Area</span>
-          <span class="value">{result.area} sqft</span>
-        </div>
-        <div class="summary-chip">
-          <span class="label">Skirting</span>
-          <span class="value">{result.skirting} ft</span>
-        </div>
-        <div class="summary-chip">
-          <span class="label">Tile Size</span>
-          <span class="value">{result.tileSize}</span>
+  <!-- Results -->
+  {#if ready}
+    <div class="results">
+      <!-- Floor tiles -->
+      <div class="result-block">
+        <div class="rb-icon">⬜</div>
+        <div class="rb-body">
+          <div class="rb-title">Floor Tiles</div>
+          <div class="rb-main">{floorTotal} <span class="rb-unit">tiles</span></div>
+          <div class="rb-breakdown">
+            {floorBase} base + {floorTotal - floorBase} wastage (5%)
+          </div>
         </div>
       </div>
 
-      <!-- Floor Bed -->
-      <h3>🧱 Floor Bed</h3>
-      <table>
-        <thead>
-          <tr><th>Material</th><th>Qty (min–max)</th><th>Cost LKR (min–max)</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Cement (50 kg bag)</td>
-            <td>{result.cementMin} – {result.cementMax}</td>
-            <td>{fmt(result.cementCostMin)} – {fmt(result.cementCostMax)}</td>
-          </tr>
-          <tr>
-            <td>Sand (1 cube)</td>
-            <td>{result.sandMin} – {result.sandMax}</td>
-            <td>{fmt(result.sandCostMin)} – {fmt(result.sandCostMax)}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- Tiling Materials -->
-      <h3>🪣 Tiling Materials</h3>
-      <table>
-        <thead>
-          <tr><th>Item</th><th>Qty</th><th>Cost LKR</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Floor tiles</td>
-            <td>{result.floorTiles}</td>
-            <td>—</td>
-          </tr>
-          <tr>
-            <td>Skirting tiles</td>
-            <td>{result.skirtingTiles}</td>
-            <td>—</td>
-          </tr>
-          <tr class="highlight-row">
-            <td><strong>Total tiles (incl. 5% wastage)</strong></td>
-            <td><strong>{result.totalTiles}</strong></td>
-            <td><strong>{fmt(result.tileCost)}</strong></td>
-          </tr>
-          <tr>
-            <td>Tile adhesive (25 kg bag)</td>
-            <td>{result.adhesiveMin} – {result.adhesiveMax}</td>
-            <td>{fmt(result.adhesiveCostMin)} – {fmt(result.adhesiveCostMax)}</td>
-          </tr>
-          <tr>
-            <td>Leveling clips (100 pcs)</td>
-            <td>{result.clips}</td>
-            <td>{fmt(result.clipsCost)}</td>
-          </tr>
-          <tr>
-            <td>Grout (1 kg)</td>
-            <td>{result.grout}</td>
-            <td>{fmt(result.groutCost)}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- Labour -->
-      <h3>👷 Labour Cost</h3>
-      <table>
-        <thead>
-          <tr><th>Type</th><th>Min (LKR)</th><th>Max (LKR)</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Floor labour</td>
-            <td>{fmt(result.floorLaborMin)}</td>
-            <td>{fmt(result.floorLaborMax)}</td>
-          </tr>
-          <tr>
-            <td>Skirting labour</td>
-            <td>{fmt(result.skirtingLaborMin)}</td>
-            <td>{fmt(result.skirtingLaborMax)}</td>
-          </tr>
-          <tr class="highlight-row">
-            <td><strong>Total labour</strong></td>
-            <td><strong>{fmt(result.laborMin)}</strong></td>
-            <td><strong>{fmt(result.laborMax)}</strong></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- Grand Total -->
-      <div class="total-box">
-        <div class="total-row">
-          <span>Materials</span>
-          <span>LKR {fmt(result.materialMin)} – {fmt(result.materialMax)}</span>
+      {#if skirting}
+        <!-- Skirting tiles -->
+        <div class="result-block">
+          <div class="rb-icon">📐</div>
+          <div class="rb-body">
+            <div class="rb-title">Skirting Tiles <span class="rb-note">(600×600)</span></div>
+            <div class="rb-main">{skirtTotal} <span class="rb-unit">tiles</span></div>
+            <div class="rb-breakdown">
+              Perimeter {perimeterM} m · {skirtBase} base + {skirtTotal - skirtBase} wastage (5%)
+            </div>
+          </div>
         </div>
-        <div class="total-row">
-          <span>Labour</span>
-          <span>LKR {fmt(result.laborMin)} – {fmt(result.laborMax)}</span>
-        </div>
-        <div class="total-row grand">
-          <span>💰 Grand Total</span>
-          <span>LKR {fmt(result.totalMin)} – {fmt(result.totalMax)}</span>
+      {/if}
+
+      <!-- Total -->
+      <div class="result-block result-total">
+        <div class="rb-icon">🧮</div>
+        <div class="rb-body">
+          <div class="rb-title">Total Tiles to Purchase</div>
+          <div class="rb-main rb-big">{grandTotal} <span class="rb-unit">tiles</span></div>
+          {#if skirting}
+            <div class="rb-breakdown">{floorTotal} floor + {skirtTotal} skirting</div>
+          {:else}
+            <div class="rb-breakdown">Includes 5% wastage allowance</div>
+          {/if}
         </div>
       </div>
 
-      <div class="result-actions">
-        <a class="action-btn action-btn--primary" href="/tilers">Find a Tiler 👷</a>
-        <button class="action-btn action-btn--secondary" onclick={reset}>Recalculate 🔄</button>
-      </div>
+      <button class="reset-btn" onclick={() => {
+        roomL = ''; roomW = ''; tileL = ''; tileW = '';
+        skirting = false;
+      }}>Reset</button>
     </div>
   {/if}
 </div>
 
 <style>
-  .calc-wrap {
-    max-width: 800px;
+  .wrap {
+    max-width: 640px;
     margin: 0 auto;
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
+    font-family: 'Inter', sans-serif;
   }
 
-  .calc-card {
-    background: white;
+  .card {
+    background: #fff;
     border-radius: 20px;
     padding: 2rem;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 24px rgba(0,0,0,.07);
   }
 
-  .calc-title {
-    font-size: 1.8rem;
+  /* Header */
+  .header { margin-bottom: 1.75rem; }
+  .header h1 {
+    font-size: 1.55rem;
     font-weight: 800;
     color: #1e3a8a;
-    margin-bottom: 0.4rem;
+    margin-bottom: .3rem;
   }
+  .header p { color: #64748b; font-size: .95rem; }
 
-  .calc-sub {
-    color: #64748b;
-    margin-bottom: 1.75rem;
-  }
-
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.1rem;
-  }
-
-  @media (min-width: 560px) {
-    .form-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  label {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: #1e293b;
-  }
-
-  .unit {
-    font-weight: 400;
-    color: #64748b;
-  }
-
-  input, select {
-    padding: 11px 14px;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: border-color 0.2s;
-    background: #f8fafc;
-  }
-
-  input:focus, select:focus {
-    outline: none;
-    border-color: #1e3a8a;
-    background: white;
-  }
-
-  .optional-section {
-    margin: 1.5rem 0;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 0.75rem 1rem;
-  }
-
-  .optional-section summary {
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-    color: #1e3a8a;
-    list-style: none;
+  /* Unit toggle */
+  .unit-toggle {
     display: flex;
     align-items: center;
-    gap: 6px;
-  }
-
-  .optional-section summary::before {
-    content: '▶';
-    font-size: 0.7rem;
-    transition: transform 0.2s;
-  }
-
-  .optional-section[open] summary::before {
-    transform: rotate(90deg);
-  }
-
-  .optional-grid {
-    margin-top: 1rem;
-  }
-
-  .error-msg {
-    background: #fef2f2;
-    color: #b91c1c;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    margin: 0.75rem 0;
-  }
-
-  .calc-btn {
-    width: 100%;
-    padding: 14px;
-    background: #1e3a8a;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 1.05rem;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 0.5rem;
-    transition: background 0.2s, transform 0.1s;
-  }
-
-  .calc-btn:hover {
-    background: #1e40af;
-  }
-
-  .calc-btn:active {
-    transform: scale(0.99);
-  }
-
-  /* Result card */
-  .result-card {
-    background: white;
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-    margin-top: 1.5rem;
-  }
-
-  .result-card h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1e3a8a;
-    margin-bottom: 1rem;
-  }
-
-  .result-card h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #1e3a8a;
-    margin: 1.5rem 0 0.75rem;
-  }
-
-  .result-summary {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-  }
-
-  .summary-chip {
-    background: #f1f5f9;
-    border-radius: 10px;
-    padding: 0.5rem 1rem;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .summary-chip .label {
-    font-size: 0.75rem;
-    color: #64748b;
-    font-weight: 500;
-  }
-
-  .summary-chip .value {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #1e3a8a;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.88rem;
-  }
-
-  th, td {
-    border: 1px solid #e2e8f0;
-    padding: 9px 12px;
-    text-align: left;
-  }
-
-  th {
-    background: #f1f5f9;
-    font-weight: 600;
-    color: #1e3a8a;
-  }
-
-  .highlight-row {
-    background: #eff6ff;
-  }
-
-  .total-box {
-    background: #1e3a8a;
-    color: white;
-    border-radius: 14px;
-    padding: 1.25rem 1.5rem;
-    margin-top: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .total-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.95rem;
-    opacity: 0.85;
-  }
-
-  .total-row.grand {
-    font-size: 1.1rem;
-    font-weight: 700;
-    opacity: 1;
-    border-top: 1px solid rgba(255, 255, 255, 0.25);
-    padding-top: 0.5rem;
-    margin-top: 0.25rem;
-  }
-
-  .result-actions {
-    display: flex;
-    flex-wrap: wrap;
     gap: 1rem;
-    margin-top: 1.5rem;
+    margin-bottom: 1.75rem;
   }
-
-  .action-btn {
-    padding: 11px 22px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    cursor: pointer;
-    text-decoration: none;
-    border: none;
-    flex: 1;
-    text-align: center;
-    min-width: 160px;
-  }
-
-  .action-btn--primary {
-    background: #f59e0b;
-    color: #1e3a8a;
-  }
-
-  .action-btn--primary:hover {
-    background: #d97706;
-  }
-
-  .action-btn--secondary {
+  .toggle-label { font-weight: 600; font-size: .9rem; color: #475569; }
+  .toggle-pills {
+    display: flex;
     background: #f1f5f9;
-    color: #1e3a8a;
+    border-radius: 10px;
+    padding: 4px;
+    gap: 4px;
+  }
+  .pill {
+    padding: 6px 20px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #64748b;
+    transition: all .15s;
+    font-family: inherit;
+  }
+  .pill.active {
+    background: #1e3a8a;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(30,58,138,.25);
   }
 
-  .action-btn--secondary:hover {
-    background: #e2e8f0;
+  /* Section grid */
+  .section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
   }
+  @media (max-width: 480px) { .section-grid { grid-template-columns: 1fr; } }
+
+  .input-group {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1rem;
+  }
+  .group-label {
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #94a3b8;
+    margin-bottom: .75rem;
+  }
+  .fields { display: flex; flex-direction: column; gap: .65rem; }
+
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  label { font-size: .85rem; font-weight: 600; color: #334155; }
+  .u { font-weight: 400; color: #94a3b8; }
+
+  input {
+    padding: 9px 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 9px;
+    font-size: .95rem;
+    font-family: inherit;
+    background: #fff;
+    transition: border-color .15s;
+    color: #1e293b;
+  }
+  input:focus { outline: none; border-color: #1e3a8a; }
+
+  .dim-badge {
+    margin-top: .6rem;
+    font-size: .8rem;
+    font-weight: 600;
+    color: #1e3a8a;
+    background: #eff6ff;
+    border-radius: 6px;
+    padding: 3px 8px;
+    display: inline-block;
+  }
+
+  /* Skirting */
+  .skirting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .skirting-info { display: flex; flex-direction: column; gap: 3px; }
+  .skirting-title { font-weight: 700; font-size: .95rem; color: #1e293b; }
+  .skirting-hint { font-size: .78rem; color: #94a3b8; }
+
+  .yes-no { display: flex; gap: 6px; flex-shrink: 0; }
+  .yn {
+    padding: 7px 18px;
+    border-radius: 8px;
+    border: 1.5px solid #e2e8f0;
+    background: #fff;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #64748b;
+    font-family: inherit;
+    transition: all .15s;
+  }
+  .yn.yn-active {
+    background: #1e3a8a;
+    border-color: #1e3a8a;
+    color: #fff;
+  }
+
+  /* Results */
+  .results {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+  }
+
+  .result-block {
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 1.1rem 1.35rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  }
+  .result-total {
+    background: #1e3a8a;
+    border-color: #1e3a8a;
+  }
+  .result-total .rb-title,
+  .result-total .rb-breakdown,
+  .result-total .rb-unit,
+  .result-total .rb-note { color: rgba(255,255,255,.7); }
+  .result-total .rb-main { color: #fff; }
+
+  .rb-icon { font-size: 1.4rem; line-height: 1; padding-top: 2px; }
+  .rb-body { flex: 1; }
+  .rb-title {
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: #64748b;
+    margin-bottom: .25rem;
+  }
+  .rb-note { text-transform: none; letter-spacing: 0; font-weight: 400; }
+  .rb-main {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1e3a8a;
+    line-height: 1.1;
+  }
+  .rb-big { font-size: 2.4rem; }
+  .rb-unit { font-size: 1rem; font-weight: 500; color: #94a3b8; }
+  .rb-breakdown { font-size: .8rem; color: #94a3b8; margin-top: .2rem; }
+
+  .reset-btn {
+    align-self: flex-start;
+    padding: 9px 22px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 9px;
+    background: #fff;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #64748b;
+    font-family: inherit;
+    transition: all .15s;
+  }
+  .reset-btn:hover { background: #f1f5f9; }
 </style>
