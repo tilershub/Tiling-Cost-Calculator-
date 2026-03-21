@@ -1,0 +1,7 @@
+{
+  "name": "tilershub",
+  "scripts": {
+    "postinstall": "cd astro-site && npm install && npm run build",
+    "deploy": "cd astro-site && npm install && npm run build && cd .. && npx wrangler versions upload"
+  }
+}

@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TilingCalculator from '../components/TilingCalculator.svelte';
+---
+
+<Layout
+  title="Tiling Cost Estimator | TILERSHUB"
+  description="Calculate your tiling project cost instantly. Enter area, tile size and price to get a full material and labour estimate for Sri Lanka."
+>
+  <TilingCalculator client:load />
+</Layout>
