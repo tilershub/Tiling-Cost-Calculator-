@@ -1,0 +1,51 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+// Inline blog post list (avoids content collections config complexity)
+const posts = [
+  { slug: 'tile-select', title: 'නිවස සඳහා හොඳම ටයිල් තෝරා ගන්නේ කෙසේද?', date: '2025-01-10', description: 'ටයිල් ප්‍රමාණය, ශෛලිය සහ ගුණාත්මකභාවය තෝරා ගැනීමේ සම්පූර්ණ මාර්ගෝපදේශය.' },
+  { slug: 'labor-cost', title: 'ශ්‍රී ලංකාවේ ටයිල් ස්ථාපනය සඳහා කාර්මික ගාස්තු 2025', date: '2025-01-20', description: 'ශ්‍රී ලංකාවේ ටයිල් ස්ථාපන ගාස්තු ප්‍රමාණ සහ ප්‍රදේශ අනුව.' },
+  { slug: 'bathroom-tiling', title: 'නාන කාමර ටයිල් ස්ථාපනය: සම්පූර්ණ මාර්ගෝපදේශය', date: '2025-02-05', description: 'නාන කාමරයට ගැලපෙන ශෛලි, ජල-ගරා ක්‍රම සහ ජනප්‍රිය නිර්මාණ.' },
+  { slug: 'tile-cost-estimate', title: 'ශ්‍රී ලංකාවේ ටයිල් ව්‍යාපෘතියකට සිදු වන සම්පූර්ණ වියදම', date: '2025-02-18', description: 'ද්‍රව්‍ය, කාර්මික ගාස්තු ඇතුළු සම්පූර්ණ වියදම ගණනය කිරීමේ ක්‍රමය.' },
+  { slug: 'certified-tilers', title: 'TILERSHUB සහතිකය – ශ්‍රේෂ්ඨ ටයිල් කාරිගරයකු හඳුනාගන්නේ කෙසේද?', date: '2025-03-01', description: 'සහතික ලත් කාරිගරයකු හඳුනාගෙන ශ්‍රේෂ්ඨ ව්‍යාපෘතිය සාක්ෂාත් කරන්නේ කෙසේද?' },
+];
+---
+
+<Layout
+  title="Blog – Tiling Tips in Sinhala | TILERSHUB"
+  description="ශ්‍රී ලංකාවේ ටයිල් ස්ථාපනය, ගාස්තු සහ ශ්‍රේෂ්ඨ කාරිගරයකු ගැන සිංහල ලිපි."
+>
+  <Header />
+  <main>
+    <div class="tilers-section">
+      <h1>Blog – ටයිල් ගැන සිංහලෙන්</h1>
+      <p class="subtitle">ශ්‍රී ලංකාවේ ටයිල් ස්ථාපනය ගැන ප්‍රයෝජනවත් ලිපි.</p>
+
+      <div class="blog-list">
+        {posts.map(p => (
+          <a class="blog-card m-card" href={`/blog/${p.slug}`}>
+            <div class="blog-card-body">
+              <div class="blog-date">{p.date}</div>
+              <h2 class="blog-title">{p.title}</h2>
+              <p class="blog-desc">{p.description}</p>
+              <span class="read-more">කියවන්න →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .blog-list { display: grid; gap: 1.5rem; max-width: 760px; }
+  .blog-card { text-decoration: none; color: inherit; display: block; }
+  .blog-card-body { padding: 1.5rem; }
+  .blog-date { font-size: 0.8rem; color: var(--text-gray); margin-bottom: 0.4rem; }
+  .blog-title { font-size: 1.15rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; line-height: 1.4; }
+  .blog-desc { color: var(--text-gray); font-size: 0.9rem; margin-bottom: 0.75rem; }
+  .read-more { color: var(--navy); font-weight: 600; font-size: 0.9rem; }
+</style>

@@ -1,0 +1,58 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const posts = await import.meta.glob('../../content/blog/*.md');
+  return await Promise.all(
+    Object.entries(posts).map(async ([filepath, loader]) => {
+      const mod = await (loader as () => Promise<{ frontmatter: { slug: string; title: string; description: string; pubDate: string } }>)();
+      return {
+        params: { slug: mod.frontmatter.slug },
+        props: { frontmatter: mod.frontmatter, filepath },
+      };
+    })
+  );
+}
+
+const { frontmatter } = Astro.props;
+
+// Load the markdown content
+const posts = import.meta.glob('../../content/blog/*.md', { eager: true }) as Record<string, { frontmatter: { slug: string; title: string }; compiledContent: () => string }>;
+const post = Object.values(posts).find(p => p.frontmatter.slug === Astro.params.slug);
+const html = post?.compiledContent?.() ?? '';
+---
+
+<Layout title={`${frontmatter.title} | TILERSHUB Blog`} description={frontmatter.description}>
+  <Header />
+  <main>
+    <article class="blog-post page-content">
+      <div class="blog-meta">
+        <a href="/blog" style="color: var(--navy); font-weight: 600;">← ආපසු Blog</a>
+        <span class="muted" style="margin-left: 1rem;">{frontmatter.pubDate}</span>
+      </div>
+      <h1>{frontmatter.title}</h1>
+      <div class="prose" set:html={html} />
+    </article>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .blog-post { max-width: 760px; }
+  .blog-meta { margin-bottom: 1.5rem; }
+  .prose :global(h2) { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin: 2rem 0 0.75rem; }
+  .prose :global(h3) { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin: 1.5rem 0 0.5rem; }
+  .prose :global(p) { color: var(--text-gray); margin-bottom: 1rem; }
+  .prose :global(ul), .prose :global(ol) { padding-left: 1.5rem; margin-bottom: 1rem; color: var(--text-gray); }
+  .prose :global(li) { margin-bottom: 0.4rem; }
+  .prose :global(table) { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+  .prose :global(th), .prose :global(td) { border: 1px solid var(--border-gray); padding: 8px 12px; text-align: left; }
+  .prose :global(th) { background: #f1f5f9; font-weight: 600; color: var(--navy); }
+  .prose :global(a) { color: var(--navy); text-decoration: underline; }
+  .prose :global(strong) { color: #1e293b; }
+  .prose :global(code) { background: var(--light-gray); padding: 2px 6px; border-radius: 4px; font-size: 0.875em; }
+  .prose :global(blockquote) { border-left: 4px solid var(--gold); padding-left: 1rem; margin: 1rem 0; color: var(--text-gray); }
+  .prose :global(hr) { border: none; border-top: 1px solid var(--border-gray); margin: 2rem 0; }
+</style>

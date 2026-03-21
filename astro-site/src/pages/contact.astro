@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="Contact TILERSHUB | Get in Touch"
+  description="Contact TILERSHUB for tiling services, tiler inquiries, or partnership opportunities in Sri Lanka."
+>
+  <Header />
+  <main>
+    <div class="page-content">
+      <h1>Contact Us</h1>
+      <p>We'd love to hear from you. Reach out via WhatsApp for the fastest response.</p>
+
+      <h3>WhatsApp (Fastest)</h3>
+      <p>
+        <a
+          href="https://wa.me/94774503744"
+          class="cta-btn"
+          style="display: inline-block; margin: 1rem 0;"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          💬 Chat on WhatsApp
+        </a>
+      </p>
+
+      <h3>Send a Message</h3>
+      <form
+        class="contact-form"
+        style="margin-top: 1rem; max-width: 560px;"
+        onsubmit="handleSubmit(event)"
+      >
+        <input name="name" type="text" placeholder="Your name" required />
+        <input name="phone" type="tel" placeholder="Phone number" />
+        <input name="email" type="email" placeholder="Email address" />
+        <textarea name="message" placeholder="Your message" rows="4" required></textarea>
+        <button type="submit" class="cta-btn" style="border: none; cursor: pointer; width: fit-content;">
+          Send Message
+        </button>
+        <p id="form-msg" style="color: #16a34a; font-weight: 500;"></p>
+      </form>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  function handleSubmit(e: Event) {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const data = new FormData(form);
+    const name = data.get('name');
+    const message = data.get('message');
+    const phone = data.get('phone');
+    const waMsg = encodeURIComponent(`Name: ${name}\nPhone: ${phone}\n\n${message}`);
+    window.open(`https://wa.me/94774503744?text=${waMsg}`, '_blank');
+    document.getElementById('form-msg')!.textContent = '✅ Opening WhatsApp…';
+  }
+</script>

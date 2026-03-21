@@ -1,0 +1,49 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import products from '../../data/shop-products.json';
+
+const waNumber = '94774503744';
+---
+
+<Layout
+  title="Shop – Tiling Tools & Equipment | TILERSHUB"
+  description="Buy professional tiling tools online in Sri Lanka. Tile vibrators, leveling clips, cutting wheels and more."
+>
+  <Header />
+  <main>
+    <div class="tilers-section">
+      <h1>Tiling Tools Shop</h1>
+      <p class="subtitle">Professional equipment delivered across Sri Lanka. Order via WhatsApp.</p>
+
+      <div class="shop-grid">
+        {products.map(p => (
+          <div class="m-card product-card">
+            <img
+              class="product-img"
+              src={p.image}
+              alt={p.title}
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="product-body">
+              <div class="product-title">{p.title}</div>
+              <div class="product-price">{p.price}</div>
+              <a
+                class="btn btn--wa"
+                href={`https://wa.me/${waNumber}?text=${encodeURIComponent(p.whatsapp)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style="display: flex; align-items: center; gap: 6px; justify-content: center;"
+              >
+                💬 Order via WhatsApp
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>

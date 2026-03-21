@@ -1,0 +1,15 @@
+{
+  "name": "tilershub",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/svelte": "^8.0.3",
+    "astro": "^6.0.8",
+    "svelte": "^5.54.0"
+  }
+}

@@ -1,0 +1,48 @@
+---
+const navLinks = [
+  { href: '/', label: 'Home', path: '/' },
+  { href: '/tilers', label: 'Find Tiler', path: '/tilers' },
+  { href: '/estimator', label: 'Estimator', path: '/estimator' },
+  { href: '/shop', label: 'Shop', path: '/shop' },
+  { href: '/contact', label: 'Contact', path: '/contact' },
+];
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="appbar" role="banner">
+  <div class="appbar-row">
+    <a class="logo-wrap" href="/" aria-label="TILERSHUB Home">
+      <img src="/icons/favicon.png" alt="" height="30" width="30" />
+      <span class="site-name">TILERSHUB</span>
+    </a>
+
+    <button class="menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false">
+      <span class="material-symbols-rounded">menu</span>
+    </button>
+  </div>
+
+  <nav class="nav-menu" id="nav-menu" role="navigation" aria-label="Primary">
+    {navLinks.map(({ href, label, path }) => {
+      const isActive = path === '/'
+        ? pathname === '/'
+        : pathname.startsWith(path);
+      return (
+        <a href={href} class:list={[{ active: isActive }]}>{label}</a>
+      );
+    })}
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('nav-menu');
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+      const open = menu.classList.toggle('active');
+      toggle.setAttribute('aria-expanded', String(open));
+      const icon = toggle.querySelector('.material-symbols-rounded');
+      if (icon) icon.textContent = open ? 'close' : 'menu';
+    });
+  }
+</script>

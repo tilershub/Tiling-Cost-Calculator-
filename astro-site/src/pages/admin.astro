@@ -1,0 +1,96 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Admin Panel – TILERSHUB">
+  <main>
+    <div class="admin-box" id="loginBox">
+      <h2>🔐 Admin Login</h2>
+      <div class="form-group">
+        <input type="password" id="adminPin" placeholder="Enter PIN" class="form-group input" />
+      </div>
+      <button class="btn-full" onclick="verifyPin()">Login</button>
+    </div>
+
+    <div class="admin-box hidden" id="dashboard">
+      <h2>🛠 Update Material Prices &amp; Ratios</h2>
+
+      <h3>💰 Material Prices (LKR)</h3>
+      {[
+        { id: 'cementPrice', label: 'Cement (50kg)' },
+        { id: 'sandPrice', label: 'Sand (1 cube)' },
+        { id: 'adhesivePrice', label: 'Tile Adhesive (25kg)' },
+        { id: 'clipsPrice', label: 'Leveling Clips (100 pcs)' },
+        { id: 'groutPrice', label: 'Grout (1kg)' },
+      ].map(f => (
+        <div class="form-group">
+          <label>{f.label}</label>
+          <input type="number" id={f.id} />
+        </div>
+      ))}
+
+      <h3 style="margin-top: 1.5rem;">📐 Ratios (per sqft)</h3>
+      {[
+        { id: 'ratioCement', label: 'Cement Bags (floor bed)', step: '0.0001' },
+        { id: 'ratioSand', label: 'Sand Cubes (floor bed)', step: '0.0001' },
+        { id: 'ratioAdhesive', label: 'Adhesive Bags', step: '0.0001' },
+        { id: 'ratioClips', label: 'Leveling Clips (packs)', step: '0.0001' },
+        { id: 'ratioGrout', label: 'Grout (kg)', step: '0.0001' },
+        { id: 'tileWastageRatio', label: 'Tile Wastage Ratio (e.g. 0.05)', step: '0.001' },
+        { id: 'ratioSkirtingFromArea', label: 'Skirting Length Ratio (e.g. 0.2)', step: '0.01' },
+      ].map(f => (
+        <div class="form-group">
+          <label>{f.label}</label>
+          <input type="number" id={f.id} step={f.step} />
+        </div>
+      ))}
+
+      <button class="btn-full" onclick="saveSettings()">💾 Save Settings</button>
+      <p id="msg" class="msg-success"></p>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const defaults: Record<string, number> = {
+    cementPrice: 1900, sandPrice: 25000, adhesivePrice: 2200,
+    clipsPrice: 1500, groutPrice: 300, ratioCement: 0.0125,
+    ratioSand: 0.00125, ratioAdhesive: 0.025, ratioClips: 0.01,
+    ratioGrout: 0.0057, tileWastageRatio: 0.05, ratioSkirtingFromArea: 0.2,
+  };
+
+  function verifyPin() {
+    const pin = (document.getElementById('adminPin') as HTMLInputElement).value;
+    if (pin === '1234') {
+      document.getElementById('loginBox')!.classList.add('hidden');
+      document.getElementById('dashboard')!.classList.remove('hidden');
+      loadSettings();
+    } else {
+      alert('❌ Incorrect PIN');
+    }
+  }
+
+  function loadSettings() {
+    for (const key in defaults) {
+      const val = localStorage.getItem(key);
+      (document.getElementById(key) as HTMLInputElement).value =
+        val !== null ? val : String(defaults[key]);
+    }
+  }
+
+  function saveSettings() {
+    for (const key in defaults) {
+      localStorage.setItem(key, (document.getElementById(key) as HTMLInputElement).value);
+    }
+    const msg = document.getElementById('msg')!;
+    msg.textContent = '✅ Settings saved!';
+    setTimeout(() => (msg.textContent = ''), 3000);
+  }
+
+  (window as any).verifyPin = verifyPin;
+  (window as any).saveSettings = saveSettings;
+</script>
+
+<style>
+  .hidden { display: none; }
+</style>

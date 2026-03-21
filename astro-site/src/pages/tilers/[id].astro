@@ -1,0 +1,243 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import tilersData from '../../data/tilers.json';
+
+export function getStaticPaths() {
+  return tilersData.map(t => ({ params: { id: t.id } }));
+}
+
+const { id } = Astro.params;
+const tiler = tilersData.find(t => t.id === id);
+if (!tiler) return Astro.redirect('/tilers');
+
+const cleanWa = String(tiler.whatsapp ?? '').replace(/\D/g, '').replace(/^0/, '');
+const waMsg = encodeURIComponent(`Hi ${tiler.name}, I found you on TILERSHUB and would like to discuss a tiling job.`);
+const waLink = cleanWa ? `https://wa.me/94${cleanWa}?text=${waMsg}` : null;
+
+const fbLink = tiler.facebook?.trim() || null;
+
+function stars(r: number) {
+  const n = Math.round(r ?? 0);
+  return '★'.repeat(n) + '☆'.repeat(5 - n);
+}
+
+const SUPABASE_URL = 'https://adahhlymilegcvesthtu.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkYWhobHltaWxlZ2N2ZXN0aHR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0NDU0ODgsImV4cCI6MjA3MTAyMTQ4OH0.gK4GK0V2NbGKRNJ4kGT1hIt3nUJ9yuVyJB5xVCSEtAU';
+---
+
+<Layout
+  title={`${tiler.name} | TILERSHUB`}
+  description={`${tiler.name} – Verified tiler in ${tiler.city}. Read reviews and contact via WhatsApp.`}
+>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <Header />
+
+  <main>
+    <!-- Cover + Profile pic -->
+    <div class="cover-image" style={`background-image: url('${tiler.cover ?? '/icons/og-image.png'}')`}>
+      <div class="profile-pic" style={`background-image: url('${tiler.image}')`}></div>
+    </div>
+
+    <div class="container" style="max-width: 760px;">
+      <!-- Tiler header -->
+      <div class="tiler-header">
+        <h1>{tiler.name}</h1>
+        <p class="muted">Verified Tiler – {tiler.city}</p>
+        <div class="tile-rating" style="justify-content: center; margin: 0.5rem 0;">
+          <span class="stars">{stars(tiler.rating ?? 0)}</span>
+          <span>({(tiler.rating ?? 0).toFixed(1)})</span>
+          <span>· {tiler.reviewCount} reviews</span>
+        </div>
+        <div id="highlightTags" style="margin: 0.75rem 0;">
+          {(tiler.highlights ?? []).map((h: string) => (
+            <span class="highlight-tag">{h}</span>
+          ))}
+        </div>
+
+        <!-- Action buttons -->
+        <div class="action-btns">
+          {waLink && (
+            <a class="btn btn--wa" href={waLink} target="_blank" rel="noopener noreferrer">
+              💬 WhatsApp
+            </a>
+          )}
+          {fbLink && (
+            <a class="btn btn--fb" href={fbLink} target="_blank" rel="noopener noreferrer">
+              📘 Facebook
+            </a>
+          )}
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="card-section">
+        <h2>About</h2>
+        <p style="white-space: pre-line; color: var(--text-gray);">{tiler.bio}</p>
+      </div>
+
+      <!-- Reviews Summary -->
+      <div class="card-section">
+        <h2>Reviews</h2>
+        <div id="ratingStars" class="stars" style="font-size: 1.5rem;">☆☆☆☆☆</div>
+        <div id="summaryGrid" class="summary-grid" style="margin: 1rem 0;"></div>
+
+        <div id="reviewList"></div>
+
+        <!-- Submit review -->
+        <details style="margin-top: 2rem;">
+          <summary style="font-weight: 600; cursor: pointer; color: var(--navy); padding: 0.5rem 0;">Write a Review</summary>
+          <form id="reviewForm" style="margin-top: 1rem; display: grid; gap: 0.75rem;">
+            <input type="text" style="display:none" id="website" name="website" autocomplete="off" tabindex="-1" />
+            <input id="name" type="text" placeholder="Your name" class="form-input" />
+            <input id="phone" type="tel" placeholder="Phone (optional)" class="form-input" />
+            <input id="email" type="email" placeholder="Email (optional)" class="form-input" />
+
+            {['quality','service','timeline','pricing','cleanliness'].map(field => (
+              <div>
+                <label style="font-weight: 600; font-size: 0.9rem; display:block; margin-bottom: 4px;">
+                  {field.charAt(0).toUpperCase() + field.slice(1).replace('timeline','Timeliness')}
+                </label>
+                <select id={field} class="form-input">
+                  <option value="5">5 – Excellent</option>
+                  <option value="4">4 – Good</option>
+                  <option value="3">3 – Average</option>
+                  <option value="2">2 – Poor</option>
+                  <option value="1">1 – Very Poor</option>
+                </select>
+              </div>
+            ))}
+
+            <textarea id="comment" placeholder="Comments (optional)" rows="3" class="form-input"></textarea>
+            <button id="submitBtn" type="button" class="btn btn--filled" onclick="submitReview()" style="width: 100%; padding: 12px;">
+              Submit Review
+            </button>
+          </form>
+        </details>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script define:vars={{ SUPABASE_URL, SUPABASE_ANON_KEY, tilerId: tiler.id, tilerName: tiler.name }}>
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  function escapeHtml(str) {
+    return String(str || '').replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[s]));
+  }
+  function starsFromAvg(avg) {
+    const r = Math.round(avg || 0);
+    return '★'.repeat(r) + '☆'.repeat(5 - r);
+  }
+  function percentFrom5(avg) {
+    return Math.round((avg / 5) * 100) + '%';
+  }
+
+  async function loadReviews() {
+    const { data, error } = await supabase
+      .from('reviews')
+      .select('*')
+      .eq('tiler_id', tilerId)
+      .eq('approved', true)
+      .order('created_at', { ascending: false });
+
+    if (error || !data) { renderEmptySummary(); return; }
+    renderSummary(data);
+    renderReviews(data);
+  }
+
+  function renderEmptySummary() {
+    document.getElementById('summaryGrid').innerHTML =
+      '<div>No reviews yet for this tiler.</div>';
+    document.getElementById('ratingStars').innerHTML = '☆☆☆☆☆';
+  }
+
+  function renderSummary(rows) {
+    if (!rows.length) { renderEmptySummary(); return; }
+    const n = rows.length;
+    const sum = rows.reduce((a, r) => ({ q: a.q + (r.quality || 0), s: a.s + (r.service || 0), t: a.t + (r.timeline || 0), p: a.p + (r.pricing || 0), c: a.c + (r.cleanliness || 0) }), { q: 0, s: 0, t: 0, p: 0, c: 0 });
+    const avgQ = sum.q / n, avgS = sum.s / n, avgT = sum.t / n, avgP = sum.p / n, avgC = sum.c / n;
+    const avgStars = (avgQ + avgS + avgT + avgP + avgC) / 5;
+    const recommends = Math.round((rows.filter(r => (((r.quality || 0) + (r.service || 0) + (r.timeline || 0) + (r.pricing || 0) + (r.cleanliness || 0)) / 5) >= 4).length / n) * 100);
+    document.getElementById('summaryGrid').innerHTML =
+      `<div>Quality of Work: ${percentFrom5(avgQ)}</div><div>Customer Service: ${percentFrom5(avgS)}</div><div>Timeliness: ${percentFrom5(avgT)}</div><div>Pricing Fairness: ${percentFrom5(avgP)}</div><div>Cleanliness: ${percentFrom5(avgC)}</div><div><strong>${recommends}% recommend this tiler</strong></div>`;
+    document.getElementById('ratingStars').innerHTML = starsFromAvg(avgStars);
+  }
+
+  function renderReviews(rows) {
+    const list = document.getElementById('reviewList');
+    list.innerHTML = '';
+    rows.forEach(r => {
+      const avg = Math.round(((r.quality || 0) + (r.service || 0) + (r.timeline || 0) + (r.pricing || 0) + (r.cleanliness || 0)) / 5);
+      const created = new Date(r.created_at).toISOString().split('T')[0];
+      list.insertAdjacentHTML('beforeend', `
+        <div class="review-card">
+          <strong>${escapeHtml(r.name || 'Anonymous')}</strong> <small>– ${created}</small>
+          <div class="stars">${'★'.repeat(avg)}${'☆'.repeat(5 - avg)}</div>
+          ${r.comment ? `<p style="margin:.4rem 0">${escapeHtml(r.comment)}</p>` : ''}
+        </div>`);
+    });
+  }
+
+  window.submitReview = async function () {
+    const btn = document.getElementById('submitBtn');
+    if (btn) btn.disabled = true;
+
+    if (document.getElementById('website')?.value.trim()) {
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    const quality = parseInt(document.getElementById('quality').value, 10);
+    const service = parseInt(document.getElementById('service').value, 10);
+    const timeline = parseInt(document.getElementById('timeline').value, 10);
+    const pricing = parseInt(document.getElementById('pricing').value, 10);
+    const cleanliness = parseInt(document.getElementById('cleanliness').value, 10);
+
+    if (![quality, service, timeline, pricing, cleanliness].every(v => Number.isInteger(v) && v >= 1 && v <= 5)) {
+      alert('Please select valid ratings for all categories.');
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    const email = document.getElementById('email').value.trim() || null;
+    if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      alert('Please enter a valid email or leave it blank.');
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    const { error } = await supabase.from('reviews').insert([{
+      tiler_id: tilerId,
+      name: document.getElementById('name').value.trim() || 'Anonymous',
+      phone: document.getElementById('phone').value.trim() || null,
+      email,
+      quality, service, timeline, pricing, cleanliness,
+      comment: document.getElementById('comment').value.trim() || null,
+    }]);
+
+    if (error) {
+      alert('Could not submit review: ' + error.message);
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    ['name', 'phone', 'email', 'comment'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    await loadReviews();
+    alert('Review submitted. Thank you!');
+    if (btn) btn.disabled = false;
+  };
+
+  document.addEventListener('DOMContentLoaded', loadReviews);
+</script>
+
+<style>
+  .action-btns { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin: 1rem 0; }
+  .card-section { background: white; border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  .card-section h2 { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; }
+  .form-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border-gray); border-radius: 8px; font-size: 1rem; font-family: inherit; }
+  .form-input:focus { outline: 2px solid var(--navy); border-color: transparent; }
+</style>
