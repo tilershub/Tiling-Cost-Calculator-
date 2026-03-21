@@ -2,14 +2,21 @@
   type Unit = 'ft' | 'in' | 'cm' | 'mm';
 
   let unit = $state<Unit>('ft');
+
+  // Primary dimension values
   let roomL = $state('');
   let roomW = $state('');
   let tileL = $state('');
   let tileW = $state('');
+
+  // Inches sub-field (only used when unit === 'ft')
+  let roomLi = $state('');
+  let roomWi = $state('');
+
   let skirting = $state(false);
 
-  function toMM(val: number, u: Unit): number {
-    if (u === 'ft') return val * 304.8;
+  function roomToMM(val: number, inches: number, u: Unit): number {
+    if (u === 'ft') return val * 304.8 + inches * 25.4;
     if (u === 'in') return val * 25.4;
     if (u === 'cm') return val * 10;
     return val; // mm
@@ -19,11 +26,11 @@
     return Math.round(n * 100) / 100;
   }
 
-  // Dimensions in mm
-  const rlMM  = $derived(toMM(parseFloat(roomL) || 0, unit));
-  const rwMM  = $derived(toMM(parseFloat(roomW) || 0, unit));
-  const tlMM  = $derived(toMM(parseFloat(tileL) || 0, unit));
-  const twMM  = $derived(toMM(parseFloat(tileW) || 0, unit));
+  // Dimensions in mm — tile inputs are always cm
+  const rlMM  = $derived(roomToMM(parseFloat(roomL) || 0, parseFloat(roomLi) || 0, unit));
+  const rwMM  = $derived(roomToMM(parseFloat(roomW) || 0, parseFloat(roomWi) || 0, unit));
+  const tlMM  = $derived((parseFloat(tileL) || 0) * 10);
+  const twMM  = $derived((parseFloat(tileW) || 0) * 10);
 
   // Areas in m²
   const roomM2 = $derived(round2((rlMM * rwMM) / 1_000_000));
@@ -40,6 +47,12 @@
 
   const grandTotal = $derived(skirting ? floorTotal + skirtTotal : floorTotal);
   const ready      = $derived(rlMM > 0 && rwMM > 0 && tlMM > 0 && twMM > 0);
+
+  function reset() {
+    roomL = ''; roomW = ''; tileL = ''; tileW = '';
+    roomLi = ''; roomWi = '';
+    skirting = false;
+  }
 </script>
 
 <div class="wrap">
@@ -54,26 +67,10 @@
     <div class="unit-toggle">
       <span class="toggle-label">Units</span>
       <div class="toggle-pills">
-        <button
-          class="pill"
-          class:active={unit === 'ft'}
-          onclick={() => unit = 'ft'}
-        >ft</button>
-        <button
-          class="pill"
-          class:active={unit === 'in'}
-          onclick={() => unit = 'in'}
-        >in</button>
-        <button
-          class="pill"
-          class:active={unit === 'cm'}
-          onclick={() => unit = 'cm'}
-        >cm</button>
-        <button
-          class="pill"
-          class:active={unit === 'mm'}
-          onclick={() => unit = 'mm'}
-        >mm</button>
+        <button class="pill" class:active={unit === 'ft'} onclick={() => unit = 'ft'}>ft</button>
+        <button class="pill" class:active={unit === 'in'} onclick={() => unit = 'in'}>in</button>
+        <button class="pill" class:active={unit === 'cm'} onclick={() => unit = 'cm'}>cm</button>
+        <button class="pill" class:active={unit === 'mm'} onclick={() => unit = 'mm'}>mm</button>
       </div>
     </div>
 
@@ -83,17 +80,51 @@
       <div class="input-group">
         <div class="group-label">Room</div>
         <div class="fields">
+          <!-- Length -->
           <div class="field">
-            <label for="rl">Length <span class="u">({unit})</span></label>
-            <input id="rl" type="number" min="0" step="any"
-              placeholder={unit === 'ft' ? 'e.g. 12' : unit === 'in' ? 'e.g. 144' : unit === 'cm' ? 'e.g. 365' : 'e.g. 3650'}
-              bind:value={roomL} />
+            <label for="rl">Length</label>
+            {#if unit === 'ft'}
+              <div class="ft-in-row">
+                <div class="ft-in-field">
+                  <input id="rl" type="number" min="0" step="1" placeholder="15" bind:value={roomL} />
+                  <span class="sub-unit">ft</span>
+                </div>
+                <div class="ft-in-field">
+                  <input id="rl-in" type="number" min="0" max="11" step="1" placeholder="7" bind:value={roomLi} />
+                  <span class="sub-unit">in</span>
+                </div>
+              </div>
+            {:else}
+              <div class="single-field">
+                <input id="rl" type="number" min="0" step="any"
+                  placeholder={unit === 'in' ? 'e.g. 144' : unit === 'cm' ? 'e.g. 365' : 'e.g. 3650'}
+                  bind:value={roomL} />
+                <span class="sub-unit">{unit}</span>
+              </div>
+            {/if}
           </div>
+          <!-- Width -->
           <div class="field">
-            <label for="rw">Width <span class="u">({unit})</span></label>
-            <input id="rw" type="number" min="0" step="any"
-              placeholder={unit === 'ft' ? 'e.g. 10' : unit === 'in' ? 'e.g. 120' : unit === 'cm' ? 'e.g. 305' : 'e.g. 3050'}
-              bind:value={roomW} />
+            <label for="rw">Width</label>
+            {#if unit === 'ft'}
+              <div class="ft-in-row">
+                <div class="ft-in-field">
+                  <input id="rw" type="number" min="0" step="1" placeholder="10" bind:value={roomW} />
+                  <span class="sub-unit">ft</span>
+                </div>
+                <div class="ft-in-field">
+                  <input id="rw-in" type="number" min="0" max="11" step="1" placeholder="3" bind:value={roomWi} />
+                  <span class="sub-unit">in</span>
+                </div>
+              </div>
+            {:else}
+              <div class="single-field">
+                <input id="rw" type="number" min="0" step="any"
+                  placeholder={unit === 'in' ? 'e.g. 120' : unit === 'cm' ? 'e.g. 305' : 'e.g. 3050'}
+                  bind:value={roomW} />
+                <span class="sub-unit">{unit}</span>
+              </div>
+            {/if}
           </div>
         </div>
         {#if roomM2 > 0}
@@ -103,19 +134,23 @@
 
       <!-- Tile -->
       <div class="input-group">
-        <div class="group-label">Tile</div>
+        <div class="group-label">Tile <span class="group-label-note">always in cm</span></div>
         <div class="fields">
+          <!-- Length -->
           <div class="field">
-            <label for="tl">Length <span class="u">({unit})</span></label>
-            <input id="tl" type="number" min="0" step="any"
-              placeholder={unit === 'ft' ? 'e.g. 2' : unit === 'in' ? 'e.g. 24' : unit === 'cm' ? 'e.g. 60' : 'e.g. 600'}
-              bind:value={tileL} />
+            <label for="tl">Length</label>
+            <div class="single-field">
+              <input id="tl" type="number" min="0" step="any" placeholder="e.g. 60" bind:value={tileL} />
+              <span class="sub-unit">cm</span>
+            </div>
           </div>
+          <!-- Width -->
           <div class="field">
-            <label for="tw">Width <span class="u">({unit})</span></label>
-            <input id="tw" type="number" min="0" step="any"
-              placeholder={unit === 'ft' ? 'e.g. 2' : unit === 'in' ? 'e.g. 24' : unit === 'cm' ? 'e.g. 60' : 'e.g. 600'}
-              bind:value={tileW} />
+            <label for="tw">Width</label>
+            <div class="single-field">
+              <input id="tw" type="number" min="0" step="any" placeholder="e.g. 60" bind:value={tileW} />
+              <span class="sub-unit">cm</span>
+            </div>
           </div>
         </div>
         {#if tileM2 > 0}
@@ -180,10 +215,7 @@
         </div>
       </div>
 
-      <button class="reset-btn" onclick={() => {
-        roomL = ''; roomW = ''; tileL = ''; tileW = '';
-        skirting = false;
-      }}>Reset</button>
+      <button class="reset-btn" onclick={reset}>Reset</button>
     </div>
   {/if}
 </div>
@@ -268,24 +300,84 @@
     letter-spacing: .06em;
     color: #94a3b8;
     margin-bottom: .75rem;
+    display: flex;
+    align-items: baseline;
+    gap: .4rem;
+  }
+  .group-label-note {
+    font-size: .7rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #cbd5e1;
   }
   .fields { display: flex; flex-direction: column; gap: .65rem; }
 
   .field { display: flex; flex-direction: column; gap: 4px; }
   label { font-size: .85rem; font-weight: 600; color: #334155; }
-  .u { font-weight: 400; color: #94a3b8; }
 
-  input {
-    padding: 9px 12px;
+  /* Ft + in compound row */
+  .ft-in-row {
+    display: flex;
+    gap: 6px;
+  }
+  .ft-in-field {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #fff;
     border: 1.5px solid #e2e8f0;
     border-radius: 9px;
+    overflow: hidden;
+    transition: border-color .15s;
+  }
+  .ft-in-field:focus-within { border-color: #1e3a8a; }
+  .ft-in-field input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    border-radius: 0;
+    padding: 9px 8px;
+    font-size: .95rem;
+    background: transparent;
+  }
+  .ft-in-field input:focus { outline: none; }
+
+  /* Single-value field with inline unit label */
+  .single-field {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 9px;
+    overflow: hidden;
+    transition: border-color .15s;
+  }
+  .single-field:focus-within { border-color: #1e3a8a; }
+  .single-field input {
+    flex: 1;
+    border: none;
+    border-radius: 0;
+    padding: 9px 12px;
     font-size: .95rem;
     font-family: inherit;
-    background: #fff;
-    transition: border-color .15s;
+    background: transparent;
     color: #1e293b;
   }
-  input:focus { outline: none; border-color: #1e3a8a; }
+  .single-field input:focus { outline: none; }
+
+  .sub-unit {
+    padding: 0 8px;
+    font-size: .78rem;
+    font-weight: 600;
+    color: #94a3b8;
+    white-space: nowrap;
+  }
+
+  input {
+    font-family: inherit;
+    color: #1e293b;
+  }
 
   .dim-badge {
     margin-top: .6rem;
