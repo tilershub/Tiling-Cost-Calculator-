@@ -22,6 +22,152 @@ const { title, description = 'TILERSHUB Tiling Cost Estimator' } = Astro.props;
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <slot />
+    <!-- Header -->
+    <header>
+      <div class="header-inner">
+        <a href="/" class="brand">
+          <span class="brand-tile"></span>
+          <span class="brand-name">TILERSHUB</span>
+        </a>
+        <span class="brand-tagline">Professional Tiling Tools</span>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main>
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="brand-tile small"></span>
+          <span class="footer-name">TILERSHUB</span>
+        </div>
+        <p class="footer-copy">&copy; {new Date().getFullYear()} TilersHub. All rights reserved.</p>
+        <p class="footer-note">Results are estimates only. Always verify quantities with your tiler.</p>
+      </div>
+    </footer>
   </body>
 </html>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f1f5f9;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ── Header ── */
+  header {
+    background: #1e3a8a;
+    padding: 0 1.5rem;
+  }
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .brand-tile {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    border-radius: 6px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .brand-tile::before,
+  .brand-tile::after {
+    content: '';
+    position: absolute;
+    background: #1e3a8a;
+  }
+  .brand-tile::before {
+    width: 1.5px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .brand-tile::after {
+    height: 1.5px;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .brand-name {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: .08em;
+  }
+  .brand-tagline {
+    font-size: .8rem;
+    font-weight: 500;
+    color: rgba(255,255,255,.5);
+    letter-spacing: .03em;
+  }
+  @media (max-width: 480px) { .brand-tagline { display: none; } }
+
+  /* ── Main ── */
+  main { flex: 1; }
+
+  /* ── Footer ── */
+  footer {
+    background: #1e293b;
+    padding: 1.75rem 1.5rem;
+    margin-top: 2rem;
+  }
+  .footer-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    text-align: center;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: .25rem;
+  }
+  .brand-tile.small {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    background: rgba(255,255,255,.15);
+  }
+  .brand-tile.small::before { background: rgba(255,255,255,.3); }
+  .brand-tile.small::after  { background: rgba(255,255,255,.3); }
+  .footer-name {
+    font-size: .95rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: .08em;
+  }
+  .footer-copy {
+    font-size: .8rem;
+    color: rgba(255,255,255,.45);
+  }
+  .footer-note {
+    font-size: .75rem;
+    color: rgba(255,255,255,.25);
+  }
+</style>
