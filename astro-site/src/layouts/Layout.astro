@@ -4,18 +4,9 @@ import '../styles/global.css';
 export interface Props {
   title: string;
   description?: string;
-  canonical?: string;
-  ogImage?: string;
 }
 
-const {
-  title,
-  description = 'TILERSHUB – Sri Lanka\'s #1 Tiling & Bathroom Service Platform. Certified tilers, transparent rates, 1-year warranty.',
-  canonical,
-  ogImage = '/icons/og-image.png',
-} = Astro.props;
-
-const canonicalURL = canonical ?? new URL(Astro.url.pathname, Astro.site ?? 'https://tilershub.lk');
+const { title, description = 'TILERSHUB Tiling Cost Estimator' } = Astro.props;
 ---
 
 <!doctype html>
@@ -25,18 +16,10 @@ const canonicalURL = canonical ?? new URL(Astro.url.pathname, Astro.site ?? 'htt
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" href="/icons/favicon.png" type="image/png" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-    <link rel="manifest" href="/manifest.json" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body>
     <slot />
